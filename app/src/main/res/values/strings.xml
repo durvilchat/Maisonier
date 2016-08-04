@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Maisonier</string>
+    <string name="load">Chargement...</string>
+
+    <string name="title_activity_login">Autentification</string>
+    <string name="color">#0082C3</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Login</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Connexion</string>
+
+
+    <string name="section_format">Page %1$d</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_modele_presentation">ModelePresentation</string>
+    <string name="title_activity_profil__user">Profil_User</string>
+    <string name="action_search">rechercher</string>
+    <string name="dialog_message_group_item_pinned">good</string>
+    <string name="dialog_message_item_pinned">bien</string>
+    <string name="accueilmaisonier">Accueil Maisonier</string>
+    <string name="gererlogement">Gérer les logements</string>
+    <string name="typelogement">Type de logement</string>
+
+
+</resources>
