@@ -7,8 +7,6 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
@@ -39,17 +37,10 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_layou_cite"
+        <Spinner
+            android:id="@+id/cite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/cite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Cité" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/btn_valider_annuler"

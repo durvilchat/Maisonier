@@ -1,5 +1,6 @@
 package com.mahya.maisonier.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -10,7 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.MainActivity;
+import com.mahya.maisonier.activities.ArticleActivity;
+import com.mahya.maisonier.activities.BatimentActivity;
+import com.mahya.maisonier.activities.CaracteristiqueActivity;
+import com.mahya.maisonier.activities.CiteActivity;
+import com.mahya.maisonier.activities.LogementActivity;
+import com.mahya.maisonier.activities.TypePenaliteActivity;
+import com.mahya.maisonier.activities.TypedeChargeActivity;
 import com.mahya.maisonier.activities.TypelogementActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -19,13 +26,20 @@ import java.util.List;
 
 public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> implements OnItemClickListener {
     public static final int sub_menu = 1001;
+    public static ProgressDialog progressDialog;
     Context context;
+    Intent[] intents;
 
     public MenuApp(Context context) {
         super(context);
         this.context = context;
         setItems(getSampleItems());
+        initMenu();
+    }
 
+    private void initMenu() {
+
+        intents = new Intent[]{new Intent(context, TypelogementActivity.class), new Intent(context, CaracteristiqueActivity.class)};
     }
 
     @Override
@@ -65,15 +79,33 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
                 ((SubmenuHolder) holder).sous_titre.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                            switch(((SubmenuHolder) holder).name.getText().toString()) {
-                            case  "Type de logement":
-                                Intent i =new Intent(context, TypelogementActivity.class);
-                                 context.startActivity(i);
-                                break;
-                            case "":
+                        TextView name = (TextView) view.findViewById(R.id.item_name);
+                        if (name.getText().toString().trim().equals(context.getString(R.string.typelogement))) {
 
-                                break;
-                            default:
+                            context.startActivity(intents[0]);
+                            ;
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.Caracteristiques))) {
+                            context.startActivity(new Intent(context, CaracteristiqueActivity.class));
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.typedecharge))) {
+                            context.startActivity(new Intent(context, TypedeChargeActivity.class));
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.Cite))) {
+                            context.startActivity(new Intent(context, CiteActivity.class));
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.batiment))) {
+                            context.startActivity(new Intent(context, BatimentActivity.class));
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.Logements))) {
+                            context.startActivity(new Intent(context, LogementActivity.class));
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.typepenalite).trim())) {
+                            context.startActivity(new Intent(context, TypePenaliteActivity.class));
+
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.article).trim())) {
+                            context.startActivity(new Intent(context, ArticleActivity.class));
+
 
                         }
 
@@ -94,12 +126,12 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu(context.getText(R.string.accueilmaisonier).toString()));
         items.add(new ItemMenu(context.getText(R.string.gererlogement).toString()));
         items.add(new ItemMenu(context.getText(R.string.typelogement).toString(), " "));
-        items.add(new ItemMenu("Batiments", " "));
-        items.add(new ItemMenu("Logements", " "));
-        items.add(new ItemMenu("Caracteristiques", " "));
-        items.add(new ItemMenu("Logements disponibles", " "));
-        items.add(new ItemMenu("Cite", " "));
-        items.add(new ItemMenu("Gérer des Loyers"));
+        items.add(new ItemMenu(context.getText(R.string.batiment).toString(), " "));
+        items.add(new ItemMenu(context.getText(R.string.Logements).toString(), " "));
+        items.add(new ItemMenu(context.getText(R.string.Caracteristiques).toString(), " "));
+        items.add(new ItemMenu(context.getText(R.string.disponibles).toString(), " "));
+        items.add(new ItemMenu(context.getText(R.string.Cite).toString(), " "));
+        items.add(new ItemMenu(context.getText(R.string.GererdesLoyers).toString()));
         items.add(new ItemMenu("Occupations", " "));
         items.add(new ItemMenu("Loyers", " "));
         items.add(new ItemMenu("Caution", " "));
@@ -112,7 +144,7 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu("Etat des occupations", " "));
         items.add(new ItemMenu("Gérer les contrats"));
         items.add(new ItemMenu("Bailleur", " "));
-        items.add(new ItemMenu("Articles", " "));
+        items.add(new ItemMenu(context.getString(R.string.article), " "));
         items.add(new ItemMenu("Contrat de bail", " "));
         items.add(new ItemMenu("Rubrique de contrat", " "));
         items.add(new ItemMenu("Rubrique", " "));
@@ -124,10 +156,10 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu("Charger Dépot", " "));
         items.add(new ItemMenu("Transfert inter-compte", " "));
         items.add(new ItemMenu("Gérer les pénalités"));
-        items.add(new ItemMenu("Types de pénalité", " "));
+        items.add(new ItemMenu(context.getString(R.string.typepenalite).toString(), " "));
         items.add(new ItemMenu("Pénalités", " "));
         items.add(new ItemMenu("Charges", " "));
-        items.add(new ItemMenu("Types de charges", " "));
+        items.add(new ItemMenu(context.getString(R.string.typedecharge).toString(), " "));
         items.add(new ItemMenu("Gestion des index"));
         items.add(new ItemMenu("Consommation en eau", " "));
         items.add(new ItemMenu("Consommation en électricité", " "));
@@ -145,10 +177,15 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         return items;
     }
 
-    @Override
-    public void onItemClicked(View view, int position) {
-        Toast.makeText(context, " okkkk", Toast.LENGTH_LONG).show();
 
+    @Override
+    public void onItemClicked(int position) {
+
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        return false;
     }
 
     @Override
@@ -216,4 +253,6 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
             name.setText(visibleItems.get(position).Text);
         }
     }
+
+
 }

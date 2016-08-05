@@ -18,12 +18,14 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class TypeCompte extends BaseModel {
 
 
+    public static List<TypeCompte> typeComptes = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -51,6 +53,31 @@ public class TypeCompte extends BaseModel {
         this.libelle = libelle;
     }
 
+    public static List<TypeCompte> getInitData(int size) {
+        List<TypeCompte> TypeCompte = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TypeCompte.add(createRandomPerson());
+        }
+        return TypeCompte;
+    }
+
+    public static TypeCompte createRandomPerson() {
+        TypeCompte TypeCompte = null;
+        try {
+            TypeCompte = typeComptes.get(0);
+            typeComptes.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return TypeCompte;
+
+    }
+
+    public static List<TypeCompte> findAll() {
+        return SQLite.select().from(TypeCompte.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -75,7 +102,6 @@ public class TypeCompte extends BaseModel {
         this.libelle = libelle;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "compteList", isVariablePrivate = true)
     public List<Compte> getCompteList() {
         if (compteList == null || compteList.isEmpty()) {
@@ -90,4 +116,5 @@ public class TypeCompte extends BaseModel {
     public void setCompteList(List<Compte> compteList) {
         this.compteList = compteList;
     }
+
 }

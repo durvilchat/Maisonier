@@ -13,8 +13,9 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.TypelogementActivity;
-import com.mahya.maisonier.entites.TypeLogement;
+import com.mahya.maisonier.activities.BatimentActivity;
+import com.mahya.maisonier.entites.Batiment;
+import com.mahya.maisonier.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,14 +29,14 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     Context mContext;
     int idSelect;
     int selectposition;
-    private List<TypeLogement> typeLogements;
+    private List<Batiment> batiments;
     private View vue;
     private SparseBooleanArray selectedItems;
-    private BatimentAdapter.SimpleViewHolder.ClickListener clickListener;
+    private OnItemClickListener clickListener;
 
-    public BatimentAdapter(Context context, List<TypeLogement> typeLogements, BatimentAdapter.SimpleViewHolder.ClickListener clickListener) {
+    public BatimentAdapter(Context context, List<Batiment> batiments, OnItemClickListener clickListener) {
         this.mContext = context;
-        this.typeLogements = typeLogements;
+        this.batiments = batiments;
         this.clickListener = clickListener;
         selectedItems = new SparseBooleanArray();
     }
@@ -52,10 +53,10 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(typeLogements.get(position).getCode());
-            viewHolder.libele.setText(typeLogements.get(position).getLibelle());
-            viewHolder.desc.setText(typeLogements.get(position).getDescription());
-            viewHolder.id.setText(String.valueOf(typeLogements.get(position).getId()));
+            viewHolder.nom.setText(batiments.get(position).getCode());
+            viewHolder.code.setText(batiments.get(position).getNom());
+            viewHolder.cite.setText(batiments.get(position).getCite().load().getNomCite() + " " + batiments.get(position).getCite().load().getSiege());
+            viewHolder.id.setText(String.valueOf(batiments.get(position).getId()));
         } catch (Exception e) {
 
             return;
@@ -81,8 +82,8 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof TypelogementActivity) {
-                    ((TypelogementActivity) mContext).onItemClicked(position);
+                if (mContext instanceof BatimentActivity) {
+                    ((BatimentActivity) mContext).onItemClicked(position);
                 }
             }
         });
@@ -91,7 +92,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             @Override
             public boolean onLongClick(View view) {
 
-                ((TypelogementActivity) mContext).onItemLongClicked(position);
+                ((BatimentActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -140,7 +141,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             @Override
             public void onClick(View view) {
 
-                ((TypelogementActivity) mContext).detail(idSelect);
+                ((BatimentActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -149,7 +150,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).modifier(idSelect);
+                ((BatimentActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -160,7 +161,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).supprimer(idSelect);
+                ((BatimentActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -172,34 +173,34 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
 
     }
 
-    public void animateTo(List<TypeLogement> typeLogements) {
-        applyAndAnimateRemovals(typeLogements);
-        applyAndAnimateAdditions(typeLogements);
-        applyAndAnimateMovedItems(typeLogements);
+    public void animateTo(List<Batiment> batiments) {
+        applyAndAnimateRemovals(batiments);
+        applyAndAnimateAdditions(batiments);
+        applyAndAnimateMovedItems(batiments);
     }
 
-    private void applyAndAnimateRemovals(List<TypeLogement> typeLogements) {
-        for (int i = this.typeLogements.size() - 1; i >= 0; i--) {
-            final TypeLogement model = this.typeLogements.get(i);
-            if (!typeLogements.contains(model)) {
+    private void applyAndAnimateRemovals(List<Batiment> batiments) {
+        for (int i = this.batiments.size() - 1; i >= 0; i--) {
+            final Batiment model = this.batiments.get(i);
+            if (!batiments.contains(model)) {
                 deleteItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<TypeLogement> typeLogements) {
-        for (int i = 0, count = typeLogements.size(); i < count; i++) {
-            final TypeLogement typeLogement = typeLogements.get(i);
-            if (!this.typeLogements.contains(typeLogement)) {
-                addItem(i, typeLogement);
+    private void applyAndAnimateAdditions(List<Batiment> batiments) {
+        for (int i = 0, count = batiments.size(); i < count; i++) {
+            final Batiment Batiment = batiments.get(i);
+            if (!this.batiments.contains(Batiment)) {
+                addItem(i, Batiment);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<TypeLogement> typeLogements) {
-        for (int toPosition = typeLogements.size() - 1; toPosition >= 0; toPosition--) {
-            final TypeLogement model = typeLogements.get(toPosition);
-            final int fromPosition = this.typeLogements.indexOf(model);
+    private void applyAndAnimateMovedItems(List<Batiment> batiments) {
+        for (int toPosition = batiments.size() - 1; toPosition >= 0; toPosition--) {
+            final Batiment model = batiments.get(toPosition);
+            final int fromPosition = this.batiments.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
@@ -207,8 +208,8 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     }
 
 
-    public void addItem(int position, TypeLogement model) {
-        typeLogements.add(position, model);
+    public void addItem(int position, Batiment model) {
+        batiments.add(position, model);
         notifyItemInserted(position);
     }
 
@@ -248,23 +249,23 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
 
     private void removeRange(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; ++i) {
-            typeLogements.remove(positionStart);
+            batiments.remove(positionStart);
         }
         notifyItemRangeRemoved(positionStart, itemCount);
     }
 
     @Override
     public int getItemViewType(int position) {
-        final TypeLogement item = typeLogements.get(position);
+        final Batiment item = batiments.get(position);
 
         return 0;
     }
 
 
-    public void add(List<TypeLogement> items) {
-        int previousDataSize = this.typeLogements.size();
-        this.typeLogements.addAll(items);
-        notifyItemRangeInserted(previousDataSize, items.size());
+    public void add(List<Batiment> batiments) {
+        int previousDataSize = this.batiments.size();
+        this.batiments.addAll(batiments);
+        notifyItemRangeInserted(previousDataSize, batiments.size());
     }
 
     public Integer getId() {
@@ -275,30 +276,30 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         return selectposition;
     }
 
-    public TypeLogement getItem(int idx) {
-        return typeLogements.get(idx);
+    public Batiment getItem(int idx) {
+        return batiments.get(idx);
     }
 
-    public void addItem(TypeLogement typeLogement, int index) {
-        typeLogements.add(typeLogement);
+    public void addItem(Batiment Batiment, int index) {
+        batiments.add(index, Batiment);
         notifyItemInserted(index);
     }
 
     public void deleteItem(int index) {
-        typeLogements.remove(index);
+        batiments.remove(index);
         notifyItemRemoved(index);
     }
 
-    public void actualiser(List<TypeLogement> typeLogements) {
-        typeLogements.clear();
-        typeLogements.addAll(typeLogements);
+    public void actualiser(List<Batiment> batiments) {
+        this.batiments.clear();
+        this.batiments.addAll(batiments);
         notifyDataSetChanged();
     }
 
 
     public void moveItem(int fromPosition, int toPosition) {
-        final TypeLogement model = typeLogements.remove(fromPosition);
-        typeLogements.add(toPosition, model);
+        final Batiment model = batiments.remove(fromPosition);
+        batiments.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -364,7 +365,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
 
     @Override
     public int getItemCount() {
-        return typeLogements.size();
+        return batiments.size();
     }
 
     @Override
@@ -381,25 +382,25 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView tilte;
-        TextView desc;
+        TextView code;
+        TextView nom;
         TextView id;
         ImageButton detail;
-        TextView libele;
+        TextView cite;
         View selectedOverlay;
-        private ClickListener listener;
+        OnItemClickListener listener;
 
-        public SimpleViewHolder(View itemView, ClickListener listener) {
+        public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            tilte = (TextView) itemView.findViewById(R.id.titre);
-            libele = (TextView) itemView.findViewById(R.id.libelle);
-            desc = (TextView) itemView.findViewById(R.id.desc);
+            code = (TextView) itemView.findViewById(R.id.titre);
+            nom = (TextView) itemView.findViewById(R.id.libelle);
+            cite = (TextView) itemView.findViewById(R.id.desc);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
-            detail = (ImageButton) itemView.findViewById(R.id.btnLocation);
+            detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;
 
@@ -425,11 +426,6 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             return false;
         }
 
-        public interface ClickListener {
-            void onItemClicked(int position);
-
-            boolean onItemLongClicked(int position);
-        }
 
     }
 }

@@ -10,6 +10,7 @@ import android.support.annotation.Size;
 import com.mahya.maisonier.dataBase.Maisonier;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -19,14 +20,16 @@ import com.raizlabs.android.dbflow.annotation.UniqueGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true,
         uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Bailleur extends BaseModel {
 
-
+    public static List<Bailleur> bailleurs = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -87,7 +90,7 @@ public class Bailleur extends BaseModel {
 
     List<Depense> depenseList;
 
-    List<Cite> citeList;
+    List<Bailleur> citeList;
 
 
     public Bailleur() {
@@ -103,6 +106,31 @@ public class Bailleur extends BaseModel {
         this.nom = nom;
         this.tel1 = tel1;
         this.titre = titre;
+    }
+
+    public static List<Bailleur> getInitData(int size) {
+        List<Bailleur> Bailleur = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Bailleur.add(createRandomPerson());
+        }
+        return Bailleur;
+    }
+
+    public static Bailleur createRandomPerson() {
+        Bailleur Bailleur = null;
+        try {
+            Bailleur = bailleurs.get(0);
+            bailleurs.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Bailleur;
+
+    }
+
+    public static List<Bailleur> findAll() {
+        return SQLite.select().from(Bailleur.class).queryList();
     }
 
     public Integer getId() {
@@ -221,10 +249,23 @@ public class Bailleur extends BaseModel {
         return titre;
     }
 
+/*
+
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "citeList")
+    public List<Bailleur> getCiteList() {
+        if (citeList == null || citeList.isEmpty()) {
+            citeList = SQLite.select()
+                    .from(Bailleur.class).where(Cite_Table.bailleur_id.eq(id))
+                    .queryList();
+        }
+
+        return citeList;
+    }
+*/
+
     public void setTitre(String titre) {
         this.titre = titre;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "contratBailList")
     public List<ContratBail> getContratBailList() {
@@ -235,7 +276,6 @@ public class Bailleur extends BaseModel {
         }
         return contratBailList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "depenseList")
     public List<Depense> getDepenseList() {
@@ -248,17 +288,9 @@ public class Bailleur extends BaseModel {
         return depenseList;
     }
 
-
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "citeList")
-    public List<Cite> getCiteList() {
-        if (citeList == null || citeList.isEmpty()) {
-            citeList = SQLite.select()
-                    .from(Cite.class).where(Cite_Table.bailleur_id.eq(id))
-                    .queryList();
-        }
-
-        return citeList;
+    @Override
+    public String toString() {
+        return nom + " " + prenom;
     }
-
 
 }

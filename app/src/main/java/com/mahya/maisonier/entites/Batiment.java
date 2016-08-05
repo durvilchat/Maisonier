@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -22,12 +23,15 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Batiment extends BaseModel {
 
 
+    public static List<Batiment> batiments = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -69,6 +73,31 @@ public class Batiment extends BaseModel {
         this.etat = etat;
     }
 
+    public static List<Batiment> getInitData(int size) {
+        List<Batiment> batiment = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            batiment.add(createRandomPerson());
+        }
+        return batiment;
+    }
+
+    public static Batiment createRandomPerson() {
+        Batiment batiment = null;
+        try {
+            batiment = batiments.get(0);
+            batiments.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return batiment;
+
+    }
+
+    public static List<Batiment> findAll() {
+        return SQLite.select().from(Batiment.class).queryList();
+    }
+
     public boolean isEtat() {
         return etat;
     }
@@ -100,7 +129,6 @@ public class Batiment extends BaseModel {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
 
     public ForeignKeyContainer<Cite> getCite() {
         return cite;
@@ -160,5 +188,10 @@ public class Batiment extends BaseModel {
         cite.setModel(cite1);
         cite.put(Cite_Table.id, cite1.id);
 
+    }
+
+    @Override
+    public String toString() {
+        return code + " " + nom;
     }
 }

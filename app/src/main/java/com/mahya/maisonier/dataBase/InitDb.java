@@ -32,6 +32,4 @@ public class InitDb extends Application {
     }
 
 
-
-
 }

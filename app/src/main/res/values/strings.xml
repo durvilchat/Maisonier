@@ -25,6 +25,19 @@
     <string name="accueilmaisonier">Accueil Maisonier</string>
     <string name="gererlogement">Gérer les logements</string>
     <string name="typelogement">Type de logement</string>
+    <string name="batiment">Batiments</string>
+    <string name="Logements">Logements</string>
+    <string name="Caracteristiques">Caracteristiques</string>
+    <string name="disponibles">Logements disponibles</string>
+    <string name="Cite">Cite</string>
+    <string name="GererdesLoyers">Gérer des Loyers</string>
+    <string name="Chargement">Chargement</string>
+    <string name="patienter">Veillez patienter</string>
+    <string name="typedecharge">Types de charges</string>
+    <string name="Logement">Logement</string>
+    <string name="typepenalite">Type de penalite</string>
+    <string name="article">Articles</string>
+    <string name="date_picker_title">date</string>
 
 
 </resources>

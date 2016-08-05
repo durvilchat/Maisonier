@@ -17,12 +17,13 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class TypeCharge extends BaseModel {
 
-
+    public static List<TypeCharge> typeCharges = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -46,6 +47,31 @@ public class TypeCharge extends BaseModel {
     public TypeCharge(Integer id, String libelle) {
         this.id = id;
         this.libelle = libelle;
+    }
+
+    public static List<TypeCharge> getInitData(int size) {
+        List<TypeCharge> TypeCharge = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TypeCharge.add(createRandomPerson());
+        }
+        return TypeCharge;
+    }
+
+    public static TypeCharge createRandomPerson() {
+        TypeCharge TypeCharge = null;
+        try {
+            TypeCharge = typeCharges.get(0);
+            typeCharges.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return TypeCharge;
+
+    }
+
+    public static List<TypeCharge> findAll() {
+        return SQLite.select().from(TypeCharge.class).queryList();
     }
 
     public Integer getId() {
@@ -72,7 +98,6 @@ public class TypeCharge extends BaseModel {
         this.montant = montant;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "chargeList", isVariablePrivate = true)
     public List<Charge> getChargeList() {
         if (chargeList == null || chargeList.isEmpty()) {
@@ -87,4 +112,5 @@ public class TypeCharge extends BaseModel {
     public void setChargeList(List<Charge> chargeList) {
         this.chargeList = chargeList;
     }
+
 }

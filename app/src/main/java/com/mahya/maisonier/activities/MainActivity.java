@@ -22,6 +22,7 @@ import com.mahya.maisonier.Profil_User;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.ExpandableRecyclerAdapter;
 import com.mahya.maisonier.adapter.MenuApp;
+import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
 public class MainActivity extends AppCompatActivity
@@ -57,17 +58,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -92,7 +82,13 @@ public class MainActivity extends AppCompatActivity
 
     public void bien(View view) {
 
-        startActivity(new Intent(this, TypelogementActivity.class));
+        Bailleur habitant = new Bailleur();
+        habitant.setNom("franck");
+        habitant.setGenre("Masculin");
+        habitant.setTel1("698939289");
+        habitant.setTitre("Bien");
+        habitant.save();
+
     }
 
     /**
@@ -153,9 +149,15 @@ public class MainActivity extends AppCompatActivity
         itemFooterName = (TextView) findViewById(R.id.item_footer_name);
     }
 
+
     @Override
-    public void onItemClicked(View view, int position) {
-        Toast.makeText(context, " okkkk", Toast.LENGTH_LONG).show();
+    public void onItemClicked(int position) {
+
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        return false;
     }
 
     @Override

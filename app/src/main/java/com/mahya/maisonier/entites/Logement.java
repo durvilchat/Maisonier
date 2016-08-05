@@ -12,6 +12,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -20,18 +21,20 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Logement extends BaseModel {
-
+    public static List<Logement> logements = new ArrayList<>();
 
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
 
-    @NotNull
+
     @Column(name = "datecreation")
 
     Date datecreation;
@@ -96,6 +99,31 @@ public class Logement extends BaseModel {
         this.prixMin = prixMin;
     }
 
+    public static List<Logement> findAll() {
+        return SQLite.select().from(Logement.class).queryList();
+    }
+
+    public static List<Logement> getInitData(int size) {
+        List<Logement> Logement = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Logement.add(createRandomPerson());
+        }
+        return Logement;
+    }
+
+    public static Logement createRandomPerson() {
+        Logement Logement = null;
+        try {
+            Logement = logements.get(0);
+            logements.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Logement;
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -152,7 +180,6 @@ public class Logement extends BaseModel {
         this.reference = reference;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "occupationList", isVariablePrivate = true)
     public List<Occupation> getOccupationList() {
         if (occupationList == null || occupationList.isEmpty()) {
@@ -167,7 +194,6 @@ public class Logement extends BaseModel {
     public void setOccupationList(List<Occupation> occupationList) {
         this.occupationList = occupationList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "photoLogementList", isVariablePrivate = true)
     public List<PhotoLogement> getPhotoLogementList() {
@@ -185,7 +211,6 @@ public class Logement extends BaseModel {
         this.photoLogementList = photoLogementList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationEauList", isVariablePrivate = true)
     public List<ConsommationEau> getConsommationEauList() {
         if (consommationEauList == null || consommationEauList.isEmpty()) {
@@ -201,7 +226,6 @@ public class Logement extends BaseModel {
         this.consommationEauList = consommationEauList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationElectriciteList", isVariablePrivate = true)
     public List<ConsommationElectricite> getConsommationElectriciteList() {
         if (consommationElectriciteList == null || consommationElectriciteList.isEmpty()) {
@@ -216,7 +240,6 @@ public class Logement extends BaseModel {
     public void setConsommationElectriciteList(List<ConsommationElectricite> consommationElectriciteList) {
         this.consommationElectriciteList = consommationElectriciteList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "caracteristiqueLogementList", isVariablePrivate = true)
     public List<CaracteristiqueLogement> getCaracteristiqueLogementList() {
@@ -247,4 +270,8 @@ public class Logement extends BaseModel {
 
     }
 
+    @Override
+    public String toString() {
+        return reference;
+    }
 }

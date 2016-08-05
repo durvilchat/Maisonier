@@ -12,9 +12,15 @@ import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
+    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
+    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+    private static final int[] ATTRS = new int[]{
+            android.R.attr.listDivider
+    };
     private boolean mShowFirstDivider = false;
     private boolean mShowLastDivider = false;
-
+    private Drawable mDivider;
+    private int mOrientation;
 
     public DividerItemDecoration(Context context, AttributeSet attrs) {
         final TypedArray a = context
@@ -39,6 +45,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         this(divider);
         mShowFirstDivider = showFirstDivider;
         mShowLastDivider = showLastDivider;
+    }
+
+    public DividerItemDecoration(Context context, int orientation) {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mDivider = a.getDrawable(0);
+        a.recycle();
+        setOrientation(orientation);
     }
 
     @Override
@@ -120,25 +133,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             throw new IllegalStateException(
                     "DividerItemDecoration can only be used with a LinearLayoutManager.");
         }
-    }
-
-    private static final int[] ATTRS = new int[]{
-            android.R.attr.listDivider
-    };
-
-    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-
-    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
-
-    private Drawable mDivider;
-
-    private int mOrientation;
-
-    public DividerItemDecoration(Context context, int orientation) {
-        final TypedArray a = context.obtainStyledAttributes(ATTRS);
-        mDivider = a.getDrawable(0);
-        a.recycle();
-        setOrientation(orientation);
     }
 
     public void setOrientation(int orientation) {

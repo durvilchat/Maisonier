@@ -17,12 +17,13 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Caracteristique extends BaseModel {
 
-
+    public static List<Caracteristique> caracteristiques = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -32,7 +33,7 @@ public class Caracteristique extends BaseModel {
     @Unique
     @Column(name = "libelle", length = 255)
     String libelle;
-    //  //@OneToMany(cascade = CascadeType.ALL, mappedBy = "caracteristique")
+
     List<CaracteristiqueLogement> caracteristiqueLogementList;
 
     public Caracteristique() {
@@ -45,6 +46,31 @@ public class Caracteristique extends BaseModel {
     public Caracteristique(Integer id, String libelle) {
         this.id = id;
         this.libelle = libelle;
+    }
+
+    public static List<Caracteristique> getInitData(int size) {
+        List<Caracteristique> Caracteristique = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Caracteristique.add(createRandomPerson());
+        }
+        return Caracteristique;
+    }
+
+    public static Caracteristique createRandomPerson() {
+        Caracteristique Caracteristique = null;
+        try {
+            Caracteristique = caracteristiques.get(0);
+            caracteristiques.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Caracteristique;
+
+    }
+
+    public static List<Caracteristique> findAll() {
+        return SQLite.select().from(Caracteristique.class).queryList();
     }
 
     public Integer getId() {
@@ -78,6 +104,5 @@ public class Caracteristique extends BaseModel {
     public void setCaracteristiqueLogementList(List<CaracteristiqueLogement> caracteristiqueLogementList) {
         this.caracteristiqueLogementList = caracteristiqueLogementList;
     }
-
 
 }

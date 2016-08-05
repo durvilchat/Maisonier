@@ -63,7 +63,7 @@
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/btnLocation"
+                android:id="@+id/detail"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

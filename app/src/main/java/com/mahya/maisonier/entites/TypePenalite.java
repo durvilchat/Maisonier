@@ -17,11 +17,14 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class TypePenalite extends BaseModel {
 
+
+    public static List<TypePenalite> typePenalites = new ArrayList<>();
 
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
@@ -60,6 +63,31 @@ public class TypePenalite extends BaseModel {
         this.etat = etat;
         this.libelle = libelle;
         this.taux = taux;
+    }
+
+    public static List<TypePenalite> getInitData(int size) {
+        List<TypePenalite> TypePenalite = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TypePenalite.add(createRandomPerson());
+        }
+        return TypePenalite;
+    }
+
+    public static TypePenalite createRandomPerson() {
+        TypePenalite TypePenalite = null;
+        try {
+            TypePenalite = typePenalites.get(0);
+            typePenalites.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return TypePenalite;
+
+    }
+
+    public static List<TypePenalite> findAll() {
+        return SQLite.select().from(TypePenalite.class).queryList();
     }
 
     public Integer getId() {
@@ -101,7 +129,6 @@ public class TypePenalite extends BaseModel {
     public void setTaux(double taux) {
         this.taux = taux;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "penaliteList", isVariablePrivate = true)
     public List<Penalite> getPenaliteList() {

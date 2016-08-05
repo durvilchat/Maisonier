@@ -1,113 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:card_view="http://schemas.android.com/apk/res-auto"
-xmlns:swipe="http://schemas.android.com/tools"
-android:id="@+id/row_item"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="5dp"
-android:layout_marginLeft="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginTop="5dp"
-android:foreground="?android:attr/selectableItemBackground"
-android:orientation="vertical"
-card_view:cardBackgroundColor="@android:color/white"
-card_view:cardCornerRadius="4dp"
-card_view:cardElevation="@dimen/cardview_default_elevation">
-
-<com.daimajia.swipe.SwipeLayout
-    android:id="@+id/swipe"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:swipe="http://schemas.android.com/tools"
+    android:id="@+id/row_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    swipe:leftEdgeSwipeOffset="0dp"
-    swipe:rightEdgeSwipeOffset="0dp">
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="@dimen/cardview_default_elevation">
 
-    <!--Bottom View For Right to Left-->
-
-    <LinearLayout
-        android:id="@+id/bottom_wrapper"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:weightSum="3">
-
-        <TextView
-            android:id="@+id/tvEdit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#0076a5"
-            android:gravity="center"
-            android:text="Edit"
-            android:textColor="#fff" />
-
-        <TextView
-            android:id="@+id/tvShare"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#003c54"
-            android:gravity="center"
-            android:text="Share"
-            android:textColor="#fff" />
-
-        <TextView
-            android:id="@+id/tvDelete"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#0076a5"
-            android:gravity="center"
-            android:text="Delete"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-
-    <!-- Another Bottom View For Left to Right -->
-
-    <LinearLayout
-        android:id="@+id/bottom_wrapper1"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:weightSum="1">
-
-        <ImageButton
-            android:id="@+id/btnLocation"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="center" />
-    </LinearLayout>
-
-    <!-- Top View,  Row itemView of RecyclerView -->
-    <LinearLayout
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:elevation="5dp"
-        android:orientation="vertical"
-        android:padding="10dp">
+        swipe:leftEdgeSwipeOffset="0dp"
+        swipe:rightEdgeSwipeOffset="0dp">
 
-        <TextView
-            android:id="@+id/tvName"
+        <!--Bottom View For Right to Left-->
+
+        <LinearLayout
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#0076a5"
+                android:gravity="center"
+                android:text="Edit"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tvShare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#003c54"
+                android:gravity="center"
+                android:text="Share"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tvDelete"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#0076a5"
+                android:gravity="center"
+                android:text="Delete"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+
+        <!-- Another Bottom View For Left to Right -->
+
+        <LinearLayout
+            android:id="@+id/bottom_wrapper1"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+            <ImageButton
+                android:id="@+id/detail"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Top View,  Row itemView of RecyclerView -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Name"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:background="?android:selectableItemBackground"
+            android:elevation="5dp"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvEmailId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvName"
-            android:layout_margin="5dp"
-            android:text="Email Id"
-            android:textColor="@android:color/black"
-            android:textSize="12sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Name"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
-</com.daimajia.swipe.SwipeLayout>
+            <TextView
+                android:id="@+id/tvEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvName"
+                android:layout_margin="5dp"
+                android:text="Email Id"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
 
 </android.support.v7.widget.CardView>

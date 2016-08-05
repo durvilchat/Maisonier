@@ -16,9 +16,10 @@ import com.paginate.recycler.LoadingListItemCreator;
 
 public class CustomLoadingListItemCreator implements LoadingListItemCreator {
 
-    RecyclerView  recyclerView;
+    RecyclerView recyclerView;
+
     public CustomLoadingListItemCreator(RecyclerView recyclerView) {
-        this.recyclerView=recyclerView;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class CustomLoadingListItemCreator implements LoadingListItemCreator {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         TypelogementActivity.VH vh = (TypelogementActivity.VH) holder;
-       // vh.tvLoading.setText(String.format("Total items loaded: %d.\nLoading more...", adapter.getItemCount()));
+        // vh.tvLoading.setText(String.format("Total items loaded: %d.\nLoading more...", adapter.getItemCount()));
 
         // This is how you can make full span if you are using StaggeredGridLayoutManager
         if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {

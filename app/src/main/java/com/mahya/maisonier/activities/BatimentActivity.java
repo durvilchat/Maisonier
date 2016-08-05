@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
 import android.transition.ChangeTransform;
 import android.util.Log;
 import android.view.Menu;
@@ -22,19 +21,23 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
-import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
-import com.mahya.maisonier.entites.TypeLogement;
-import com.mahya.maisonier.entites.TypeLogement_Table;
+import com.mahya.maisonier.adapter.model.BatimentAdapter;
+import com.mahya.maisonier.entites.Batiment;
+import com.mahya.maisonier.entites.Batiment_Table;
+import com.mahya.maisonier.entites.Cite;
 import com.mahya.maisonier.interfaces.CrudActivity;
+import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
 import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
@@ -44,12 +47,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BatimentActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
-        TypeLogementAdapter.SimpleViewHolder.ClickListener {
+        OnItemClickListener {
 
     private static final int GRID_SPAN = 3;
     private static final String TAG = BatimentActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
-    TypeLogementAdapter mAdapter;
+    BatimentAdapter mAdapter;
     FrameLayout fab;
     ImageButton myfab_main_btn;
     Animation animation;
@@ -65,7 +68,7 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         @Override
         public void run() {
             page++;
-            mAdapter.add(TypeLogement.getInitData(itemsPerPage));
+            mAdapter.add(Batiment.getInitData(itemsPerPage));
             loading = false;
         }
     };
@@ -80,8 +83,8 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
-        TypeLogement.typelogs.clear();
-        TypeLogement.typelogs = TypeLogement.findAll();
+        Batiment.batiments.clear();
+        Batiment.batiments = Batiment.findAll();
         setTitle("Batiment");
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -105,7 +108,7 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        if (new TypeLogement().findAll().isEmpty()) {
+        if (new Batiment().findAll().isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -132,10 +135,15 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         dialog.setContentView(R.layout.add_batiment);
         // Initialisation du formulaire
 
-        final EditText code = (EditText) findViewById(R.id.code);
-        final EditText nom = (EditText) findViewById(R.id.nom);
-        final EditText cite = (EditText) findViewById(R.id.cite);
+        final EditText code = (EditText) dialog.findViewById(R.id.code);
+        final EditText nom = (EditText) dialog.findViewById(R.id.nom);
+        final Spinner cite = (Spinner) dialog.findViewById(R.id.cite);
 
+        ArrayAdapter<Cite> adapter =
+                new ArrayAdapter<Cite>(getApplicationContext(), android.R.layout.simple_spinner_item, Cite.findAll());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        cite.setAdapter(adapter);
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
@@ -152,20 +160,15 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
                     return;
 
                 }
-                if (cite.getText().toString().trim().equals("")) {
-                    cite.setError("Velliez remplir le cite");
-                    return;
-
-                }
-                TypeLogement typeLogement = new TypeLogement();
-                typeLogement.setCode(code.getText().toString().trim());
-                typeLogement.setLibelle(nom.getText().toString().trim());
-                typeLogement.setDescription(cite.getText().toString().trim());
+                Batiment batiment = new Batiment();
+                batiment.setCode(code.getText().toString().trim());
+                batiment.setNom(nom.getText().toString().trim());
+                batiment.assoCite((Cite) cite.getSelectedItem());
                 try {
-                    typeLogement.save();
-                    Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    batiment.save();
+                    Snackbar.make(view, "le batiment a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, 0);
+                    mAdapter.addItem(batiment, 1);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -182,9 +185,8 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                code.setText("");
+                nom.setText("");
 
                 dialog.dismiss();
             }
@@ -193,11 +195,16 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
     }
 
     @Override
+    public void detail(int i) {
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mAdapter = null;
         //FlowManager.destroy();
-        // Delete.tables(TypeLogement.class);
+        // Delete.tables(Batiment.class);
     }
 
     @Override
@@ -223,16 +230,16 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            TypeLogement typeLogement = new TypeLogement();
-                            typeLogement.setId(id);
-                            typeLogement.delete();
+                            Batiment Batiment = new Batiment();
+                            Batiment.setId(id);
+                            Batiment.delete();
 
                         } catch (Exception e) {
 
                         }
 
                         mAdapter.deleteItem(mAdapter.getSelectposition());
-                        mAdapter.notifyItemRemoved(mAdapter.getSelectposition());
+
 
                     }
                 })
@@ -272,67 +279,50 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
     }
 
     @Override
-    public void detail(final int id) {
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
-
-        AlertDialog detail = new AlertDialog.Builder(this)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getCode() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
-                .setIcon(R.drawable.ic_info_indigo_900_18dp)
-                .setTitle("Detail " + typeLogement.getLibelle())
-                .setNeutralButton("OK", null)
-                .setCancelable(false)
-                .create();
-        detail.show();
+    public void onLongClick(View view, int position) {
 
     }
+
 
     @Override
     public void modifier(final int id) {
 
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        final Batiment batiment = SQLite.select().from(Batiment.class).where(Batiment_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_batiment);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
-        final EditText Description = (EditText) dialog.findViewById(R.id.Description);
-        Libelle.setText(typeLogement.getLibelle());
-        Code.setText(typeLogement.getCode());
-        Description.setText(typeLogement.getDescription());
+        final EditText code = (EditText) dialog.findViewById(R.id.code);
+        final EditText nom = (EditText) dialog.findViewById(R.id.nom);
+        final Spinner cite = (Spinner) dialog.findViewById(R.id.cite);
+        nom.setText(batiment.getNom());
+        code.setText(batiment.getCode());
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Libelle.getText().toString().trim().equals("")) {
-                    Libelle.setError("Velliez remplir le libelle");
+                if (nom.getText().toString().trim().equals("")) {
+                    nom.setError("Velliez remplir le nom");
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
-                    return;
-
-                }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
+                if (code.getText().toString().trim().equals("")) {
+                    code.setError("Velliez remplir le code");
                     return;
 
                 }
                 try {
 
-                    typeLogement.setId(typeLogement.getId());
-                    typeLogement.setCode(Code.getText().toString().trim());
-                    typeLogement.setLibelle(Libelle.getText().toString().trim());
-                    typeLogement.setDescription(Description.getText().toString().trim());
-                    typeLogement.save();
-                    mAdapter.actualiser(typeLogement.findAll());
-                    System.out.println("good");
+                    batiment.setId(batiment.getId());
+                    batiment.setCode(code.getText().toString().trim());
+                    batiment.setNom(nom.getText().toString().trim());
+                    batiment.assoCite((Cite) cite.getSelectedItem());
+                    batiment.save();
+                    mAdapter.actualiser(Batiment.findAll());
                 } catch (Exception e) {
-                    System.out.println("erroo");
                     System.out.println(e.getMessage());
                 }
 
@@ -340,15 +330,11 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
                 dialog.dismiss();
             }
         });
-        // Your android custom dialog ok action
-        // Action for custom dialog ok button click
         annuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                code.setText("");
+                nom.setText("");
 
                 dialog.dismiss();
             }
@@ -363,15 +349,15 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
             paginate.unbind();
         }
         handler.removeCallbacks(fakeCallback);
-        mAdapter = new TypeLogementAdapter(this, (ArrayList<TypeLogement>) TypeLogement.findAll(), this);
+        mAdapter = new BatimentAdapter(this, Batiment.findAll(), (OnItemClickListener) this);
         loading = false;
         page = 0;
 
-        mAdapter = new TypeLogementAdapter(this, TypeLogement.getInitData(initItem), this);
+        mAdapter = new BatimentAdapter(this, Batiment.getInitData(initItem), (OnItemClickListener) this);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        ((TypeLogementAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        ((BatimentAdapter) mAdapter).setMode(Attributes.Mode.Single);
         paginate = Paginate.with(mRecyclerView, this)
                 .setLoadingTriggerThreshold(threshold)
                 .addLoadingListItem(addLoadingRow)
@@ -422,7 +408,7 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<TypeLogement> filteredModelList = filter(TypeLogement.findAll(), query);
+        final List<Batiment> filteredModelList = filter(Batiment.findAll(), query);
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
         return true;
@@ -435,12 +421,12 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
     }
 
 
-    private List<TypeLogement> filter(List<TypeLogement> models, String query) {
+    private List<Batiment> filter(List<Batiment> models, String query) {
         query = query.toLowerCase();
         System.out.println(models);
-        final List<TypeLogement> filteredModelList = new ArrayList<>();
-        for (TypeLogement model : models) {
-            final String text = model.getLibelle().toLowerCase();
+        final List<Batiment> filteredModelList = new ArrayList<>();
+        for (Batiment model : models) {
+            final String text = model.getNom().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }

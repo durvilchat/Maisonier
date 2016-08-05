@@ -18,12 +18,14 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class ArticleBail extends BaseModel {
 
 
+    public static List<ArticleBail> articleBails = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -60,6 +62,31 @@ public class ArticleBail extends BaseModel {
         this.numero = numero;
     }
 
+    public static List<ArticleBail> getInitData(int size) {
+        List<ArticleBail> articleBails = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            articleBails.add(createRandomPerson());
+        }
+        return articleBails;
+    }
+
+    public static ArticleBail createRandomPerson() {
+        ArticleBail batiment = null;
+        try {
+            batiment = articleBails.get(0);
+            articleBails.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return batiment;
+
+    }
+
+    public static List<ArticleBail> findAll() {
+        return SQLite.select().from(ArticleBail.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -92,7 +119,6 @@ public class ArticleBail extends BaseModel {
         this.numero = numero;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "rubriqueList", isVariablePrivate = true)
     public List<Rubrique> getMyRubrique() {
         if (rubriqueList == null || rubriqueList.isEmpty()) {
@@ -117,5 +143,10 @@ public class ArticleBail extends BaseModel {
 
     public void setRubriqueList(List<Rubrique> rubriqueList) {
         this.rubriqueList = rubriqueList;
+    }
+
+    @Override
+    public String toString() {
+        return libelle;
     }
 }

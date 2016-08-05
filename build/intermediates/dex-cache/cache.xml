@@ -30,15 +30,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Maisonier\app\build\intermediates\exploded-aar\com.bignerdranch.android\recyclerview-multiselect\0.2\jars\classes.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="8a90606ee73178bb9b1a336dc36ae3ec25ad33ea">
-        <dex dex="D:\Maisonier\app\build\intermediates\pre-dexed\debug\com.bignerdranch.android-recyclerview-multiselect-0.2_ead97bea6eab101d3cd2d28ffa6c536408a53ad9.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\Maisonier\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
         jumboMode="false"
         optimize="false"

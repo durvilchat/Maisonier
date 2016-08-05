@@ -1,5 +1,6 @@
 package com.mahya.maisonier.activities;
 
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -35,6 +36,7 @@ import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
 import com.mahya.maisonier.entites.TypeLogement;
 import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
+import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
 import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
@@ -44,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypelogementActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
-        TypeLogementAdapter.SimpleViewHolder.ClickListener {
+        OnItemClickListener {
 
     private static final int GRID_SPAN = 3;
     private static final String TAG = TypelogementActivity.class.getSimpleName();
@@ -88,7 +90,6 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         initView();
-
         fab.startAnimation(animation);
         handler = new Handler();
         setupPagination();
@@ -232,7 +233,6 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
                         }
 
                         mAdapter.deleteItem(mAdapter.getSelectposition());
-                        mAdapter.notifyItemRemoved(mAdapter.getSelectposition());
 
                     }
                 })
@@ -269,6 +269,11 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
         toggleSelection(position);
 
         return true;
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
     }
 
     @Override
@@ -329,7 +334,7 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
                     typeLogement.setLibelle(Libelle.getText().toString().trim());
                     typeLogement.setDescription(Description.getText().toString().trim());
                     typeLogement.save();
-                    mAdapter.actualiser(typeLogement.findAll());
+                    mAdapter.actualiser(TypeLogement.findAll());
                     System.out.println("good");
                 } catch (Exception e) {
                     System.out.println("erroo");

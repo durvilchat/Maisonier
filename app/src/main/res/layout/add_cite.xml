@@ -7,9 +7,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
+        android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
@@ -17,6 +16,7 @@
             android:id="@+id/Bailleur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_weight="1" />
 
         <android.support.design.widget.TextInputLayout
@@ -29,6 +29,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nom de la cité"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_Siege"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/Siege"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Siège"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 

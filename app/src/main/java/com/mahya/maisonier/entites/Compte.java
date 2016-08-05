@@ -16,10 +16,12 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.annotation.UniqueGroup;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Compte extends BaseModel {
@@ -64,6 +66,10 @@ public class Compte extends BaseModel {
         this.solde = solde;
     }
 
+    public static List<Compte> findAll() {
+        return SQLite.select().from(Compte.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -95,4 +101,10 @@ public class Compte extends BaseModel {
 
     }
 
+    public void assoTypeCompte(TypeCompte typeCompte1) {
+        typeCompte = new ForeignKeyContainer<>(TypeCompte.class);
+        typeCompte.setModel(typeCompte1);
+        typeCompte.put(TypeCompte_Table.id, typeCompte1.id);
+
+    }
 }

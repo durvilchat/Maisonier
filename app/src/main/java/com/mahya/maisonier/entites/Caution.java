@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -21,6 +22,7 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.util.Date;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Caution extends BaseModel {
 

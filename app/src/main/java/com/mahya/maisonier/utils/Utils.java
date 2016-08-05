@@ -1,5 +1,6 @@
 package com.mahya.maisonier.utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -45,6 +46,15 @@ public class Utils {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(settingName, settingValue);
         editor.apply();
+    }
+
+    public static void pleaseWait(Context context, ProgressDialog pd) {
+        pd = new ProgressDialog(context);
+        pd.setTitle(context.getString(R.string.patienter));
+        pd.setMessage(context.getString(R.string.Chargement));
+        pd.setCancelable(true);
+        pd.setIndeterminate(true);
+        pd.show();
     }
 
 }

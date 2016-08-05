@@ -15,6 +15,7 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.TypelogementActivity;
 import com.mahya.maisonier.entites.TypeLogement;
+import com.mahya.maisonier.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +32,9 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
     private List<TypeLogement> typeLogements;
     private View vue;
     private SparseBooleanArray selectedItems;
-    private TypeLogementAdapter.SimpleViewHolder.ClickListener clickListener;
+    private OnItemClickListener clickListener;
 
-    public TypeLogementAdapter(Context context, List<TypeLogement> typeLogements, TypeLogementAdapter.SimpleViewHolder.ClickListener clickListener) {
+    public TypeLogementAdapter(Context context, List<TypeLogement> typeLogements, OnItemClickListener clickListener) {
         this.mContext = context;
         this.typeLogements = typeLogements;
         this.clickListener = clickListener;
@@ -290,8 +291,8 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
     }
 
     public void actualiser(List<TypeLogement> typeLogements) {
-        typeLogements.clear();
-        typeLogements.addAll(typeLogements);
+        this.typeLogements.clear();
+        this.typeLogements.addAll(typeLogements);
         notifyDataSetChanged();
     }
 
@@ -387,9 +388,9 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         ImageButton detail;
         TextView libele;
         View selectedOverlay;
-        private ClickListener listener;
+        private OnItemClickListener listener;
 
-        public SimpleViewHolder(View itemView, ClickListener listener) {
+        public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tilte = (TextView) itemView.findViewById(R.id.titre);
@@ -399,7 +400,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
-            detail = (ImageButton) itemView.findViewById(R.id.btnLocation);
+            detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;
 
@@ -425,11 +426,6 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             return false;
         }
 
-        public interface ClickListener {
-            void onItemClicked(int position);
-
-            boolean onItemLongClicked(int position);
-        }
 
     }
 }

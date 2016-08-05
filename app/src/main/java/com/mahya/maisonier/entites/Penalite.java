@@ -6,6 +6,7 @@
 package com.mahya.maisonier.entites;
 
 import android.support.annotation.Size;
+import android.widget.ArrayAdapter;
 
 import com.mahya.maisonier.dataBase.Maisonier;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -13,20 +14,25 @@ import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.annotation.UniqueGroup;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.util.Date;
+import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Penalite extends BaseModel {
 
 
+    public static ArrayAdapter penalites;
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -91,6 +97,10 @@ public class Penalite extends BaseModel {
         this.montantPayer = montantPayer;
     }
 
+    public static List<Penalite> findAll() {
+        return SQLite.select().from(Penalite.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -139,7 +149,6 @@ public class Penalite extends BaseModel {
         this.observation = observation;
     }
 
-
     public void assoOccupation(Occupation occupation1) {
         occupation = new ForeignKeyContainer<>(Occupation.class);
         occupation.setModel(occupation1);
@@ -160,6 +169,5 @@ public class Penalite extends BaseModel {
         mois.put(Mois_Table.id, mois1.id);
 
     }
-
 
 }

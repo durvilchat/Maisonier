@@ -121,6 +121,10 @@ public class Habitant extends BaseModel {
         this.titre = titre;
     }
 
+    public static List<Habitant> findAll() {
+        return SQLite.select().from(Habitant.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -281,7 +285,6 @@ public class Habitant extends BaseModel {
         this.titre = titre;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "occupationList", isVariablePrivate = true)
     public List<Occupation> getOccupationList() {
         if (occupationList == null || occupationList.isEmpty()) {
@@ -298,7 +301,6 @@ public class Habitant extends BaseModel {
         this.occupationList = occupationList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "factureList", isVariablePrivate = true)
     public List<Facture> getFactureList() {
         if (factureList == null || factureList.isEmpty()) {
@@ -313,7 +315,6 @@ public class Habitant extends BaseModel {
     public void setFactureList(List<Facture> factureList) {
         this.factureList = factureList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationEauList", isVariablePrivate = true)
     public List<ConsommationEau> getConsommationEauList() {
@@ -330,7 +331,6 @@ public class Habitant extends BaseModel {
         this.consommationEauList = consommationEauList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationElectriciteList", isVariablePrivate = true)
     public List<ConsommationElectricite> getConsommationElectriciteList() {
         if (consommationElectriciteList == null || consommationElectriciteList.isEmpty()) {
@@ -346,4 +346,8 @@ public class Habitant extends BaseModel {
         this.consommationElectriciteList = consommationElectriciteList;
     }
 
+    @Override
+    public String toString() {
+        return nom + " " + prenom;
+    }
 }

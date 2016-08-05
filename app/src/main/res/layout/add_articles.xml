@@ -21,7 +21,7 @@
                 android:id="@+id/Libelle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.16"
+                android:layout_weight="1.31"
                 android:ems="10"
                 android:hint="Libellé"
                 android:inputType="textMultiLine" />

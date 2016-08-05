@@ -15,15 +15,20 @@
 
         <Spinner
             android:id="@+id/TypeDeLogement"
+            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/Batiment"
+            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/desc_layou_Reference"
@@ -52,6 +57,27 @@
             android:ems="10"
             android:hint="Prix Max"
             android:inputType="numberDecimal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="date de creation"
+                android:inputType="date" />
+
+            <Button
+                android:id="@+id/dateSelect"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/ic_menu_my_calendar" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/Description"

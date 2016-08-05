@@ -13,27 +13,29 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Cite extends BaseModel {
 
-
+    public static List<Cite> cites = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
     @Size(max = 255)
     @Column(name = "description", length = 255)
     String description;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+
     @Size(max = 255)
     @Column(name = "email", length = 255)
     String email;
@@ -46,7 +48,7 @@ public class Cite extends BaseModel {
     @Size(min = 1, max = 255)
     @Column(name = "nom_cite", length = 255)
     String nomCite;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Column(name = "police_cite")
     Double policeCite;
     @Column(name = "police_contact")
@@ -60,7 +62,7 @@ public class Cite extends BaseModel {
     @Column(name = "tels", length = 255)
     String tels;
     //@OneToMany(mappedBy = "cite")
-    List<Batiment> batimentList;
+    List<Cite> batimentList;
     @Column
     @ForeignKey(
             references = {@ForeignKeyReference(columnName = "bailleur_id",
@@ -80,6 +82,31 @@ public class Cite extends BaseModel {
         this.id = id;
         this.etat = etat;
         this.nomCite = nomCite;
+    }
+
+    public static List<Cite> getInitData(int size) {
+        List<Cite> Cite = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Cite.add(createRandomPerson());
+        }
+        return Cite;
+    }
+
+    public static Cite createRandomPerson() {
+        Cite Cite = null;
+        try {
+            Cite = cites.get(0);
+            cites.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Cite;
+
+    }
+
+    public static List<Cite> findAll() {
+        return SQLite.select().from(Cite.class).queryList();
     }
 
     public Integer getId() {
@@ -157,6 +184,19 @@ public class Cite extends BaseModel {
     public String getTels() {
         return tels;
     }
+/*
+
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "batimentList", isVariablePrivate = true)
+    public List<Cite> getBatimentList() {
+        if (batimentList == null || batimentList.isEmpty()) {
+            batimentList = SQLite.select()
+                    .from(Cite.class)
+                    .where(Batiment_Table.cite_id.eq(id))
+                    .queryList();
+        }
+        return batimentList;
+    }
+*/
 
     public void setTels(String tels) {
         this.tels = tels;
@@ -170,18 +210,7 @@ public class Cite extends BaseModel {
         this.bailleur = bailleur;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "batimentList", isVariablePrivate = true)
-    public List<Batiment> getBatimentList() {
-        if (batimentList == null || batimentList.isEmpty()) {
-            batimentList = SQLite.select()
-                    .from(Batiment.class)
-                    .where(Batiment_Table.cite_id.eq(id))
-                    .queryList();
-        }
-        return batimentList;
-    }
-
-    public void setBatimentList(List<Batiment> batimentList) {
+    public void setBatimentList(List<Cite> batimentList) {
         this.batimentList = batimentList;
     }
 
@@ -191,6 +220,5 @@ public class Cite extends BaseModel {
         bailleur.put(Bailleur_Table.id, bailleur1.id);
 
     }
-
 
 }
