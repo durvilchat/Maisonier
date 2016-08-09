@@ -1,6 +1,5 @@
 package com.mahya.maisonier.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -27,7 +26,6 @@ import java.util.List;
 
 public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> implements OnItemClickListener {
     public static final int sub_menu = 1001;
-    public static ProgressDialog progressDialog;
     Context context;
     Intent[] intents;
 
@@ -35,13 +33,9 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         super(context);
         this.context = context;
         setItems(getSampleItems());
-        initMenu();
     }
 
-    private void initMenu() {
 
-        intents = new Intent[]{new Intent(context, TypelogementActivity.class), new Intent(context, CaracteristiqueActivity.class)};
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -83,8 +77,8 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
                         TextView name = (TextView) view.findViewById(R.id.item_name);
                         if (name.getText().toString().trim().equals(context.getString(R.string.typelogement))) {
 
-                            context.startActivity(intents[0]);
-                            ;
+                            context.startActivity(new Intent(context, TypelogementActivity.class));
+
                         } else if (name.getText().toString().trim().equals(context.getString(R.string.Caracteristiques))) {
                             context.startActivity(new Intent(context, CaracteristiqueActivity.class));
 
@@ -128,39 +122,39 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
     List<ItemMenu> getSampleItems() {
         List<ItemMenu> items = new ArrayList<>();
 
-        items.add(new ItemMenu(null, context.getText(R.string.accueilmaisonier).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.gererlogement).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.accueilmaisonier).toString()));
+        items.add(new ItemMenu(null, context.getText(R.string.gererlogement).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.typelogement).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.batiment).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Logements).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Caracteristiques).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.disponibles).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Cite).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.GererdesLoyers).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.GererdesLoyers).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.Occupations).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Loyers).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Caution).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Correspondance).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Depenses).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.Gérerleshabitants).toString(), ""));
+        items.add(new ItemMenu(null, context.getText(R.string.Gérerleshabitants).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.Enregistrement).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Listedeshablitants).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Dossierdunhabitant).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Etatdesoccupations).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.Gérerlescontrats).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Gérerlescontrats).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.Bailleur).toString(), " "));
         items.add(new ItemMenu(null, context.getString(R.string.article), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Contratdebail).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Rubriquedecontrat).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Rubrique).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.ChargerRibriqueduncontrat).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.Gérerlescomptes).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Gérerlescomptes).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.Typedecompte).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Compte).toString() , " "));
         items.add(new ItemMenu(null, context.getText(R.string.Dépot).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.ChargerDépot).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Transfertintercompte).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.Gérerlespénalités).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Gérerlespénalités).toString()));
         items.add(new ItemMenu(null, context.getString(R.string.typepenalite).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Pénalités).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Charges).toString(), " "));
@@ -171,7 +165,7 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu(null, context.getText(R.string.Indexeneau).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Indexenéléctricité).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Gérerlecable).toString(), " "));
-        items.add(new ItemMenu(null, context.getText(R.string.Etats).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Etats).toString()));
         items.add(new ItemMenu(null, context.getText(R.string.Depenses).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Historiquedeparametrage).toString(), " "));
         items.add(new ItemMenu(null, context.getText(R.string.Mois).toString(), " "));

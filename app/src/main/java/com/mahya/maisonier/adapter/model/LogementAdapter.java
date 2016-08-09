@@ -13,10 +13,11 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.TypelogementActivity;
+import com.mahya.maisonier.activities.LogementActivity;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
 
 
     private static final String TAG = LogementAdapter.class.getSimpleName();
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     Context mContext;
     int idSelect;
     int selectposition;
@@ -53,7 +55,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(String.valueOf(logements.get(position).getDatecreation()));
+            viewHolder.tilte.setText(formatter.format(logements.get(position).getDatecreation()));
             viewHolder.libele.setText(logements.get(position).getReference());
             viewHolder.desc.setText(logements.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(logements.get(position).getId()));
@@ -82,8 +84,8 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof TypelogementActivity) {
-                    ((TypelogementActivity) mContext).onItemClicked(position);
+                if (mContext instanceof LogementActivity) {
+                    ((LogementActivity) mContext).onItemClicked(position);
                 }
             }
         });
@@ -92,7 +94,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             @Override
             public boolean onLongClick(View view) {
 
-                ((TypelogementActivity) mContext).onItemLongClicked(position);
+                ((LogementActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -141,7 +143,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             @Override
             public void onClick(View view) {
 
-                ((TypelogementActivity) mContext).detail(idSelect);
+                ((LogementActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -150,7 +152,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).modifier(idSelect);
+                ((LogementActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -161,7 +163,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).supprimer(idSelect);
+                ((LogementActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }

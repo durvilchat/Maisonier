@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mahya.maisonier.Profil_User;
 import com.mahya.maisonier.R;
@@ -48,14 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-        recycler.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextView text = (TextView) view.findViewById(R.id.item_name);
-                Toast.makeText(context, " tres " + text.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
