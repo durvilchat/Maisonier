@@ -128,56 +128,56 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
     List<ItemMenu> getSampleItems() {
         List<ItemMenu> items = new ArrayList<>();
 
-        items.add(new ItemMenu(context.getText(R.string.accueilmaisonier).toString()));
-        items.add(new ItemMenu(context.getText(R.string.gererlogement).toString()));
-        items.add(new ItemMenu(context.getText(R.string.typelogement).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.batiment).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.Logements).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.Caracteristiques).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.disponibles).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.Cite).toString(), " "));
-        items.add(new ItemMenu(context.getText(R.string.GererdesLoyers).toString()));
-        items.add(new ItemMenu("Occupations", " "));
-        items.add(new ItemMenu("Loyers", " "));
-        items.add(new ItemMenu("Caution", " "));
-        items.add(new ItemMenu("Correspondances", " "));
-        items.add(new ItemMenu("Depenses", " "));
-        items.add(new ItemMenu("Gérer les habitants"));
-        items.add(new ItemMenu("Enregistrement", " "));
-        items.add(new ItemMenu("Liste des hablitants", " "));
-        items.add(new ItemMenu("Dossier d'un habitant", " "));
-        items.add(new ItemMenu("Etat des occupations", " "));
-        items.add(new ItemMenu("Gérer les contrats"));
-        items.add(new ItemMenu(context.getText(R.string.Bailleur).toString(), " "));
-        items.add(new ItemMenu(context.getString(R.string.article), " "));
-        items.add(new ItemMenu("Contrat de bail", " "));
-        items.add(new ItemMenu("Rubrique de contrat", " "));
-        items.add(new ItemMenu("Rubrique", " "));
-        items.add(new ItemMenu("Charger Ribrique d'un contrat", " "));
-        items.add(new ItemMenu("Gérer les comptes"));
-        items.add(new ItemMenu("Type de compte", " "));
-        items.add(new ItemMenu("Compte", " "));
-        items.add(new ItemMenu("Dépot", " "));
-        items.add(new ItemMenu("Charger Dépot", " "));
-        items.add(new ItemMenu("Transfert inter-compte", " "));
-        items.add(new ItemMenu("Gérer les pénalités"));
-        items.add(new ItemMenu(context.getString(R.string.typepenalite).toString(), " "));
-        items.add(new ItemMenu("Pénalités", " "));
-        items.add(new ItemMenu("Charges", " "));
-        items.add(new ItemMenu(context.getString(R.string.typedecharge).toString(), " "));
-        items.add(new ItemMenu("Gestion des index"));
-        items.add(new ItemMenu("Consommation en eau", " "));
-        items.add(new ItemMenu("Consommation en électricité", " "));
-        items.add(new ItemMenu("Index en eau", " "));
-        items.add(new ItemMenu("Index en éléctricité", " "));
-        items.add(new ItemMenu("Gérer le cable", " "));
-        items.add(new ItemMenu("Etats"));
-        items.add(new ItemMenu("Depenses", " "));
-        items.add(new ItemMenu("Depenses", " "));
-        items.add(new ItemMenu("Historique de parametrage", " "));
-        items.add(new ItemMenu("Mois", " "));
-        items.add(new ItemMenu("Année", " "));
-        items.add(new ItemMenu("Parametres"));
+        items.add(new ItemMenu(null, context.getText(R.string.accueilmaisonier).toString()));
+        items.add(new ItemMenu(null, context.getText(R.string.gererlogement).toString()));
+        items.add(new ItemMenu(null, context.getText(R.string.typelogement).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.batiment).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Logements).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Caracteristiques).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.disponibles).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.Cite).toString(), " "));
+        items.add(new ItemMenu(null, context.getText(R.string.GererdesLoyers).toString()));
+        items.add(new ItemMenu(null, "Occupations", " "));
+        items.add(new ItemMenu(null, "Loyers", " "));
+        items.add(new ItemMenu(null, "Caution", " "));
+        items.add(new ItemMenu(null, "Correspondances", " "));
+        items.add(new ItemMenu(null, "Depenses", " "));
+        items.add(new ItemMenu(null, "Gérer les habitants"));
+        items.add(new ItemMenu(null, "Enregistrement", " "));
+        items.add(new ItemMenu(null, "Liste des hablitants", " "));
+        items.add(new ItemMenu(null, "Dossier d'un habitant", " "));
+        items.add(new ItemMenu(null, "Etat des occupations", " "));
+        items.add(new ItemMenu(null, "Gérer les contrats"));
+        items.add(new ItemMenu(null, context.getText(R.string.Bailleur).toString(), " "));
+        items.add(new ItemMenu(null, context.getString(R.string.article), " "));
+        items.add(new ItemMenu(null, "Contrat de bail", " "));
+        items.add(new ItemMenu(null, "Rubrique de contrat", " "));
+        items.add(new ItemMenu(null, "Rubrique", " "));
+        items.add(new ItemMenu(null, "Charger Ribrique d'un contrat", " "));
+        items.add(new ItemMenu(null, "Gérer les comptes"));
+        items.add(new ItemMenu(null, "Type de compte", " "));
+        items.add(new ItemMenu(null, "Compte", " "));
+        items.add(new ItemMenu(null, "Dépot", " "));
+        items.add(new ItemMenu(null, "Charger Dépot", " "));
+        items.add(new ItemMenu(null, "Transfert inter-compte", " "));
+        items.add(new ItemMenu(null, "Gérer les pénalités"));
+        items.add(new ItemMenu(null, context.getString(R.string.typepenalite).toString(), " "));
+        items.add(new ItemMenu(null, "Pénalités", " "));
+        items.add(new ItemMenu(null, "Charges", " "));
+        items.add(new ItemMenu(null, context.getString(R.string.typedecharge).toString(), " "));
+        items.add(new ItemMenu(null, "Gestion des index"));
+        items.add(new ItemMenu(null, "Consommation en eau", " "));
+        items.add(new ItemMenu(null, "Consommation en électricité", " "));
+        items.add(new ItemMenu(null, "Index en eau", " "));
+        items.add(new ItemMenu(null, "Index en éléctricité", " "));
+        items.add(new ItemMenu(null, "Gérer le cable", " "));
+        items.add(new ItemMenu(null, "Etats"));
+        items.add(new ItemMenu(null, "Depenses", " "));
+        items.add(new ItemMenu(null, "Depenses", " "));
+        items.add(new ItemMenu(null, "Historique de parametrage", " "));
+        items.add(new ItemMenu(null, "Mois", " "));
+        items.add(new ItemMenu(null, "Année", " "));
+        items.add(new ItemMenu(null, "Parametres"));
 
         return items;
     }
@@ -200,16 +200,18 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
 
     public static class ItemMenu extends ExpandableRecyclerAdapter.ListItem {
         public String Text;
+        ImageView icon;
 
-        public ItemMenu(String group) {
+        public ItemMenu(ImageView icon, String group) {
             super(menu);
-
+            this.icon = icon;
             Text = group;
         }
 
-        public ItemMenu(String first, String last) {
+        public ItemMenu(ImageView icon, String first, String last) {
             super(sub_menu);
 
+            this.icon = icon;
             Text = first + " " + last;
         }
     }

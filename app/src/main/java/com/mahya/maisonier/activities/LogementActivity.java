@@ -47,6 +47,7 @@ import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,12 +222,13 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                     return;
 
                 }
-
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
                 Logement logement = new Logement();
                 logement.setReference(ref.getText().toString().trim());
                 logement.setPrixMax(Double.parseDouble(priwMax.getText().toString().trim()));
                 logement.setPrixMin(Double.parseDouble(prixMin.getText().toString().trim()));
                 logement.setDescription(desc.getText().toString().trim());
+                logement.setDatecreation(formatter.parse(date.getText().toString()));
                 logement.assoBatiment((Batiment) batiment.getSelectedItem());
                 logement.assoTypeLogement((TypeLogement) type.getSelectedItem());
 
