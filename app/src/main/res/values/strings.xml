@@ -41,6 +41,41 @@
     <string name="ajouterCite">Ajouter un cite</string>
     <string name="modifierCite">Modifier un cite</string>
     <string name="Bailleur">Bailleur</string>
+    <string name="Occupations">Occupations</string>
+    <string name="Loyers">Loyers</string>
+    <string name="Caution">Caution</string>
+    <string name="Correspondance">Correspondance</string>
+    <string name="Depenses">Depenses</string>
+    <string name="Parametres">Parametres</string>
+    <string name="Année">Année</string>
+    <string name="Mois">Mois</string>
+    <string name="Historiquedeparametrage">Historique de parametrage</string>
+    <string name="Etats">Etats</string>
+    <string name="Gérerlecable">Gérer le cable</string>
+    <string name="Indexenéléctricité">Index en éléctricité</string>
+    <string name="Indexeneau">Index en eau</string>
+    <string name="Consommationenélectricité">Consommation en électricité</string>
+    <string name="Consommationeneau">Consommation en eau</string>
+    <string name="Gestiondesindex">Gestion des index</string>
+    <string name="Charges">Charges</string>
+    <string name="Pénalités">Pénalités</string>
+    <string name="Gérerlespénalités">Gérer les pénalités</string>
+    <string name="Transfertintercompte">Transfert inter-compte</string>
+    <string name="ChargerDépot">Charger Dépot</string>
+    <string name="Dépot">Dépot</string>
+    <string name="Compte">Compte</string>
+    <string name="Typedecompte">Type de compte</string>
+    <string name="Gérerlescomptes">Gérer les comptes</string>
+    <string name="ChargerRibriqueduncontrat">Charger Ribrique d\'un contrat</string>
+    <string name="Rubrique">Rubrique</string>
+    <string name="Rubriquedecontrat">Rubrique de contrat</string>
+    <string name="Contratdebail">Contrat de bail</string>
+    <string name="Gérerlescontrats">Gérer les contrats</string>
+    <string name="Etatdesoccupations">Etat des occupations</string>
+    <string name="Dossierdunhabitant">Dossier d\'un habitant</string>
+    <string name="Listedeshablitants">Liste des hablitants</string>
+    <string name="Enregistrement">Enregistrement</string>
+    <string name="Gérerleshabitants">Gérer les habitants</string>
 
 
 </resources>
