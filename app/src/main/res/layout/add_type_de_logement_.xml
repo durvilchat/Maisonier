@@ -13,6 +13,18 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Ajouter un type de Logement"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:id="@+id/operation"/>
+
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/desc_Libelle"
             android:layout_width="match_parent"
