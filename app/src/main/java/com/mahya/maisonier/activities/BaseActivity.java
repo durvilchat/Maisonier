@@ -13,8 +13,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int threshold = 4;
     protected int totalPages;
     protected int itemsPerPage = 10;
-    protected int initItem = 50;
-    protected long networkDelay = 3000;
+    protected int initItem = 1;
+    protected long networkDelay = 1500;
     protected boolean addLoadingRow = true;
     protected boolean customLoadingListItem = false;
     protected Orientation orientation = Orientation.VERTICAL;
