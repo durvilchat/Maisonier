@@ -47,6 +47,7 @@ import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
     private static final String TAG = LogementActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     DatePicker datePicker;
-    TextView displayDate;
     Button changeDate;
     int month;
     LogementAdapter mAdapter;
@@ -152,7 +152,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         final EditText date = (EditText) dialog.findViewById(R.id.date);
         final Button selectDate = (Button) dialog.findViewById(R.id.dateSelect);
 
-        date.setEnabled(false);
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,21 +222,33 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                     return;
 
                 }
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-                Logement logement = new Logement();
-                logement.setReference(ref.getText().toString().trim());
-                logement.setPrixMax(Double.parseDouble(priwMax.getText().toString().trim()));
-                logement.setPrixMin(Double.parseDouble(prixMin.getText().toString().trim()));
-                logement.setDescription(desc.getText().toString().trim());
+
+                DateFormat   formatter = new SimpleDateFormat("dd/MM/yyyy");
                 try {
-                    logement.setDatecreation(formatter.parse(date.getText().toString()));
+                    System.out.println(formatter.parse(date.getText().toString()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                logement.assoBatiment((Batiment) batiment.getSelectedItem());
-                logement.assoTypeLogement((TypeLogement) type.getSelectedItem());
+                try {
+                    Logement logement = new Logement();
+                    logement.setReference(ref.getText().toString().trim());
+                    logement.setPrixMax(Double.parseDouble(priwMax.getText().toString().trim()));
+                    logement.setPrixMin(Double.parseDouble(prixMin.getText().toString().trim()));
+                    logement.setDescription(desc.getText().toString().trim());
+                    logement.setDatecreation(formatter.parse(date.getText().toString()));
 
-                logement.save();
+                    logement.assoBatiment((Batiment) batiment.getSelectedItem());
+                    logement.assoTypeLogement((TypeLogement) type.getSelectedItem());
+
+                    logement.save();
+                    Snackbar.make(view, "la logement a été correctement crée", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, logement);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (Logement.findAll().isEmpty()) {
                     mRecyclerView.setVisibility(View.GONE);
                     tvEmptyView.setVisibility(View.VISIBLE);
@@ -246,11 +257,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                     mRecyclerView.setVisibility(View.VISIBLE);
                     tvEmptyView.setVisibility(View.GONE);
                 }
-
-                Snackbar.make(view, "la logement a été correctement crée", Snackbar.LENGTH_LONG)
-
-                        .setAction("Action", null).show();
-                mAdapter.addItem(0, logement);
 
 
                 dialog.dismiss();
@@ -278,7 +284,7 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
     public String currentDate() {
         StringBuilder mcurrentDate = new StringBuilder();
         month = datePicker.getMonth() + 1;
-        mcurrentDate.append(month + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear());
+        mcurrentDate.append(datePicker.getDayOfMonth() + "/" + month + "/" + datePicker.getYear());
         return mcurrentDate.toString();
     }
 

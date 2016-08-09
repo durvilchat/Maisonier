@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical" >
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -28,7 +27,7 @@
                 android:id="@+id/selectDatePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Change Date" />
+                android:text="Valider" />
 
         </LinearLayout>
     </ScrollView>

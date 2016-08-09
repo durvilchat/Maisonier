@@ -43,7 +43,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
         vue = view;
         return new SimpleViewHolder(view, clickListener);
     }
@@ -53,8 +53,8 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(logements.get(position).getReference());
-            //viewHolder.libele.setText(logements.get(position).getLibelle());
+            viewHolder.tilte.setText(String.valueOf(logements.get(position).getDatecreation()));
+            viewHolder.libele.setText(logements.get(position).getReference());
             viewHolder.desc.setText(logements.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(logements.get(position).getId()));
         } catch (Exception e) {

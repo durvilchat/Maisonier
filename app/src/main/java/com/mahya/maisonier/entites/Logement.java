@@ -36,7 +36,7 @@ public class Logement extends BaseModel {
 
 
     @Column(name = "datecreation")
-
+    @NotNull
     Date datecreation;
     @Size(max = 255)
     @Column(name = "description", length = 255)
