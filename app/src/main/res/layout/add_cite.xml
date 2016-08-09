@@ -15,6 +15,18 @@
         android:paddingRight="20dp">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Ajouter un Cite"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:id="@+id/operation"/>
+
+
+        <TextView
             android:id="@+id/optionCite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
