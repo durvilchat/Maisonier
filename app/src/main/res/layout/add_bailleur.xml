@@ -8,8 +8,6 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
@@ -36,10 +34,37 @@
             <EditText
                 android:id="@+id/Prenom"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:hint="Prénom"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp">
+
+            <ImageView
+                android:id="@+id/imgBailleur"
+                android:layout_width="99dp"
+                android:layout_height="88dp"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.52"
+                app:srcCompat="@drawable/avatar" />
+
+            <include
+                layout="@layout/prise_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgBailleur"
+                android:layout_toRightOf="@+id/imgBailleur" />
+
+
+        </RelativeLayout>
+
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_DatedelivrancedeCNI"
@@ -118,7 +143,7 @@
             <EditText
                 android:id="@+id/Tel1"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Tel1"
                 android:inputType="phone" />
@@ -131,12 +156,6 @@
 
 
         </android.support.design.widget.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="67dp"
-            android:layout_height="60dp"
-            app:srcCompat="@drawable/usuario" />
 
         <include
             layout="@layout/btn_valider_annuler"

@@ -15,16 +15,13 @@
 
         <Spinner
             android:id="@+id/TypeDeLogement"
-            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/Batiment"
-            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

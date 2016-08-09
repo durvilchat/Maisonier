@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.ArticleActivity;
+import com.mahya.maisonier.activities.BailleurActivity;
 import com.mahya.maisonier.activities.BatimentActivity;
 import com.mahya.maisonier.activities.CaracteristiqueActivity;
 import com.mahya.maisonier.activities.CiteActivity;
@@ -107,6 +108,10 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
                             context.startActivity(new Intent(context, ArticleActivity.class));
 
 
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.Bailleur).trim())) {
+                            context.startActivity(new Intent(context, BailleurActivity.class));
+
+
                         }
 
 
@@ -143,7 +148,7 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu("Dossier d'un habitant", " "));
         items.add(new ItemMenu("Etat des occupations", " "));
         items.add(new ItemMenu("Gérer les contrats"));
-        items.add(new ItemMenu("Bailleur", " "));
+        items.add(new ItemMenu(context.getText(R.string.Bailleur).toString(), " "));
         items.add(new ItemMenu(context.getString(R.string.article), " "));
         items.add(new ItemMenu("Contrat de bail", " "));
         items.add(new ItemMenu("Rubrique de contrat", " "));

@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.mahya.maisonier.Profil_User;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.Test;
 import com.mahya.maisonier.adapter.ExpandableRecyclerAdapter;
 import com.mahya.maisonier.adapter.MenuApp;
-import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
 public class MainActivity extends AppCompatActivity
@@ -82,12 +82,7 @@ public class MainActivity extends AppCompatActivity
 
     public void bien(View view) {
 
-        Bailleur habitant = new Bailleur();
-        habitant.setNom("franck");
-        habitant.setGenre("Masculin");
-        habitant.setTel1("698939289");
-        habitant.setTitre("Bien");
-        habitant.save();
+        startActivity(new Intent(this, Test.class));
 
     }
 

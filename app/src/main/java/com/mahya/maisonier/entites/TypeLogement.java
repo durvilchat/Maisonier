@@ -63,10 +63,9 @@ public class TypeLogement extends BaseModel {
         this.libelle = libelle;
     }
 
-    public TypeLogement(String code, boolean etat, String libelle) {
+    public TypeLogement(String libelle) {
 
-        this.code = code;
-        this.etat = etat;
+
         this.libelle = libelle;
     }
 
@@ -148,5 +147,10 @@ public class TypeLogement extends BaseModel {
 
     public void setEtat(boolean etat) {
         this.etat = etat;
+    }
+
+    @Override
+    public String toString() {
+        return code + " " + libelle;
     }
 }

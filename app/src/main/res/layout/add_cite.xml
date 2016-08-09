@@ -1,6 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
 
 
@@ -8,16 +10,29 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/optionCite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Cite"
+            android:textColor="@color/white"
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/Bailleur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:layout_weight="1" />
+            android:layout_weight="3" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_NomCite"
@@ -66,7 +81,11 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_Telephone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="9"
+            app:counterOverflowTextAppearance="@style/counterOverride"
+            app:counterTextAppearance="@style/counterText">
 
             <EditText
                 android:id="@+id/Telephone"

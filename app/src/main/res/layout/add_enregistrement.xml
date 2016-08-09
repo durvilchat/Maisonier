@@ -90,7 +90,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imgBailleur"
             android:layout_width="67dp"
             android:layout_height="60dp"
             app:srcCompat="@drawable/usuario" />

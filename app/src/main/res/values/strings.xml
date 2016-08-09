@@ -38,6 +38,9 @@
     <string name="typepenalite">Type de penalite</string>
     <string name="article">Articles</string>
     <string name="date_picker_title">date</string>
+    <string name="ajouterCite">Ajouter un cite</string>
+    <string name="modifierCite">Modifier un cite</string>
+    <string name="Bailleur">Bailleur</string>
 
 
 </resources>

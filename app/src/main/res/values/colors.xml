@@ -31,8 +31,8 @@
 
     <color name="lightGray">#e0e0e0</color>
     <color name="indicator_unselected">#4D000000</color>
-    <color name="white">#ffffffff</color>
-    <color name="black">#ff000000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <integer-array name="color_array">
         <item>@color/red</item>

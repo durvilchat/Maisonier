@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.entites.TypeLogement;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     // Common options
     protected int threshold = 4;
-    protected int totalPages = TypeLogement.typelogs.size() / 48;
+    protected int totalPages;
     protected int itemsPerPage = 10;
     protected int initItem = 50;
     protected long networkDelay = 3000;

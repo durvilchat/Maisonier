@@ -17,12 +17,14 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class TypeCaution extends BaseModel {
 
 
+    public static List<TypeCaution> typeCautions = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -47,6 +49,31 @@ public class TypeCaution extends BaseModel {
         this.libelle = libelle;
     }
 
+    public static List<TypeCaution> getInitData(int size) {
+        List<TypeCaution> typeLogements = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            typeLogements.add(createRandomPerson());
+        }
+        return typeLogements;
+    }
+
+    public static TypeCaution createRandomPerson() {
+        TypeCaution typeLogement = null;
+        try {
+            typeLogement = typeCautions.get(0);
+            typeCautions.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return typeLogement;
+
+    }
+
+    public static List<TypeCaution> findAll() {
+        return SQLite.select().from(TypeCaution.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -63,7 +90,6 @@ public class TypeCaution extends BaseModel {
         this.libelle = libelle;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "cautionList", isVariablePrivate = true)
     public List<Caution> getCautionList() {
         if (cautionList == null || cautionList.isEmpty()) {
@@ -78,4 +104,5 @@ public class TypeCaution extends BaseModel {
     public void setCautionList(List<Caution> cautionList) {
         this.cautionList = cautionList;
     }
+
 }

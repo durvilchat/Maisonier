@@ -140,7 +140,7 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         final Spinner cite = (Spinner) dialog.findViewById(R.id.cite);
 
         ArrayAdapter<Cite> adapter =
-                new ArrayAdapter<Cite>(getApplicationContext(), android.R.layout.simple_spinner_item, Cite.findAll());
+                new ArrayAdapter<Cite>(this, R.layout.spinner_item, Cite.findAll());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         cite.setAdapter(adapter);
