@@ -1,0 +1,164 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="513dp"
+            android:layout_marginBottom="20dp"
+            android:columnCount="2"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="67dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/usuario" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Habitant"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/Habitant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Habitant" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logement"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/Logement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logement" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loyer De Base"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/LoyerDeBase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loyer De Base" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mode De Payement"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/ModeDePayement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mode De Payement" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Etat"
+                android:textStyle="bold" />
+            <CheckBox
+                android:id="@+id/Etat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paie Eau"
+                android:textStyle="bold" />
+            <CheckBox
+                android:id="@+id/PaieEau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paie Electricité"
+                android:textStyle="bold" />
+            <CheckBox
+
+                android:id="@+id/PaieElectricite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paie Cable"
+                android:textStyle="bold" />
+            <CheckBox
+                android:id="@+id/PaieCable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date d'entreé"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/DateEntree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date d'entreé" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de sortie"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/DateSortie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de sortie" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description" />
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</ScrollView>

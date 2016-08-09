@@ -1,0 +1,87 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="513dp"
+            android:layout_marginBottom="20dp"
+            android:columnCount="2"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Occupation"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/Occupation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Occupation" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mois"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/Mois"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mois" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Montant Payé"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/MontantPaye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Montant Payé" />
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DatePayement"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/DatePayement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DatePayement" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observations"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/Observations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observations" />
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</ScrollView>
