@@ -7,34 +7,40 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
+import android.transition.ChangeTransform;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
-import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
-import com.mahya.maisonier.entites.TypeLogement;
-import com.mahya.maisonier.entites.TypeLogement_Table;
+import com.mahya.maisonier.adapter.model.DepotAdapter;
+import com.mahya.maisonier.entites.Annee;
+import com.mahya.maisonier.entites.Depot;
+import com.mahya.maisonier.entites.Depot_Table;
+import com.mahya.maisonier.entites.Habitant;
+import com.mahya.maisonier.entites.Logement;
+import com.mahya.maisonier.entites.Mois;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
@@ -45,27 +51,19 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
-public class TypelogementActivity extends android.app.Fragment implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class DepotActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
+
     private static final int GRID_SPAN = 3;
-    private static final String TAG = TypelogementActivity.class.getSimpleName();
-    protected int threshold = 6;
-    protected int totalPages;
-    protected int itemsPerPage = 8;
-    protected int initItem = 20;
-    protected long networkDelay = 2000;
-    protected boolean addLoadingRow = true;
-    protected boolean customLoadingListItem = false;
-    protected BaseActivity.Orientation orientation = BaseActivity.Orientation.VERTICAL;
+    private static final String TAG = DepotActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
-    TypeLogementAdapter mAdapter;
+    DepotAdapter mAdapter;
     FrameLayout fab;
     ImageButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
-    private android.content.Context context = getActivity();
+    private android.content.Context context = this;
     private TextView tvEmptyView;
     private boolean loading = false;
     private int page = 0;
@@ -75,51 +73,46 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         @Override
         public void run() {
             page++;
-            mAdapter.add(TypeLogement.getInitData(itemsPerPage));
+            mAdapter.add(Depot.getInitData(initItem));
             loading = false;
-
         }
     };
-    private CoordinatorLayout activityTypelogement;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_model1, null);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.simple_grow);
-        activityTypelogement = (CoordinatorLayout) view.findViewById(R.id.activity_typelogement);
-
-        TypeLogement.typelogs.clear();
-        TypeLogement.typelogs = TypeLogement.findAll();
-        getActivity().setTitle("Type de logement");
-        totalPages = TypeLogement.typelogs.size() / itemsPerPage - 1;
-        System.out.println(totalPages);
-
-        initView(view);
+        super.onCreate(savedInstanceState);
+        getWindow().setAllowReturnTransitionOverlap(true);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().setSharedElementExitTransition(new ChangeTransform());
+        animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
+        super.setContentView(R.layout.activity_model1);
+        Depot.depots.clear();
+        Depot.depots = Depot.findAll();
+        setTitle(context.getString(R.string.Contratdebail));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        initView();
         fab.startAnimation(animation);
         handler = new Handler();
         setupPagination();
     }
 
+    private void initView() {
 
-    private void initView(View view) {
-
-        fab = (FrameLayout) view.findViewById(R.id.myfab_main);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_item);
-        tvEmptyView = (TextView) view.findViewById(R.id.empty_view);
+        fab = (FrameLayout) findViewById(R.id.myfab_main);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
+        tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) view.findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        if (new TypeLogement().findAll().isEmpty()) {
+        if (Depot.findAll().isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -143,43 +136,71 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         // custom dialog
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_depots);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
-        final EditText Description = (EditText) dialog.findViewById(R.id.Description);
+        TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final EditText montant = (EditText) dialog.findViewById(R.id.Montant);
+        final EditText observation = (EditText) dialog.findViewById(R.id.Observation);
+        Button dateSelect = (Button) dialog.findViewById(R.id.dateSelect);
+        final Spinner habitant = (Spinner) dialog.findViewById(R.id.Habitant);
+        final Spinner logement = (Spinner) dialog.findViewById(R.id.Logement);
+        final Spinner mois = (Spinner) dialog.findViewById(R.id.Mois);
+        final Spinner annee = (Spinner) dialog.findViewById(R.id.Annee);
+
+        habitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        logement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        mois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
+        annee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if (Libelle.getText().toString().trim().equals("")) {
-                    Libelle.setError("Velliez remplir le libelle");
+                if (habitant.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
+                if (logement.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
+                if (mois.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                TypeLogement typeLogement = new TypeLogement();
-                typeLogement.setCode(Code.getText().toString().trim());
-                typeLogement.setLibelle(Libelle.getText().toString().trim());
-                typeLogement.setDescription(Description.getText().toString().trim());
+                if (annee.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner une année", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                Depot depot = new Depot();
+                depot.setMontant(Double.parseDouble(montant.getText().toString().trim()));
+                depot.assoMois((Mois) mois.getSelectedItem());
+                depot.setObservation(observation.getText().toString().trim());
+
                 try {
-                    typeLogement.save();
-                    Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    depot.save();
+                    if (Depot.findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+                    Snackbar.make(view, "la Depot a été correctement crée", Snackbar.LENGTH_LONG)
+
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, 0);
+                    mAdapter.addItem(0, depot);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -196,9 +217,8 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                montant.setText("");
+                observation.setText("");
 
                 dialog.dismiss();
             }
@@ -207,18 +227,18 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         mAdapter = null;
         //FlowManager.destroy();
-        // Delete.tables(TypeLogement.class);
+        // Delete.tables(Depot.class);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-
+            finish();
             return true;
         }
 
@@ -228,7 +248,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     @Override
     public void supprimer(final int id) {
 
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(this)
                 .setTitle("Avertissement")
                 .setMessage("Voulez vous vraimment supprimer ?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -237,9 +257,9 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            TypeLogement typeLogement = new TypeLogement();
-                            typeLogement.setId(id);
-                            typeLogement.delete();
+                            Depot Depot = new Depot();
+                            Depot.setId(id);
+                            Depot.delete();
 
                         } catch (Exception e) {
 
@@ -276,7 +296,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     @Override
     public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
-            //  actionMode = getActivity().getActionBar().startSupportActionMode(actionModeCallback);
+            actionMode = startSupportActionMode(actionModeCallback);
         }
 
         toggleSelection(position);
@@ -291,82 +311,97 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
 
     @Override
     public void detail(final int id) {
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
 
-        AlertDialog detail = new AlertDialog.Builder(context)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getCode() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
-                .setIcon(R.drawable.ic_info_indigo_900_18dp)
-                .setTitle("Detail " + typeLogement.getLibelle())
-                .setNeutralButton("OK", null)
-                .setCancelable(false)
-                .create();
-        detail.show();
 
     }
 
     @Override
     public void modifier(final int id) {
 
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        final Depot depot = SQLite.select().from(Depot.class).where(Depot_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_depots);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
-        final EditText Description = (EditText) dialog.findViewById(R.id.Description);
-        Libelle.setText(typeLogement.getLibelle());
-        Code.setText(typeLogement.getCode());
-        Description.setText(typeLogement.getDescription());
+        TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final EditText montant = (EditText) dialog.findViewById(R.id.Montant);
+        final EditText observation = (EditText) dialog.findViewById(R.id.Observation);
+        Button dateSelect = (Button) dialog.findViewById(R.id.dateSelect);
+        final Spinner habitant = (Spinner) dialog.findViewById(R.id.Habitant);
+        final Spinner logement = (Spinner) dialog.findViewById(R.id.Logement);
+        final Spinner mois = (Spinner) dialog.findViewById(R.id.Mois);
+        final Spinner annee = (Spinner) dialog.findViewById(R.id.Annee);
+
+        habitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        logement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        mois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
+        annee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
+
+
+        montant.setText(String.valueOf(depot.getMontant()));
+        observation.setText(depot.getObservation());
+
+
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if (Libelle.getText().toString().trim().equals("")) {
-                    Libelle.setError("Velliez remplir le libelle");
+                if (habitant.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
+                if (logement.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
+                if (mois.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
+                if (annee.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner une année", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                Depot depot = new Depot();
+                depot.setMontant(Double.parseDouble(montant.getText().toString().trim()));
+                depot.assoMois((Mois) mois.getSelectedItem());
+                depot.setObservation(observation.getText().toString().trim());
+
                 try {
+                    depot.save();
 
-                    typeLogement.setId(typeLogement.getId());
-                    typeLogement.setCode(Code.getText().toString().trim());
-                    typeLogement.setLibelle(Libelle.getText().toString().trim());
-                    typeLogement.setDescription(Description.getText().toString().trim());
-                    typeLogement.save();
-                    mAdapter.actualiser(TypeLogement.findAll());
-                    System.out.println("good");
+
+                    Snackbar.make(v, "la Depot a été correctement modifié", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, depot);
                 } catch (Exception e) {
-                    System.out.println("erroo");
-                    System.out.println(e.getMessage());
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 
                 dialog.dismiss();
             }
         });
+
         // Your android custom dialog ok action
         // Action for custom dialog ok button click
         annuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                montant.setText("");
+                observation.setText("");
 
                 dialog.dismiss();
             }
@@ -374,22 +409,22 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         dialog.show();
     }
 
-
+    @Override
     protected void setupPagination() {
         // If RecyclerView was recently bound, unbind
         if (paginate != null) {
             paginate.unbind();
         }
         handler.removeCallbacks(fakeCallback);
-        mAdapter = new TypeLogementAdapter(getActivity(), (ArrayList<TypeLogement>) TypeLogement.findAll(), this);
+        //  mAdapter = new DepotAdapter(this, (ArrayList<Depot>) Depot.findAll(), this);
         loading = false;
         page = 0;
 
-        mAdapter = new TypeLogementAdapter(context, TypeLogement.getInitData(initItem), this);
+        mAdapter = new DepotAdapter(this, Depot.getInitData(initItem), this);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        ((TypeLogementAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        ((DepotAdapter) mAdapter).setMode(Attributes.Mode.Single);
         paginate = Paginate.with(mRecyclerView, this)
                 .setLoadingTriggerThreshold(threshold)
                 .addLoadingListItem(addLoadingRow)
@@ -397,12 +432,10 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
                 .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
                     @Override
                     public int getSpanSize() {
-                        return GRID_SPAN;
+                        return 0;
                     }
                 })
                 .build();
-
-
     }
 
     @Override
@@ -423,10 +456,16 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         return page == totalPages; // If all pages are loaded return true
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.model, menu);
+        getMenuInflater().inflate(R.menu.model, menu);
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
@@ -436,7 +475,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<TypeLogement> filteredModelList = filter(TypeLogement.findAll(), query);
+        final List<Depot> filteredModelList = filter(Depot.findAll(), query);
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
         return true;
@@ -449,12 +488,12 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     }
 
 
-    private List<TypeLogement> filter(List<TypeLogement> models, String query) {
+    private List<Depot> filter(List<Depot> models, String query) {
         query = query.toLowerCase();
         System.out.println(models);
-        final List<TypeLogement> filteredModelList = new ArrayList<>();
-        for (TypeLogement model : models) {
-            final String text = model.getLibelle().toLowerCase();
+        final List<Depot> filteredModelList = new ArrayList<>();
+        for (Depot model : models) {
+            final String text = model.getObservation().toString().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }
@@ -471,7 +510,6 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
 
             mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
-
             return true;
         }
 

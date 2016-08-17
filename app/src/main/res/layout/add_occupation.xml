@@ -1,0 +1,346 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:columnCount="2"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+
+            <Spinner
+                android:id="@+id/habitant"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
+            <ImageView
+                android:id="@+id/imgBailleur"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                app:srcCompat="@drawable/avatar" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_margin_half"
+                android:layout_marginTop="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/activity_margin_half"
+                    android:paddingLeft="@dimen/activity_margin_half"
+                    android:paddingTop="@dimen/activity_margin_half">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nom"
+                        android:textSize="6pt"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/Nom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nom" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_margin_half"
+                android:layout_marginTop="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/activity_margin_half"
+                    android:paddingLeft="@dimen/activity_margin_half"
+                    android:paddingTop="@dimen/activity_margin_half">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Prénom"
+                        android:textSize="6pt"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/Prenom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="prenom" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_margin_half"
+                android:layout_marginTop="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/activity_margin_half"
+                    android:paddingLeft="@dimen/activity_margin_half"
+                    android:paddingTop="@dimen/activity_margin_half">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Titre"
+                        android:textSize="6pt"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/Titre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Titre" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:columnCount="2"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:weightSum="1">
+
+
+            <Spinner
+                android:id="@+id/logement"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:ems="10"
+                    android:hint="Description"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mode de paiment" />
+
+            <RadioGroup
+                android:id="@+id/modereglement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/modePostpaye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="mode postpayé " />
+
+                <RadioButton
+                    android:id="@+id/modePrepaye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="mode prépayé" />
+
+
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/desc_Libelle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/loyerBase"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.48"
+                    android:ems="10"
+                    android:hint="Loyer de Base*"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/dateEntree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="date d'entrée"
+                        android:inputType="date" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/dateSelectEntree"
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/DateSortie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="date de sortie"
+                        android:inputType="date" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/dateSelectsort"
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/paieEaucheckBox"
+                    android:layout_width="157dp"
+                    android:layout_height="match_parent"
+                    android:text="Paie Eau" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/indexEau"
+                        android:layout_width="266dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Index"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/paieElectcheckBox"
+                    android:layout_width="157dp"
+                    android:layout_height="match_parent"
+                    android:text="Paie Electricite" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/indexElect"
+                        android:layout_width="266dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Index"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/paieCablecheckBox"
+                    android:layout_width="157dp"
+                    android:layout_height="match_parent"
+                    android:text="Paie Cable" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/indexCable"
+                        android:layout_width="266dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Forfait"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <include
+            layout="@layout/btn_valider_annuler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</ScrollView>

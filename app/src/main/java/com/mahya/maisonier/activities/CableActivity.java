@@ -3,69 +3,71 @@ package com.mahya.maisonier.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
+import android.transition.ChangeTransform;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
-import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
-import com.mahya.maisonier.entites.TypeLogement;
-import com.mahya.maisonier.entites.TypeLogement_Table;
+import com.mahya.maisonier.adapter.model.CableAdapter;
+import com.mahya.maisonier.entites.Annee;
+import com.mahya.maisonier.entites.Cable;
+import com.mahya.maisonier.entites.Cable_Table;
+import com.mahya.maisonier.entites.Habitant;
+import com.mahya.maisonier.entites.Logement;
+import com.mahya.maisonier.entites.Mois;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
 import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
-public class TypelogementActivity extends android.app.Fragment implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class CableActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
+
     private static final int GRID_SPAN = 3;
-    private static final String TAG = TypelogementActivity.class.getSimpleName();
-    protected int threshold = 6;
-    protected int totalPages;
-    protected int itemsPerPage = 8;
-    protected int initItem = 20;
-    protected long networkDelay = 2000;
-    protected boolean addLoadingRow = true;
-    protected boolean customLoadingListItem = false;
-    protected BaseActivity.Orientation orientation = BaseActivity.Orientation.VERTICAL;
+    private static final String TAG = CableActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
-    TypeLogementAdapter mAdapter;
+    CableAdapter mAdapter;
     FrameLayout fab;
     ImageButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
-    private android.content.Context context = getActivity();
+    private android.content.Context context = this;
     private TextView tvEmptyView;
     private boolean loading = false;
     private int page = 0;
@@ -75,51 +77,54 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         @Override
         public void run() {
             page++;
-            mAdapter.add(TypeLogement.getInitData(itemsPerPage));
+            mAdapter.add(Cable.getInitData(initItem));
             loading = false;
-
         }
     };
-    private CoordinatorLayout activityTypelogement;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_model1, null);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        super.onCreate(savedInstanceState);
+        getWindow().setAllowReturnTransitionOverlap(true);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().setSharedElementExitTransition(new ChangeTransform());
+        animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
+        super.setContentView(R.layout.activity_model1);
+        Cable.cables.clear();
+        Cable.cables = Cable.findAll();
+        if (Cable.cables.size() < 50) {
+            initItem = Cable.cables.size();
+        }
+        totalPages = Cable.cables.size() / initItem;
+        if (totalPages < 0) {
 
-        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.simple_grow);
-        activityTypelogement = (CoordinatorLayout) view.findViewById(R.id.activity_typelogement);
-
-        TypeLogement.typelogs.clear();
-        TypeLogement.typelogs = TypeLogement.findAll();
-        getActivity().setTitle("Type de logement");
-        totalPages = TypeLogement.typelogs.size() / itemsPerPage - 1;
-        System.out.println(totalPages);
-
-        initView(view);
+            totalPages = 1;
+        }
+        setTitle(context.getString(R.string.Contratdebail));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        initView();
         fab.startAnimation(animation);
         handler = new Handler();
         setupPagination();
     }
 
+    private void initView() {
 
-    private void initView(View view) {
-
-        fab = (FrameLayout) view.findViewById(R.id.myfab_main);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_item);
-        tvEmptyView = (TextView) view.findViewById(R.id.empty_view);
+        fab = (FrameLayout) findViewById(R.id.myfab_main);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
+        tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) view.findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        if (new TypeLogement().findAll().isEmpty()) {
+        if (Cable.findAll().isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -143,43 +148,77 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         // custom dialog
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_gerer_le_cable);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
-        final EditText Description = (EditText) dialog.findViewById(R.id.Description);
+
+        final TextView mOperation = (TextView) dialog.findViewById(R.id.operation);
+        final Spinner mHabitant = (Spinner) dialog.findViewById(R.id.Habitant);
+        final Spinner mLogement = (Spinner) dialog.findViewById(R.id.Logement);
+        final Spinner mAnnee = (Spinner) dialog.findViewById(R.id.Annee);
+        final Spinner mMois = (Spinner) dialog.findViewById(R.id.Mois);
+        final EditText mMontantPaye = (EditText) dialog.findViewById(R.id.MontantPaye);
+        final EditText mDatePayement = (EditText) dialog.findViewById(R.id.DatePayement);
+        final MaterialBetterSpinner mObservation = (MaterialBetterSpinner) dialog.findViewById(R.id.observation);
+
+        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        mLogement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        mMois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
+        mAnnee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if (Libelle.getText().toString().trim().equals("")) {
-                    Libelle.setError("Velliez remplir le libelle");
+                if (mHabitant.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
+                if (mLogement.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
+                if (mMois.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                TypeLogement typeLogement = new TypeLogement();
-                typeLogement.setCode(Code.getText().toString().trim());
-                typeLogement.setLibelle(Libelle.getText().toString().trim());
-                typeLogement.setDescription(Description.getText().toString().trim());
+                if (mAnnee.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner une année", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Cable cable = new Cable();
+                cable.setMontantPayer(Double.parseDouble(mMontantPaye.getText().toString().trim()));
                 try {
-                    typeLogement.save();
-                    Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    cable.setDatePaiement(sdf.parse(mDatePayement.getText().toString()));
+                } catch (ParseException e) {
+                    Toast.makeText(context, "la dae que vous avez validée est incorrecte", Toast.LENGTH_SHORT).show();
+                }
+                cable.assoMois((Mois) mMois.getSelectedItem());
+                cable.setObservation(mObservation.getText().toString().trim());
+
+                try {
+                    cable.save();
+                    if (Cable.findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+                    Snackbar.make(view, "la Cable a été correctement crée", Snackbar.LENGTH_LONG)
+
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, 0);
+                    mAdapter.addItem(0, cable);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -196,9 +235,8 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                mMontantPaye.setText("");
+                mObservation.setText("");
 
                 dialog.dismiss();
             }
@@ -207,18 +245,18 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         mAdapter = null;
         //FlowManager.destroy();
-        // Delete.tables(TypeLogement.class);
+        // Delete.tables(Cable.class);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-
+            finish();
             return true;
         }
 
@@ -228,7 +266,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     @Override
     public void supprimer(final int id) {
 
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(this)
                 .setTitle("Avertissement")
                 .setMessage("Voulez vous vraimment supprimer ?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -237,9 +275,9 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            TypeLogement typeLogement = new TypeLogement();
-                            typeLogement.setId(id);
-                            typeLogement.delete();
+                            Cable Cable = new Cable();
+                            Cable.setId(id);
+                            Cable.delete();
 
                         } catch (Exception e) {
 
@@ -276,7 +314,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     @Override
     public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
-            //  actionMode = getActivity().getActionBar().startSupportActionMode(actionModeCallback);
+            actionMode = startSupportActionMode(actionModeCallback);
         }
 
         toggleSelection(position);
@@ -291,82 +329,102 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
 
     @Override
     public void detail(final int id) {
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
 
-        AlertDialog detail = new AlertDialog.Builder(context)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getCode() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
-                .setIcon(R.drawable.ic_info_indigo_900_18dp)
-                .setTitle("Detail " + typeLogement.getLibelle())
-                .setNeutralButton("OK", null)
-                .setCancelable(false)
-                .create();
-        detail.show();
 
     }
 
     @Override
     public void modifier(final int id) {
 
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        final Cable cable = SQLite.select().from(Cable.class).where(Cable_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
-        // Initialisation du formulaire
+        dialog.setContentView(R.layout.add_gerer_le_cable);
+        // Initialisation du formulaire 
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
-        final EditText Description = (EditText) dialog.findViewById(R.id.Description);
-        Libelle.setText(typeLogement.getLibelle());
-        Code.setText(typeLogement.getCode());
-        Description.setText(typeLogement.getDescription());
+        final TextView mOperation = (TextView) dialog.findViewById(R.id.operation);
+        final Spinner mHabitant = (Spinner) dialog.findViewById(R.id.Habitant);
+        final Spinner mLogement = (Spinner) dialog.findViewById(R.id.Logement);
+        final Spinner mAnnee = (Spinner) dialog.findViewById(R.id.Annee);
+        final Spinner mMois = (Spinner) dialog.findViewById(R.id.Mois);
+        final EditText mMontantPaye = (EditText) dialog.findViewById(R.id.MontantPaye);
+        final EditText mDatePayement = (EditText) dialog.findViewById(R.id.DatePayement);
+        final MaterialBetterSpinner mObservation = (MaterialBetterSpinner) dialog.findViewById(R.id.observation);
+
+        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        mLogement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        mMois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
+        mAnnee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
+
+
+        mObservation.setText(cable.getObservation());
+
+
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if (Libelle.getText().toString().trim().equals("")) {
-                    Libelle.setError("Velliez remplir le libelle");
+                if (mHabitant.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
+                if (mLogement.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
+                if (mMois.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
+                if (mAnnee.getSelectedItem().toString().trim().equals("")) {
+                    Toast.makeText(context, "Veillez selectionner une année", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Cable cable = new Cable();
+                cable.setId(id);
+                cable.setMontantPayer(Double.parseDouble(mMontantPaye.getText().toString().trim()));
                 try {
+                    cable.setDatePaiement(sdf.parse(mDatePayement.getText().toString()));
+                } catch (ParseException e) {
+                    Toast.makeText(context, "la dae que vous avez validée est incorrecte", Toast.LENGTH_SHORT).show();
+                }
+                cable.assoMois((Mois) mMois.getSelectedItem());
+                cable.setObservation(mObservation.getText().toString().trim());
 
-                    typeLogement.setId(typeLogement.getId());
-                    typeLogement.setCode(Code.getText().toString().trim());
-                    typeLogement.setLibelle(Libelle.getText().toString().trim());
-                    typeLogement.setDescription(Description.getText().toString().trim());
-                    typeLogement.save();
-                    mAdapter.actualiser(TypeLogement.findAll());
-                    System.out.println("good");
+                try {
+                    cable.save();
+
+
+                    Snackbar.make(v, "la Cable a été correctement modifié", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, cable);
                 } catch (Exception e) {
-                    System.out.println("erroo");
-                    System.out.println(e.getMessage());
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 
                 dialog.dismiss();
             }
         });
+
         // Your android custom dialog ok action
         // Action for custom dialog ok button click
         annuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
-                Description.setText("");
+                mMontantPaye.setText("");
+                mObservation.setText("");
 
                 dialog.dismiss();
             }
@@ -374,22 +432,22 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         dialog.show();
     }
 
-
+    @Override
     protected void setupPagination() {
         // If RecyclerView was recently bound, unbind
         if (paginate != null) {
             paginate.unbind();
         }
         handler.removeCallbacks(fakeCallback);
-        mAdapter = new TypeLogementAdapter(getActivity(), (ArrayList<TypeLogement>) TypeLogement.findAll(), this);
+        //  mAdapter = new CableAdapter(this, (ArrayList<Cable>) Cable.findAll(), this);
         loading = false;
         page = 0;
 
-        mAdapter = new TypeLogementAdapter(context, TypeLogement.getInitData(initItem), this);
+        mAdapter = new CableAdapter(this, Cable.getInitData(initItem), this);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        ((TypeLogementAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        ((CableAdapter) mAdapter).setMode(Attributes.Mode.Single);
         paginate = Paginate.with(mRecyclerView, this)
                 .setLoadingTriggerThreshold(threshold)
                 .addLoadingListItem(addLoadingRow)
@@ -397,12 +455,10 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
                 .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
                     @Override
                     public int getSpanSize() {
-                        return GRID_SPAN;
+                        return 0;
                     }
                 })
                 .build();
-
-
     }
 
     @Override
@@ -423,10 +479,16 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         return page == totalPages; // If all pages are loaded return true
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.model, menu);
+        getMenuInflater().inflate(R.menu.model, menu);
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
@@ -436,7 +498,7 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<TypeLogement> filteredModelList = filter(TypeLogement.findAll(), query);
+        final List<Cable> filteredModelList = filter(Cable.findAll(), query);
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
         return true;
@@ -449,12 +511,12 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
     }
 
 
-    private List<TypeLogement> filter(List<TypeLogement> models, String query) {
+    private List<Cable> filter(List<Cable> models, String query) {
         query = query.toLowerCase();
         System.out.println(models);
-        final List<TypeLogement> filteredModelList = new ArrayList<>();
-        for (TypeLogement model : models) {
-            final String text = model.getLibelle().toLowerCase();
+        final List<Cable> filteredModelList = new ArrayList<>();
+        for (Cable model : models) {
+            final String text = model.getObservation().toString().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }
@@ -471,7 +533,6 @@ public class TypelogementActivity extends android.app.Fragment implements Pagina
         public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
 
             mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
-
             return true;
         }
 
