@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/lightGray"
+    android:background="@color/white"
     android:onClick="dcnx"
     android:orientation="horizontal"
     android:padding="@dimen/standard_padding">
@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/standard_padding"
-        android:src="@drawable/ic_settings_black" />
+        android:src="@drawable/ic_exit" />
 
     <TextView
         android:id="@+id/item_footer_name"

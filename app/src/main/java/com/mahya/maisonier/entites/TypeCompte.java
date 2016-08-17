@@ -117,4 +117,8 @@ public class TypeCompte extends BaseModel {
         this.compteList = compteList;
     }
 
+    @Override
+    public String toString() {
+        return libelle;
+    }
 }

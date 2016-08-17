@@ -11,6 +11,7 @@ import android.support.annotation.Size;
 import com.mahya.maisonier.dataBase.Maisonier;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -20,13 +21,16 @@ import com.raizlabs.android.dbflow.annotation.UniqueGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Habitant extends BaseModel {
 
 
+    public static List<Habitant> habitants = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -123,6 +127,27 @@ public class Habitant extends BaseModel {
 
     public static List<Habitant> findAll() {
         return SQLite.select().from(Habitant.class).queryList();
+    }
+
+    public static List<Habitant> getInitData(int size) {
+        List<Habitant> habitant = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            habitant.add(createRandomPerson());
+        }
+        return habitant;
+    }
+
+    public static Habitant createRandomPerson() {
+        Habitant habitant = null;
+        try {
+            habitant = habitants.get(0);
+            habitants.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return habitant;
+
     }
 
     public Integer getId() {

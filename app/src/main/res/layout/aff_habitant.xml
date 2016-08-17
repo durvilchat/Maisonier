@@ -1,20 +1,21 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="513dp"
             android:layout_marginBottom="20dp"
+            android:columnCount="2"
             android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:columnCount="2"
             android:paddingRight="20dp">
 
 
@@ -22,154 +23,164 @@
                 android:id="@+id/imageView4"
                 android:layout_width="67dp"
                 android:layout_height="60dp"
-                app:srcCompat="@drawable/usuario"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/usuario" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Nom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <TextView
-                android:text="Nom"
+                android:id="@+id/Nom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Nom" />
+                android:text="Nom" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Prénom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Prénom"
+                android:id="@+id/Prenom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Prenom" />
+                android:text="Prénom" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Numéro de CNI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Numéro de CNI"
+                android:id="@+id/NumeroCNI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/NumeroCNI" />
+                android:text="Numéro de CNI" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Genre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Genre"
+                android:id="@+id/Genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Genre" />
+                android:text="Genre" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Titre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Titre"
+                android:id="@+id/Titre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Titre" />
+                android:text="Titre" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Emails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Emails"
+                android:id="@+id/Emails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Emails" />
+                android:text="Emails" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Téléphone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Téléphone"
+                android:id="@+id/Télephone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Télephone" />
+                android:text="Téléphone" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Date de Naissance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Date de Naissance"
+                android:id="@+id/DateNaissance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/DateNaissance" />
+                android:text="Date de Naissance" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Lieu de Naissance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Lieu de Naissance"
+                android:id="@+id/LieuNaissance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/LieuNaissance" />
+                android:text="Lieu de Naissance" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Nom du Père"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Nom du Père"
+                android:id="@+id/NomPere"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/NomPere" />
+                android:text="Nom du Père" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Nom de la Mère"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Nom de la Mère"
+                android:id="@+id/NomMère"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/NomMère" />
-
+                android:text="Nom de la Mère" />
 
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Profession"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textStyle="bold" />
+
             <TextView
-                android:text="Profession"
+                android:id="@+id/Profession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Profession" />
-
+                android:text="Profession" />
 
 
         </LinearLayout>

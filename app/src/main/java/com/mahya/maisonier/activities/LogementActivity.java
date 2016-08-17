@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -48,19 +47,21 @@ import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
+
+import static com.mahya.maisonier.utils.Utils.currentDate;
 
 public class LogementActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
     private static final int GRID_SPAN = 3;
     private static final String TAG = LogementActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
-    DatePicker datePicker;
     Button changeDate;
-    int month;
     LogementAdapter mAdapter;
     FrameLayout fab;
     ImageButton myfab_main_btn;
@@ -158,14 +159,14 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
 
                 final Dialog dialog1 = new Dialog(context);
                 dialog1.setContentView(R.layout.dialog_date);
-                datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
                 changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
 
-                date.setText(currentDate());
+                date.setText(currentDate(datePicker));
                 changeDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        date.setText(currentDate());
+                        date.setText(currentDate(datePicker));
                     }
                 });
                 dialog1.show();
@@ -173,23 +174,38 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                 changeDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        date.setText(currentDate());
+                        date.setText(currentDate(datePicker));
                         dialog1.dismiss();
                     }
                 });
             }
         });
-        ArrayAdapter<TypeLogement> adapter1 =
-                new ArrayAdapter<TypeLogement>(this, R.layout.spinner_item, TypeLogement.findAll());
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter1.add(new TypeLogement(" jdsjdfhd"));
-        type.setAdapter(adapter1);
 
-        ArrayAdapter<Batiment> adapter2 =
-                new ArrayAdapter<Batiment>(this, R.layout.spinner_item, Batiment.findAll());
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final HintSpinner batimentHint = new HintSpinner<>(
+                batiment,
+                new HintAdapter<Batiment>(this, "Batiment", Batiment.findAll()),
+                new HintSpinner.Callback<Batiment>() {
 
-        batiment.setAdapter(adapter2);
+
+                    @Override
+                    public void onItemSelected(int position, Batiment itemAtPosition) {
+                    }
+                });
+        batimentHint.init();
+
+        final HintSpinner typehint = new HintSpinner<>(
+                type,
+                new HintAdapter<TypeLogement>(this, "Type de logement", TypeLogement.findAll()),
+                new HintSpinner.Callback<TypeLogement>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, TypeLogement itemAtPosition) {
+                    }
+                });
+        typehint.init();
+
+
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
@@ -223,12 +239,8 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
 
                 }
 
-                DateFormat   formatter = new SimpleDateFormat("dd/MM/yyyy");
-                try {
-                    System.out.println(formatter.parse(date.getText().toString()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
                 try {
                     Logement logement = new Logement();
                     logement.setReference(ref.getText().toString().trim());
@@ -280,13 +292,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         dialog.show();
     }
 
-
-    public String currentDate() {
-        StringBuilder mcurrentDate = new StringBuilder();
-        month = datePicker.getMonth() + 1;
-        mcurrentDate.append(datePicker.getDayOfMonth() + "/" + month + "/" + datePicker.getYear());
-        return mcurrentDate.toString();
-    }
 
     @Override
     protected void onDestroy() {
@@ -403,18 +408,29 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         final EditText priwMax = (EditText) dialog.findViewById(R.id.PrixMax);
         final EditText desc = (EditText) dialog.findViewById(R.id.Description);
 
-        ArrayAdapter<TypeLogement> adapter1 =
-                new ArrayAdapter<TypeLogement>(this, R.layout.spinner_item, TypeLogement.findAll());
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final HintSpinner batimentHint = new HintSpinner<>(
+                batiment,
+                new HintAdapter<Batiment>(this, "Batiment", Batiment.findAll()),
+                new HintSpinner.Callback<Batiment>() {
 
-        type.setAdapter(adapter1);
 
-        ArrayAdapter<Batiment> adapter2 =
-                new ArrayAdapter<Batiment>(this, R.layout.spinner_item, Batiment.findAll());
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    @Override
+                    public void onItemSelected(int position, Batiment itemAtPosition) {
+                    }
+                });
+        batimentHint.init();
 
-        batiment.setAdapter(adapter2);
+        final HintSpinner typehint = new HintSpinner<>(
+                type,
+                new HintAdapter<TypeLogement>(this, "Type de logement", TypeLogement.findAll()),
+                new HintSpinner.Callback<TypeLogement>() {
 
+
+                    @Override
+                    public void onItemSelected(int position, TypeLogement itemAtPosition) {
+                    }
+                });
+        typehint.init();
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box

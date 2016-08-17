@@ -53,7 +53,7 @@ public class TypeComptedapter extends RecyclerSwipeAdapter<TypeComptedapter.Simp
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(TypeComptes.get(position).getLibelle());
+            viewHolder.tilte.setVisibility(View.GONE);
             viewHolder.libele.setText(TypeComptes.get(position).getLibelle());
             viewHolder.desc.setText(TypeComptes.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(TypeComptes.get(position).getId()));

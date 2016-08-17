@@ -14,6 +14,7 @@ import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -24,12 +25,15 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Rubrique extends BaseModel {
 
 
+    public static List<Rubrique> rubriques = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -78,6 +82,31 @@ public class Rubrique extends BaseModel {
         this.valeur = valeur;
     }
 
+    public static List<Rubrique> getInitData(int size) {
+        List<Rubrique> Rubrique = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Rubrique.add(createRandomPerson());
+        }
+        return Rubrique;
+    }
+
+    public static Rubrique createRandomPerson() {
+        Rubrique Rubrique = null;
+        try {
+            Rubrique = rubriques.get(0);
+            rubriques.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Rubrique;
+
+    }
+
+    public static List<Rubrique> findAll() {
+        return SQLite.select().from(Rubrique.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -118,7 +147,6 @@ public class Rubrique extends BaseModel {
         this.valeur = valeur;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "contratRubriqueList", isVariablePrivate = true)
     public List<ContratRubrique> getContratRubrique() {
         if (contratRubriqueList == null || contratRubriqueList.isEmpty()) {
@@ -137,7 +165,6 @@ public class Rubrique extends BaseModel {
     public void setArticleBail(ForeignKeyContainer<ArticleBail> articleBail) {
         this.articleBail = articleBail;
     }
-
 
     public void setContratRubriqueList(List<ContratRubrique> contratRubriqueList) {
         this.contratRubriqueList = contratRubriqueList;

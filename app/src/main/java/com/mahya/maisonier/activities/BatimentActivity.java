@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -45,6 +44,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
 
 public class BatimentActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
@@ -83,6 +85,8 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
+
+        totalPages = Batiment.batiments.size() / itemsPerPage - 1;
         Batiment.batiments.clear();
         Batiment.batiments = Batiment.findAll();
         setTitle("Batiment");
@@ -138,12 +142,18 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         final EditText code = (EditText) dialog.findViewById(R.id.code);
         final EditText nom = (EditText) dialog.findViewById(R.id.nom);
         final Spinner cite = (Spinner) dialog.findViewById(R.id.cite);
+        final HintSpinner citeHint = new HintSpinner<>(
+                cite,
+                new HintAdapter<Cite>(this, "Cite", Cite.findAll()),
+                new HintSpinner.Callback<Cite>() {
 
-        ArrayAdapter<Cite> adapter =
-                new ArrayAdapter<Cite>(this, R.layout.spinner_item, Cite.findAll());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        cite.setAdapter(adapter);
+                    @Override
+                    public void onItemSelected(int position, Cite itemAtPosition) {
+                    }
+                });
+        citeHint.init();
+
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
@@ -296,6 +306,18 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
         final EditText code = (EditText) dialog.findViewById(R.id.code);
         final EditText nom = (EditText) dialog.findViewById(R.id.nom);
         final Spinner cite = (Spinner) dialog.findViewById(R.id.cite);
+        final HintSpinner citeHint = new HintSpinner<>(
+                cite,
+                new HintAdapter<Cite>(this, "Cite", Cite.findAll()),
+                new HintSpinner.Callback<Cite>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Cite itemAtPosition) {
+                    }
+                });
+        citeHint.init();
+
         nom.setText(batiment.getNom());
         code.setText(batiment.getCode());
         final Button valider = (Button) dialog.findViewById(R.id.valider);
@@ -369,6 +391,8 @@ public class BatimentActivity extends BaseActivity implements Paginate.Callbacks
                     }
                 })
                 .build();
+
+        paginate.setHasMoreDataToLoad(false);
     }
 
     @Override

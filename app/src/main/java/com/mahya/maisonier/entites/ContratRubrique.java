@@ -12,15 +12,22 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class ContratRubrique extends BaseModel {
 
 
+    public static List<ContratRubrique> contratRubriques = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -52,6 +59,35 @@ public class ContratRubrique extends BaseModel {
         this.id = id;
     }
 
+    public static List<ContratRubrique> getInitData(int size) {
+        List<ContratRubrique> ContratRubrique = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            ContratRubrique.add(createRandomPerson());
+        }
+        return ContratRubrique;
+    }
+
+    public static ContratRubrique createRandomPerson() {
+        ContratRubrique ContratRubrique = null;
+        try {
+            ContratRubrique = contratRubriques.get(0);
+            contratRubriques.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return ContratRubrique;
+
+    }
+
+    public static List<ContratRubrique> findAll() {
+        return SQLite.select().from(ContratRubrique.class).queryList();
+    }
+
+    public static List<ContratRubrique> getContratRubriques() {
+        return contratRubriques;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -68,7 +104,6 @@ public class ContratRubrique extends BaseModel {
         this.valeur = valeur;
     }
 
-
     public void assocContratBail(ContratBail contratBail1) {
         contratBail = new ForeignKeyContainer<>(ContratBail.class);
         contratBail.setModel(contratBail1);
@@ -83,5 +118,11 @@ public class ContratRubrique extends BaseModel {
 
     }
 
+    public ForeignKeyContainer<Rubrique> getRubrique() {
+        return rubrique;
+    }
 
+    public ForeignKeyContainer<ContratBail> getContratBail() {
+        return contratBail;
+    }
 }

@@ -17,6 +17,7 @@ import com.mahya.maisonier.activities.LogementActivity;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,12 +28,11 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
 
 
     private static final String TAG = LogementAdapter.class.getSimpleName();
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     Context mContext;
     int idSelect;
     int selectposition;
     private List<Logement> logements;
-    private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
@@ -46,7 +46,6 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
-        vue = view;
         return new SimpleViewHolder(view, clickListener);
     }
 

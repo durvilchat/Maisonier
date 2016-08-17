@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -18,13 +19,16 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class ContratBail extends BaseModel {
 
 
+    public static List<ContratBail> contratBails = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -66,6 +70,31 @@ public class ContratBail extends BaseModel {
         this.dateEtablissement = dateEtablissement;
     }
 
+    public static List<ContratBail> getInitData(int size) {
+        List<ContratBail> ContratBail = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            ContratBail.add(createRandomPerson());
+        }
+        return ContratBail;
+    }
+
+    public static ContratBail createRandomPerson() {
+        ContratBail ContratBail = null;
+        try {
+            ContratBail = contratBails.get(0);
+            contratBails.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return ContratBail;
+
+    }
+
+    public static List<ContratBail> findAll() {
+        return SQLite.select().from(ContratBail.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -82,6 +111,13 @@ public class ContratBail extends BaseModel {
         this.dateEtablissement = dateEtablissement;
     }
 
+    public ForeignKeyContainer<Bailleur> getBailleur() {
+        return bailleur;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "contratRubriqueList", isVariablePrivate = true)
     public List<ContratRubrique> getContratRubriqueList() {
@@ -112,4 +148,6 @@ public class ContratBail extends BaseModel {
         occupation.put(Occupation_Table.id, occupation1.id);
 
     }
+
+
 }

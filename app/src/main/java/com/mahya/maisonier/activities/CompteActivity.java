@@ -30,6 +30,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
@@ -143,7 +144,7 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         dialog.setContentView(R.layout.add_compte);
         // Initialisation du formulaire
 
-        final Spinner type = (Spinner) dialog.findViewById(R.id.TypeDeLogement);
+        final Spinner type = (Spinner) dialog.findViewById(R.id.TypeDeCompte);
         final Spinner habitant = (Spinner) dialog.findViewById(R.id.Habitant);
         final Spinner logement = (Spinner) dialog.findViewById(R.id.Logement);
         final EditText solde = (EditText) dialog.findViewById(R.id.Solde);
@@ -174,6 +175,18 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (type.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un type de compte", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (logement.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (habitant.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (solde.getText().toString().trim().equals("")) {
                     solde.setError("Velliez remplir le solde");
                     return;

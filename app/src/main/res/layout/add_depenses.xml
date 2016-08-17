@@ -7,52 +7,51 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/operation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ajouter des dépenses"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/activity_margin_half"
             android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter une dépense"
             android:textColor="@color/white"
-            android:id="@+id/operation"/>
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <Spinner
             android:id="@+id/Annee"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Mois"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Cite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Batiment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Bailleur"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <android.support.design.widget.TextInputLayout
@@ -99,20 +98,25 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_DateEnregistrement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+                android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <EditText
                 android:id="@+id/DateEnregistrement"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
                 android:hint="Date d'enregistrement"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/dateSelect"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_date" />
+        </LinearLayout>
 
         <include
             layout="@layout/btn_valider_annuler"

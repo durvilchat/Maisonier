@@ -37,7 +37,6 @@ import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
 import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -291,7 +290,6 @@ public class CaracteristiqueActivity extends BaseActivity implements Paginate.Ca
 
                     caracteristique.save();
                     mAdapter.actualiser(Caracteristique.findAll());
-                    System.out.println("good");
                 } catch (Exception e) {
                     System.out.println("erroo");
                     System.out.println(e.getMessage());
@@ -323,6 +321,7 @@ public class CaracteristiqueActivity extends BaseActivity implements Paginate.Ca
         if (paginate != null) {
             paginate.unbind();
         }
+        paginate.setHasMoreDataToLoad(true);
         handler.removeCallbacks(fakeCallback);
         mAdapter = new CaracteristiqueAdapter(this, Caracteristique.findAll(), (OnItemClickListener) this);
         loading = false;
@@ -337,12 +336,6 @@ public class CaracteristiqueActivity extends BaseActivity implements Paginate.Ca
                 .setLoadingTriggerThreshold(threshold)
                 .addLoadingListItem(addLoadingRow)
                 .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
                 .build();
     }
 

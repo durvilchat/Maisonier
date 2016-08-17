@@ -100,6 +100,10 @@ public class Bailleur extends BaseModel {
         this.id = id;
     }
 
+    public Bailleur(String nom) {
+        this.nom = nom;
+    }
+
     public Bailleur(Integer id, String genre, String nom, String tel1, String titre) {
         this.id = id;
         this.genre = genre;

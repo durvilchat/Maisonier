@@ -299,7 +299,7 @@ public class TypePenaliteActivity extends BaseActivity implements Paginate.Callb
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
 
         libelle.setText(typePenalite.getLibelle());
-        delai.setText(typePenalite.getDelai());
+        delai.setText(String.valueOf(typePenalite.getDelai()));
         taux.setText(String.valueOf(typePenalite.getTaux()));
         valider.setOnClickListener(new View.OnClickListener() {
             @Override

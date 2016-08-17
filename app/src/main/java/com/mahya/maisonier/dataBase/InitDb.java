@@ -2,10 +2,13 @@ package com.mahya.maisonier.dataBase;
 
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
+import android.os.Environment;
 
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.socks.library.KLog;
+
+import java.io.File;
 /*
 import com.socks.library.KLog;
 
@@ -29,6 +32,18 @@ public class InitDb extends Application {
 
 
         FlowManager.init(new FlowConfig.Builder(this).build());
+
+        File maisonier = new File(Environment.getExternalStorageDirectory() +
+                File.separator + "TollCulator");
+        boolean success = true;
+        if (!maisonier.exists()) {
+            success = maisonier.mkdir();
+        }
+        if (success) {
+            System.out.println("good");
+        } else {
+            // Do something else on failure
+        }
     }
 
 

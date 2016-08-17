@@ -76,6 +76,11 @@
     <string name="Listedeshablitants">Liste des hablitants</string>
     <string name="Enregistrement">Enregistrement</string>
     <string name="Gérerleshabitants">Gérer les habitants</string>
+    <string name="habitant">Habitant</string>
+    <string name="ajouterLoyer">Ajouter un loyer</string>
+    <string name="ajouterContrat">Ajouter un contrat de bail</string>
+    <string name="TypedeCaution">Type de caution</string>
+    <string name="detail">Detail</string>
 
 
 </resources>

@@ -23,6 +23,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ModelContainer
@@ -30,6 +31,7 @@ import java.util.List;
 public class Mois extends BaseModel {
 
 
+    public static List<Mois> moises = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -74,6 +76,39 @@ public class Mois extends BaseModel {
         this.id = id;
     }
 
+    public static List<Mois> getMoises() {
+        return moises;
+    }
+
+    public static void setMoises(List<Mois> moises) {
+        Mois.moises = moises;
+    }
+
+    public static List<Mois> getInitData(int size) {
+        List<Mois> articleBails = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            articleBails.add(createRandomPerson());
+        }
+        return articleBails;
+    }
+
+    public static Mois createRandomPerson() {
+        Mois batiment = null;
+        try {
+            batiment = moises.get(0);
+            moises.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return batiment;
+
+    }
+
+    public static List<Mois> findAll() {
+        return SQLite.select().from(Mois.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -90,7 +125,6 @@ public class Mois extends BaseModel {
         this.mois = mois;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "penaliteList", isVariablePrivate = true)
     public List<Penalite> getPenaliteList() {
         if (penaliteList == null || penaliteList.isEmpty()) {
@@ -105,7 +139,6 @@ public class Mois extends BaseModel {
     public void setPenaliteList(List<Penalite> penaliteList) {
         this.penaliteList = penaliteList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "depotList", isVariablePrivate = true)
     public List<Depot> getDepotList() {
@@ -122,7 +155,6 @@ public class Mois extends BaseModel {
         this.depotList = depotList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "factureList", isVariablePrivate = true)
     public List<Facture> getFactureList() {
         if (factureList == null || factureList.isEmpty()) {
@@ -137,7 +169,6 @@ public class Mois extends BaseModel {
     public void setFactureList(List<Facture> factureList) {
         this.factureList = factureList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "cableList", isVariablePrivate = true)
     public List<Cable> getCableList() {
@@ -154,7 +185,6 @@ public class Mois extends BaseModel {
         this.cableList = cableList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "loyerList", isVariablePrivate = true)
     public List<Loyer> getLoyerList() {
         if (loyerList == null || loyerList.isEmpty()) {
@@ -169,7 +199,6 @@ public class Mois extends BaseModel {
     public void setLoyerList(List<Loyer> loyerList) {
         this.loyerList = loyerList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationEauList", isVariablePrivate = true)
     public List<ConsommationEau> getConsommationEauList() {
@@ -186,7 +215,6 @@ public class Mois extends BaseModel {
         this.consommationEauList = consommationEauList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "consommationElectriciteList", isVariablePrivate = true)
     public List<ConsommationElectricite> getConsommationElectriciteList() {
         if (consommationElectriciteList == null || consommationElectriciteList.isEmpty()) {
@@ -202,6 +230,21 @@ public class Mois extends BaseModel {
         this.consommationElectriciteList = consommationElectriciteList;
     }
 
+    public Integer getMoisId() {
+        return moisId;
+    }
+
+    public void setMoisId(Integer moisId) {
+        this.moisId = moisId;
+    }
+
+    public ForeignKeyContainer<Annee> getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(ForeignKeyContainer<Annee> annee) {
+        this.annee = annee;
+    }
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "chargeList", isVariablePrivate = true)
     public List<Charge> getChargeList() {
@@ -218,7 +261,6 @@ public class Mois extends BaseModel {
         this.chargeList = chargeList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "depenseList", isVariablePrivate = true)
     public List<Depense> getDepenseList() {
         if (depenseList == null || depenseList.isEmpty()) {
@@ -234,7 +276,6 @@ public class Mois extends BaseModel {
         this.depenseList = depenseList;
     }
 
-
     public void assoAnnee(Annee annee1) {
         annee = new ForeignKeyContainer<>(Annee.class);
         annee.setModel(annee1);
@@ -242,5 +283,8 @@ public class Mois extends BaseModel {
 
     }
 
-
+    @Override
+    public String toString() {
+        return mois;
+    }
 }

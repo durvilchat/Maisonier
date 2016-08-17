@@ -221,4 +221,8 @@ public class Cite extends BaseModel {
 
     }
 
+    @Override
+    public String toString() {
+        return nomCite + " " + siege;
+    }
 }

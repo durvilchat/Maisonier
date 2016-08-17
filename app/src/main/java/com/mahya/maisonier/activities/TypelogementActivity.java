@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.transition.ChangeTransform;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
             page++;
             mAdapter.add(TypeLogement.getInitData(itemsPerPage));
             loading = false;
+
         }
     };
 
@@ -82,10 +84,13 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
+        setupWindowAnimations();
         TypeLogement.typelogs.clear();
         TypeLogement.typelogs = TypeLogement.findAll();
         setTitle("Type de logement");
         ActionBar actionBar = getSupportActionBar();
+        totalPages = TypeLogement.typelogs.size() / itemsPerPage - 1;
+        System.out.println(totalPages);
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -93,6 +98,17 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
         fab.startAnimation(animation);
         handler = new Handler();
         setupPagination();
+    }
+
+    private void setupWindowAnimations() {
+
+        Slide slide = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            slide = new Slide();
+            slide.setDuration(1000);
+            getWindow().setReturnTransition(slide);
+        }
+        ;
     }
 
     private void initView() {
@@ -388,6 +404,8 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
                     }
                 })
                 .build();
+
+
     }
 
     @Override
@@ -462,6 +480,7 @@ public class TypelogementActivity extends BaseActivity implements Paginate.Callb
         public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
 
             mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
+
             return true;
         }
 

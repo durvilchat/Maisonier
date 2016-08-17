@@ -12,6 +12,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -20,13 +21,16 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Occupation extends BaseModel {
 
 
+    public static List<Occupation> occupations = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -123,6 +127,31 @@ public class Occupation extends BaseModel {
         this.paieElectricite = paieElectricite;
     }
 
+    public static List<Occupation> findAll() {
+        return SQLite.select().from(Occupation.class).queryList();
+    }
+
+    public static List<Occupation> getInitData(int size) {
+        List<Occupation> Occupation = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Occupation.add(createRandomPerson());
+        }
+        return Occupation;
+    }
+
+    public static Occupation createRandomPerson() {
+        Occupation Occupation = null;
+        try {
+            Occupation = occupations.get(0);
+            occupations.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Occupation;
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -167,11 +196,6 @@ public class Occupation extends BaseModel {
         return forfaitEau;
     }
 
-    public void setForfaitEau(Boolean forfaitEau) {
-        this.forfaitEau = forfaitEau;
-    }
-
-
     public double getLoyerBase() {
         return loyerBase;
     }
@@ -190,10 +214,6 @@ public class Occupation extends BaseModel {
 
     public Boolean isForfaitElectricte() {
         return forfaitElectricte;
-    }
-
-    public void setForfaitElectricte(Boolean forfaitElectricte) {
-        this.forfaitElectricte = forfaitElectricte;
     }
 
     public boolean isPaieCable() {
@@ -220,7 +240,6 @@ public class Occupation extends BaseModel {
         this.paieElectricite = paieElectricite;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "penaliteList", isVariablePrivate = true)
     public List<Penalite> getPenaliteList() {
         if (penaliteList == null || penaliteList.isEmpty()) {
@@ -235,7 +254,6 @@ public class Occupation extends BaseModel {
     public void setPenaliteList(List<Penalite> penaliteList) {
         this.penaliteList = penaliteList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "depotList", isVariablePrivate = true)
     public List<Depot> getDepotList() {
@@ -252,7 +270,6 @@ public class Occupation extends BaseModel {
         this.depotList = depotList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "cableList", isVariablePrivate = true)
     public List<Cable> getCableList() {
         if (cableList == null || cableList.isEmpty()) {
@@ -267,7 +284,6 @@ public class Occupation extends BaseModel {
     public void setCableList(List<Cable> cableList) {
         this.cableList = cableList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "loyerList", isVariablePrivate = true)
     public List<Loyer> getLoyerList() {
@@ -284,7 +300,6 @@ public class Occupation extends BaseModel {
         this.loyerList = loyerList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "cautionList", isVariablePrivate = true)
     public List<Caution> getCautionList() {
         if (cautionList == null || cautionList.isEmpty()) {
@@ -299,7 +314,6 @@ public class Occupation extends BaseModel {
     public void setCautionList(List<Caution> cautionList) {
         this.cautionList = cautionList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "chargeList", isVariablePrivate = true)
     public List<Charge> getChargeList() {
@@ -316,7 +330,6 @@ public class Occupation extends BaseModel {
         this.chargeList = chargeList;
     }
 
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "contratBailList", isVariablePrivate = true)
     public List<ContratBail> getContratBailList() {
         if (contratBailList == null || contratBailList.isEmpty()) {
@@ -331,7 +344,6 @@ public class Occupation extends BaseModel {
     public void setContratBailList(List<ContratBail> contratBailList) {
         this.contratBailList = contratBailList;
     }
-
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "compteList", isVariablePrivate = true)
     public List<Compte> getCompteList() {
@@ -348,7 +360,6 @@ public class Occupation extends BaseModel {
         this.compteList = compteList;
     }
 
-
     public void assoLogement(Logement logement1) {
         logement = new ForeignKeyContainer<>(Logement.class);
         logement.setModel(logement1);
@@ -356,4 +367,39 @@ public class Occupation extends BaseModel {
 
     }
 
+    public void assoHabitant(Habitant habitant1) {
+        habitant = new ForeignKeyContainer<>(Habitant.class);
+        habitant.setModel(habitant1);
+        habitant.put(Habitant_Table.id, habitant1.id);
+
+    }
+
+    public Boolean getForfaitEau() {
+        return forfaitEau;
+    }
+
+    public void setForfaitEau(Boolean forfaitEau) {
+        this.forfaitEau = forfaitEau;
+    }
+
+    public ForeignKeyContainer<Logement> getLogement() {
+        return logement;
+    }
+
+    public ForeignKeyContainer<Habitant> getHabitant() {
+        return habitant;
+    }
+
+    public Boolean getForfaitElectricte() {
+        return forfaitElectricte;
+    }
+
+    public void setForfaitElectricte(Boolean forfaitElectricte) {
+        this.forfaitElectricte = forfaitElectricte;
+    }
+
+    @Override
+    public String toString() {
+        return getLogement().load().getReference();
+    }
 }

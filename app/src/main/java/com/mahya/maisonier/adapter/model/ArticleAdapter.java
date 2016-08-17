@@ -30,7 +30,6 @@ public class ArticleAdapter extends RecyclerSwipeAdapter<ArticleAdapter.SimpleVi
     int idSelect;
     int selectposition;
     private List<ArticleBail> articleBails;
-    private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
@@ -44,7 +43,7 @@ public class ArticleAdapter extends RecyclerSwipeAdapter<ArticleAdapter.SimpleVi
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
-        vue = view;
+
         return new SimpleViewHolder(view, clickListener);
     }
 
@@ -53,9 +52,10 @@ public class ArticleAdapter extends RecyclerSwipeAdapter<ArticleAdapter.SimpleVi
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.num.setText(articleBails.get(position).getNumero());
-            viewHolder.libele.setText(articleBails.get(position).getLibelle());
+            viewHolder.num.setText(String.valueOf(articleBails.get(position).getNumero()));
+            viewHolder.desc.setText(articleBails.get(position).getLibelle());
             viewHolder.id.setText(String.valueOf(articleBails.get(position).getId()));
+
         } catch (Exception e) {
 
             return;
@@ -285,9 +285,9 @@ public class ArticleAdapter extends RecyclerSwipeAdapter<ArticleAdapter.SimpleVi
         notifyItemRemoved(index);
     }
 
-    public void actualiser(List<ArticleBail> articleBails) {
+    public void actualiser(List<ArticleBail> cites) {
         this.articleBails.clear();
-        this.articleBails.addAll(articleBails);
+        this.articleBails.addAll(cites);
         notifyDataSetChanged();
     }
 
@@ -377,19 +377,19 @@ public class ArticleAdapter extends RecyclerSwipeAdapter<ArticleAdapter.SimpleVi
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView num;
-        TextView desc;
+        TextView numero, desc;
         TextView id;
         ImageButton detail;
-        TextView libele;
+        TextView num;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            num = (TextView) itemView.findViewById(R.id.titre);
-            libele = (TextView) itemView.findViewById(R.id.libelle);
+            numero = (TextView) itemView.findViewById(R.id.titre);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            num = (TextView) itemView.findViewById(R.id.libelle);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

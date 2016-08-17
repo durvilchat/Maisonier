@@ -14,15 +14,16 @@
         android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/operation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ajouter un type de Logement"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/activity_margin_half"
             android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter un type de Logement"
             android:textColor="@color/white"
-            android:id="@+id/operation"/>
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <android.support.design.widget.TextInputLayout

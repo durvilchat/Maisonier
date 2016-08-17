@@ -47,7 +47,7 @@
                 android:textSize="@dimen/abc_text_size_subhead_material" />
 
             <TextView
-                android:id="@+id/prenom"
+                android:id="@+id/titre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.34"

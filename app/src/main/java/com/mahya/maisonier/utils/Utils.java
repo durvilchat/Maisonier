@@ -2,12 +2,22 @@ package com.mahya.maisonier.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.widget.DatePicker;
 
 import com.mahya.maisonier.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static com.mahya.maisonier.utils.Constants.patch;
 
 /**
  * Created by Suleiman on 30-04-2015.
@@ -54,66 +64,44 @@ final int PIC_CROP = 3;
         editor.putString(settingName, settingValue);
         editor.apply();
     }
-/*
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.camera:
-                try {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
-                    File imageFile = new File(imageFilePath);
-                    picUri = Uri.fromFile(imageFile); // convert path to Uri
-                    takePictureIntent.putExtra( MediaStore.EXTRA_OUTPUT,  picUri );
-                    startActivityForResult(takePictureIntent, CAMERA_CAPTURE);
 
-                } catch(ActivityNotFoundException anfe){
-                    //display an error message
-                    String errorMessage = "Whoops - your device doesn't support capturing images!";
-                    Toast.makeText(Test.this, errorMessage, Toast.LENGTH_SHORT).show();
-                }
+    public static String saveToInternalStorage(Bitmap bitmap, String filename) throws IOException {
 
-                break;
+        OutputStream output;
+        filename = filename.trim();
 
-            case R.id.gallery:
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start the Intent
-                startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
-                break;
+        // Find the SD Card path
+        File filepath = Environment.getExternalStorageDirectory();
 
-            default:
-                break;
+        // Create a new folder in SD Card
+        File dir = new File(filepath.getAbsolutePath() + "" + patch);
+        dir.mkdirs();
+
+        // Create a name for the saved image
+        File file = new File(dir, "img" + filename + ".png");
+
+        // Show a toast message on successful save
+        try {
+
+            output = new FileOutputStream(file);
+
+            // Compress into png format image from 0% - 100%
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        return "img" + filename + ".png";
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            //user is returning from capturing an image using the camera
-            if(requestCode == CAMERA_CAPTURE){
-                //get the Uri for the captured image
-                Uri uri = picUri;
-                //carry out the crop operation
-                performCrop();
-                Log.d("picUri", uri.toString());
+    public static String currentDate(DatePicker datePicker) {
+        StringBuilder mcurrentDate = new StringBuilder();
+        int month = datePicker.getMonth() + 1;
+        mcurrentDate.append(datePicker.getDayOfMonth() + "/" + month + "/" + datePicker.getYear());
+        return mcurrentDate.toString();
+    }
 
-            }
 
-            else if(requestCode == PICK_IMAGE_REQUEST){
-                picUri = data.getData();
-                Log.d("uriGallery", picUri.toString());
-                performCrop();
-            }
-
-            //user is returning from cropping the image
-            else if(requestCode == PIC_CROP){
-                //get the returned data
-                Bundle extras = data.getExtras();
-                //get the cropped bitmap
-                Bitmap thePic = (Bitmap) extras.get("data");
-                //display the returned cropped image
-                imageView.setImageBitmap(thePic);
-            }
-
-        }
-    }*/
 }

@@ -17,16 +17,20 @@ import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Caution extends BaseModel {
 
 
+    public static List<Caution> cautions = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -34,7 +38,7 @@ public class Caution extends BaseModel {
     @NotNull
     @Column(name = "date_depot")
 
-    Date dateDepot;
+    Date dateCaution;
 
     @NotNull
     @Column(name = "montant")
@@ -73,12 +77,37 @@ public class Caution extends BaseModel {
         this.id = id;
     }
 
-    public Caution(Integer id, Date dateDepot, double montant, double montantRembourse, String statut) {
+    public Caution(Integer id, Date dateCaution, double montant, double montantRembourse, String statut) {
         this.id = id;
-        this.dateDepot = dateDepot;
+        this.dateCaution = dateCaution;
         this.montant = montant;
         this.montantRembourse = montantRembourse;
         this.statut = statut;
+    }
+
+    public static List<Caution> getInitData(int size) {
+        List<Caution> Caution = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Caution.add(createRandomPerson());
+        }
+        return Caution;
+    }
+
+    public static Caution createRandomPerson() {
+        Caution Caution = null;
+        try {
+            Caution = cautions.get(0);
+            cautions.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Caution;
+
+    }
+
+    public static List<Caution> findAll() {
+        return SQLite.select().from(Caution.class).queryList();
     }
 
     public Integer getId() {
@@ -89,12 +118,12 @@ public class Caution extends BaseModel {
         this.id = id;
     }
 
-    public Date getDateDepot() {
-        return dateDepot;
+    public Date getDateCaution() {
+        return dateCaution;
     }
 
-    public void setDateDepot(Date dateDepot) {
-        this.dateDepot = dateDepot;
+    public void setDateCaution(Date dateCaution) {
+        this.dateCaution = dateCaution;
     }
 
     public double getMontant() {
@@ -135,4 +164,11 @@ public class Caution extends BaseModel {
 
     }
 
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<TypeCaution> getTypeCaution() {
+        return typeCaution;
+    }
 }

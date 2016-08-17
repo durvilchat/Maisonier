@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -27,31 +28,42 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.activities.detail.Aff_BailleurActivity;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.BailleurAdapter;
 import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.mahya.maisonier.utils.Constants;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
 import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mahya.maisonier.utils.Utils.currentDate;
+import static com.mahya.maisonier.utils.Utils.saveToInternalStorage;
 
 public class BailleurActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
@@ -70,7 +82,9 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
     ImageButton myfab_main_btn;
     Animation animation;
     ImageView photo;
-    String mCurrentPhotoPath;
+    DatePicker datePicker;
+    Button changeDate;
+    Bitmap thePic = null;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
@@ -89,6 +103,7 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
     };
     //captured picture uri
     private Uri picUri;
+    private int month;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -100,8 +115,10 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
+
         Bailleur.bailleurs.clear();
         Bailleur.bailleurs = Bailleur.findAll();
+        System.out.println(Bailleur.findAll());
 
         totalPages = Bailleur.bailleurs.size() / initItem;
         if (totalPages < 0) {
@@ -159,20 +176,68 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
         dialog.setContentView(R.layout.add_bailleur);
         // Initialisation du formulaire
 
-        final EditText nom = (EditText) dialog.findViewById(R.id.Nom);
-        final EditText prenom = (EditText) dialog.findViewById(R.id.Prenom);
-        final EditText siege = (EditText) dialog.findViewById(R.id.Siege);
-        final EditText Pcont = (EditText) dialog.findViewById(R.id.PoliceDesContacts);
-        final EditText Pdesc = (EditText) dialog.findViewById(R.id.PoliceDeLaDescription);
-        final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
+        final TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final EditText Nom = (EditText) dialog.findViewById(R.id.Nom);
+        final EditText Prenom = (EditText) dialog.findViewById(R.id.Prenom);
+        final EditText NumeroCni = (EditText) dialog.findViewById(R.id.NumeroCni);
+        final EditText DateDelivranceCni = (EditText) dialog.findViewById(R.id.DateDelivranceCni);
+        final EditText LieuDelivranceCni = (EditText) dialog.findViewById(R.id.LieuDelivranceCni);
+        final MaterialBetterSpinner Genre = (MaterialBetterSpinner) dialog.findViewById(R.id.Genre);
+        final MaterialBetterSpinner Titre = (MaterialBetterSpinner) dialog.findViewById(R.id.Titre);
+        final EditText Tel1 = (EditText) dialog.findViewById(R.id.Tel1);
         photo = (ImageView) dialog.findViewById(R.id.imgBailleur);
 
+        List<String> titres = new ArrayList<>();
+        titres.add("Monsieur");
+        titres.add("Madame");
+        titres.add("Docteur");
+        titres.add("Professeur");
+        List<String> genres = new ArrayList<>();
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, R.layout.spinner_item, titres);
+
+        Titre.setAdapter(adapter);
+
+        genres.add("Homme");
+        genres.add("Femme");
+        ArrayAdapter<String> adapter1 =
+                new ArrayAdapter<String>(this, R.layout.spinner_item, genres);
+
+        Genre.setAdapter(adapter1);
 
         final Button camera = (Button) dialog.findViewById(R.id.capturer);
         final Button gallery = (Button) dialog.findViewById(R.id.choisirImg);
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+        final Button selectDate = (Button) dialog.findViewById(R.id.dateSelect);
 
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                DateDelivranceCni.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDelivranceCni.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDelivranceCni.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+            }
+        });
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,6 +251,57 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
             }
         });
         // Click cancel to dismiss android custom dialog box
+        dialog.show();
+
+        valider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Nom.getText().toString().trim().isEmpty()) {
+                    Nom.setError("Veillez saisir votre nom");
+                    return;
+                }
+
+                if (Tel1.getText().toString().trim().isEmpty()) {
+                    Tel1.setError("Veillez saisir votre numero de le telephone");
+                    return;
+                }
+                DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Bailleur bailleur = new Bailleur();
+                bailleur.setNom(Nom.getText().toString().trim());
+                bailleur.setPrenom(Prenom.getText().toString().trim());
+                bailleur.setGenre(Genre.getText().toString());
+                bailleur.setLieuDelivraisonCni(LieuDelivranceCni.getText().toString());
+                bailleur.setNumeroCNI(NumeroCni.getText().toString());
+                try {
+                    bailleur.setDateDelivraisonCni(sdf.parse(DateDelivranceCni.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                bailleur.setTitre(Titre.getText().toString());
+                bailleur.setTel1(Tel1.getText().toString().trim());
+
+                try {
+                    bailleur.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bailleur.save();
+                Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                mAdapter.addItem(0, bailleur);
+
+                dialog.dismiss();
+            }
+        });
+
+        annuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 
@@ -253,6 +369,11 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
             toggleSelection(position);
         } else {
 
+            Intent intent = new Intent(this, Aff_BailleurActivity.class);
+            intent.putExtra("idBailleur", (int) BailleurAdapter.idSelect);
+            startActivity(intent);
+
+
         }
     }
 
@@ -281,16 +402,158 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
     @Override
     public void modifier(final int id) {
 
-        final Bailleur cite = SQLite.select().from(Bailleur.class).where(Bailleur_Table.id.eq(id)).querySingle();
+        final Bailleur bailleur = SQLite.select().from(Bailleur.class).where(Bailleur_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_cite);
+        dialog.setContentView(R.layout.add_bailleur);
         // Initialisation du formulaire
 
+        final TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final EditText Nom = (EditText) dialog.findViewById(R.id.Nom);
+        final EditText Prenom = (EditText) dialog.findViewById(R.id.Prenom);
+        final EditText NumeroCni = (EditText) dialog.findViewById(R.id.NumeroCni);
+        final EditText DateDelivranceCni = (EditText) dialog.findViewById(R.id.DateDelivranceCni);
+        final EditText LieuDelivranceCni = (EditText) dialog.findViewById(R.id.LieuDelivranceCni);
+        final MaterialBetterSpinner Genre = (MaterialBetterSpinner) dialog.findViewById(R.id.Genre);
+        final MaterialBetterSpinner Titre = (MaterialBetterSpinner) dialog.findViewById(R.id.Titre);
+        final EditText Tel1 = (EditText) dialog.findViewById(R.id.Tel1);
+        photo = (ImageView) dialog.findViewById(R.id.imgBailleur);
 
+        final DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Nom.setText(bailleur.getNom());
+        Prenom.setText(bailleur.getPrenom());
+        NumeroCni.setText(bailleur.getNumeroCNI());
+        Genre.setText(bailleur.getGenre());
+        DateDelivranceCni.setText(sdf.format(bailleur.getDateDelivraisonCni()));
+        LieuDelivranceCni.setText(bailleur.getLieuDelivraisonCni());
+        Titre.setText(bailleur.getTitre());
+        Tel1.setText(bailleur.getTel1());
+        if (bailleur.getPhoto() != null) {
+
+            photo.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + bailleur.getPhoto()));
+        }
+
+
+        List<String> titres = new ArrayList<>();
+        titres.add("Monsieur");
+        titres.add("Madame");
+        titres.add("Docteur");
+        titres.add("Professeur");
+        List<String> genres = new ArrayList<>();
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, R.layout.spinner_item, titres);
+
+        Titre.setAdapter(adapter);
+
+        genres.add("Homme");
+        genres.add("Femme");
+        ArrayAdapter<String> adapter1 =
+                new ArrayAdapter<String>(this, R.layout.spinner_item, genres);
+
+        Genre.setAdapter(adapter1);
+
+        final Button camera = (Button) dialog.findViewById(R.id.capturer);
+        final Button gallery = (Button) dialog.findViewById(R.id.choisirImg);
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+        final Button selectDate = (Button) dialog.findViewById(R.id.dateSelect);
+
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                DateDelivranceCni.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDelivranceCni.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDelivranceCni.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+            }
+        });
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraOption(0);
+            }
+        });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraOption(1);
+            }
+        });
         // Click cancel to dismiss android custom dialog box
+        dialog.show();
+
+        valider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Nom.getText().toString().trim().isEmpty()) {
+                    Nom.setError("Veillez saisir votre nom");
+                    return;
+                }
+
+                if (Tel1.getText().toString().trim().isEmpty()) {
+                    Tel1.setError("Veillez saisir votre numero de le telephone");
+                    return;
+                }
+                Bailleur bailleur = new Bailleur();
+                bailleur.setId(id);
+
+                bailleur.setNom(Nom.getText().toString().trim());
+                bailleur.setPrenom(Prenom.getText().toString().trim());
+                bailleur.setGenre(Genre.getText().toString());
+                bailleur.setLieuDelivraisonCni(LieuDelivranceCni.getText().toString());
+                bailleur.setNumeroCNI(NumeroCni.getText().toString());
+                try {
+                    bailleur.setDateDelivraisonCni(sdf.parse(DateDelivranceCni.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                bailleur.setTitre(Titre.getText().toString());
+                bailleur.setTel1(Tel1.getText().toString().trim());
+
+                try {
+                    bailleur.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bailleur.save();
+                Snackbar.make(view, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                mAdapter.actualiser(Bailleur.findAll());
+
+                dialog.dismiss();
+            }
+        });
+
+        annuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+
 
     }
 
@@ -387,7 +650,7 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
             case 0:
                 try {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/maisonier/picture.jpg";
                     File imageFile = new File(imageFilePath);
                     picUri = Uri.fromFile(imageFile);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
@@ -434,9 +697,10 @@ public class BailleurActivity extends BaseActivity implements Paginate.Callbacks
                 //get the returned data
                 Bundle extras = data.getExtras();
                 //get the cropped bitmap
-                Bitmap thePic = (Bitmap) extras.get("data");
+                thePic = (Bitmap) extras.get("data");
                 //display the returned cropped image
                 photo.setImageBitmap(thePic);
+
             }
 
         }

@@ -15,15 +15,19 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Depot extends BaseModel {
 
 
+    public static List<Depot> depots = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -74,6 +78,35 @@ public class Depot extends BaseModel {
         this.dateDepot = dateDepot;
     }
 
+    public static List<Depot> getDepots() {
+        return depots;
+    }
+
+    public static List<Depot> getInitData(int size) {
+        List<Depot> Depot = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Depot.add(createRandomPerson());
+        }
+        return Depot;
+    }
+
+    public static Depot createRandomPerson() {
+        Depot Depot = null;
+        try {
+            Depot = depots.get(0);
+            depots.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Depot;
+
+    }
+
+    public static List<Depot> findAll() {
+        return SQLite.select().from(Depot.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -101,7 +134,6 @@ public class Depot extends BaseModel {
     public Double getMontant() {
         return montant;
     }
-
     public void setMontant(Double montant) {
         this.montant = montant;
     }
@@ -120,5 +152,22 @@ public class Depot extends BaseModel {
         occupation.put(Occupation_Table.id, occupation1.id);
 
     }
+
+    public void assoMois(Mois mois1) {
+        mois = new ForeignKeyContainer<>(Mois.class);
+        mois.setModel(mois1);
+        mois.put(Mois_Table.id, mois1.id);
+
+    }
+
+    public ForeignKeyContainer<Mois> getMois() {
+        return mois;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+
 
 }

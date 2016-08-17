@@ -20,7 +20,7 @@
     <com.daimajia.swipe.SwipeLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="69dp"
         swipe:leftEdgeSwipeOffset="0dp"
         swipe:rightEdgeSwipeOffset="0dp">
 
@@ -80,8 +80,9 @@
             android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/useimg"
                 android:layout_width="102dp"
-                android:layout_height="91dp"
+                android:layout_height="72dp"
                 android:src="@drawable/avatar"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp" />
@@ -104,10 +105,11 @@
                     android:layout_weight="0.28"
                     android:text="Android version name"
                     android:textColor="@color/primary_text_default_material_light"
-                    android:textSize="@dimen/abc_text_size_subhead_material" />
+                    android:textSize="@dimen/abc_text_size_subhead_material"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/prenom"
+                    android:id="@+id/titre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.27"

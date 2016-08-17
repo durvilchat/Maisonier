@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.TypelogementActivity;
+import com.mahya.maisonier.activities.BaseActivity;
+import com.mahya.maisonier.activities.LogementActivity;
 import com.paginate.recycler.LoadingListItemCreator;
 
 /**
@@ -26,12 +27,12 @@ public class CustomLoadingListItemCreator implements LoadingListItemCreator {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.custom_loading_list_item, parent, false);
-        return new TypelogementActivity.VH(view);
+        return new BaseActivity.VH(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        TypelogementActivity.VH vh = (TypelogementActivity.VH) holder;
+        LogementActivity.VH vh = (LogementActivity.VH) holder;
         // vh.tvLoading.setText(String.format("Total items loaded: %d.\nLoading more...", adapter.getItemCount()));
 
         // This is how you can make full span if you are using StaggeredGridLayoutManager

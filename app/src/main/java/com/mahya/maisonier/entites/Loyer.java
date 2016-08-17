@@ -18,15 +18,19 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.annotation.UniqueGroup;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Loyer extends BaseModel {
 
 
+    public static List<Loyer> loyers = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -80,6 +84,31 @@ public class Loyer extends BaseModel {
         this.montantPayer = montantPayer;
     }
 
+    public static List<Loyer> findAll() {
+        return SQLite.select().from(Loyer.class).queryList();
+    }
+
+    public static List<Loyer> getInitData(int size) {
+        List<Loyer> Loyer = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Loyer.add(createRandomPerson());
+        }
+        return Loyer;
+    }
+
+    public static Loyer createRandomPerson() {
+        Loyer Loyer = null;
+        try {
+            Loyer = loyers.get(0);
+            loyers.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Loyer;
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -103,11 +132,9 @@ public class Loyer extends BaseModel {
     public void setMontantPayer(double montantPayer) {
         this.montantPayer = montantPayer;
     }
-
     public String getObservation() {
         return observation;
     }
-
     public void setObservation(String observation) {
         this.observation = observation;
     }
@@ -119,5 +146,29 @@ public class Loyer extends BaseModel {
 
     }
 
+    public void assMois(Mois mois1) {
+        mois = new ForeignKeyContainer<>(Mois.class);
+        mois.setModel(mois1);
+        mois.put(Occupation_Table.id, mois1.id);
 
+    }
+
+    public void assRemise(Remise remise1) {
+        remise = new ForeignKeyContainer<>(Remise.class);
+        remise.setModel(remise1);
+        remise.put(Occupation_Table.id, remise1.id);
+
+    }
+
+    public ForeignKeyContainer<Mois> getMois() {
+        return mois;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<Remise> getRemise() {
+        return remise;
+    }
 }

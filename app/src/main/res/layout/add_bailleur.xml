@@ -14,28 +14,28 @@
 
 
         <TextView
+            android:id="@+id/operation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ajouter un Bailleur"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/activity_margin_half"
             android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter un Bailleur"
             android:textColor="@color/white"
-            android:id="@+id/operation"/>
-
-
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_Nom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
             <EditText
                 android:id="@+id/Nom"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="wrap_content"
                 android:hint="Nom"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -77,7 +77,6 @@
                 android:layout_toRightOf="@+id/imgBailleur" />
 
 
-
         </RelativeLayout>
 
 
@@ -91,23 +90,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Numéro de CNI"
+                android:inputType="number"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_DateDelivranceCni"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
             <EditText
                 android:id="@+id/DateDelivranceCni"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Date de Délivrance de CNI"
+                android:hint="date de creation"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/dateSelect"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_date" />
+        </LinearLayout>
 
 
         <android.support.design.widget.TextInputLayout
@@ -118,36 +123,27 @@
             <EditText
                 android:id="@+id/LieuDelivranceCni"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:hint="Lieu de Délivrance CNI"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_Genre"
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/Genre"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="Genre"
+            android:textColorHint="@color/lightGray"
+            app:met_floatingLabel="normal" />
 
-            <EditText
-                android:id="@+id/Genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Genre"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_Titre"
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/Titre"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/Titre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Titre"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:hint="Titre"
+            android:textColorHint="@color/lightGray"
+            app:met_floatingLabel="normal" />
 
 
         <android.support.design.widget.TextInputLayout

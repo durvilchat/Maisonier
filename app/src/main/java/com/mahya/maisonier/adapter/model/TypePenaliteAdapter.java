@@ -30,7 +30,6 @@ public class TypePenaliteAdapter extends RecyclerSwipeAdapter<TypePenaliteAdapte
     int idSelect;
     int selectposition;
     private List<TypePenalite> typePenalites;
-    private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
@@ -44,7 +43,6 @@ public class TypePenaliteAdapter extends RecyclerSwipeAdapter<TypePenaliteAdapte
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
-        vue = view;
         return new SimpleViewHolder(view, clickListener);
     }
 
@@ -53,9 +51,9 @@ public class TypePenaliteAdapter extends RecyclerSwipeAdapter<TypePenaliteAdapte
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(typePenalites.get(position).getLibelle());
-            viewHolder.libelle.setText(typePenalites.get(position).getDelai());
-            viewHolder.delai.setText(String.valueOf(typePenalites.get(position).getTaux()));
+            viewHolder.libelle.setText(typePenalites.get(position).getLibelle());
+            viewHolder.tilte.setText(String.valueOf(typePenalites.get(position).getDelai()));
+            viewHolder.delai.setText(String.valueOf(typePenalites.get(position).getTaux() + "%"));
             viewHolder.id.setText(String.valueOf(typePenalites.get(position).getId()));
         } catch (Exception e) {
 

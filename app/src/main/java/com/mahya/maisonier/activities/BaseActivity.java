@@ -10,21 +10,17 @@ import com.mahya.maisonier.R;
 public abstract class BaseActivity extends AppCompatActivity {
 
     // Common options
-    protected int threshold = 4;
+    protected int threshold = 6;
     protected int totalPages;
-    protected int itemsPerPage = 10;
+    protected int itemsPerPage = 8;
     protected int initItem = 20;
-    protected long networkDelay = 1500;
+    protected long networkDelay = 2000;
     protected boolean addLoadingRow = true;
     protected boolean customLoadingListItem = false;
     protected Orientation orientation = Orientation.VERTICAL;
 
     protected abstract void setupPagination();
 
-
-    public enum LayoutManagerEnum {
-        LINEAR
-    }
 
 
     public enum Orientation {

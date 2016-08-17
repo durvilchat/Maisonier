@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.TypelogementActivity;
 import com.mahya.maisonier.entites.TypeLogement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -53,7 +52,8 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(typeLogements.get(position).getCode());
+            viewHolder.code.setText(typeLogements.get(position).getCode());
+            viewHolder.code.setTextColor(mContext.getResources().getColor(R.color.red));
             viewHolder.libele.setText(typeLogements.get(position).getLibelle());
             viewHolder.desc.setText(typeLogements.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(typeLogements.get(position).getId()));
@@ -82,9 +82,9 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof TypelogementActivity) {
+              /*  if (mContext instanceof TypelogementActivity) {
                     ((TypelogementActivity) mContext).onItemClicked(position);
-                }
+                }*/
             }
         });
 
@@ -92,7 +92,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public boolean onLongClick(View view) {
 
-                ((TypelogementActivity) mContext).onItemLongClicked(position);
+                //  ((TypelogementActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -141,7 +141,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public void onClick(View view) {
 
-                ((TypelogementActivity) mContext).detail(idSelect);
+                // ((TypelogementActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -150,7 +150,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).modifier(idSelect);
+                //  ((TypelogementActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -161,7 +161,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TypelogementActivity) mContext).supprimer(idSelect);
+                //((TypelogementActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -382,7 +382,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView tilte;
+        TextView code;
         TextView desc;
         TextView id;
         ImageButton detail;
@@ -393,7 +393,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            tilte = (TextView) itemView.findViewById(R.id.titre);
+            code = (TextView) itemView.findViewById(R.id.titre);
             libele = (TextView) itemView.findViewById(R.id.libelle);
             desc = (TextView) itemView.findViewById(R.id.desc);
             id = (TextView) itemView.findViewById(R.id.idItem);

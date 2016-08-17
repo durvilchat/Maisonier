@@ -32,10 +32,9 @@ import android.widget.TextView;
 import com.daimajia.swipe.util.Attributes;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
-import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
+import com.mahya.maisonier.adapter.model.TypeComptedapter;
+import com.mahya.maisonier.entites.TypeCompte;
 import com.mahya.maisonier.entites.TypeCompte_Table;
-import com.mahya.maisonier.entites.TypeLogement;
-import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
@@ -52,7 +51,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
     private static final int GRID_SPAN = 3;
     private static final String TAG = TypeCompteActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
-    TypeLogementAdapter mAdapter;
+    TypeComptedapter mAdapter;
     FrameLayout fab;
     ImageButton myfab_main_btn;
     Animation animation;
@@ -68,7 +67,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
         @Override
         public void run() {
             page++;
-            mAdapter.add(TypeLogement.getInitData(itemsPerPage));
+            mAdapter.add(TypeCompte.getInitData(itemsPerPage));
             loading = false;
         }
     };
@@ -83,9 +82,9 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
-        TypeLogement.typelogs.clear();
-        TypeLogement.typelogs = TypeLogement.findAll();
-        setTitle("Type de logement");
+        TypeCompte.typeComptes.clear();
+        TypeCompte.typeComptes = TypeCompte.findAll();
+        setTitle(context.getString(R.string.Typedecompte));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -107,7 +106,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        if (new TypeLogement().findAll().isEmpty()) {
+        if (new TypeCompte().findAll().isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -131,11 +130,10 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
         // custom dialog
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_type_de_compte);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
+        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle); 
         final EditText Description = (EditText) dialog.findViewById(R.id.Description);
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
@@ -149,25 +147,14 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
                     return;
 
                 }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
-                    return;
-
-                }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
-                    return;
-
-                }
-                TypeLogement typeLogement = new TypeLogement();
-                typeLogement.setCode(Code.getText().toString().trim());
-                typeLogement.setLibelle(Libelle.getText().toString().trim());
-                typeLogement.setDescription(Description.getText().toString().trim());
+                TypeCompte typeCompte = new TypeCompte();
+                typeCompte.setLibelle(Libelle.getText().toString().trim());
+                typeCompte.setDescription(Description.getText().toString().trim());
                 try {
-                    typeLogement.save();
-                    Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    typeCompte.save();
+                    Snackbar.make(view, "le type de compte a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, 0);
+                    mAdapter.addItem(0, typeCompte);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -184,8 +171,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
+                Libelle.setText(""); 
                 Description.setText("");
 
                 dialog.dismiss();
@@ -199,7 +185,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
         super.onDestroy();
         mAdapter = null;
         //FlowManager.destroy();
-        // Delete.tables(TypeLogement.class);
+        // Delete.tables(TypeCompte.class);
     }
 
     @Override
@@ -225,7 +211,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            TypeLogement typeLogement = new TypeLogement();
+                            TypeCompte typeLogement = new TypeCompte();
                             typeLogement.setId(id);
                             typeLogement.delete();
 
@@ -280,10 +266,10 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
 
     @Override
     public void detail(final int id) {
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        final TypeCompte typeLogement = SQLite.select().from(TypeCompte.class).where(TypeCompte_Table.id.eq(id)).querySingle();
 
         AlertDialog detail = new AlertDialog.Builder(this)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getCode() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
+                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
                 .setIcon(R.drawable.ic_info_indigo_900_18dp)
                 .setTitle("Detail " + typeLogement.getLibelle())
                 .setNeutralButton("OK", null)
@@ -296,18 +282,16 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
     @Override
     public void modifier(final int id) {
 
-        final TypeLogement typeLogement = SQLite.select().from(TypeLogement.class).where(TypeCompte_Table.id.eq(id)).querySingle();
+        final TypeCompte typeCompte = SQLite.select().from(TypeCompte.class).where(TypeCompte_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_type_de_logement_);
+        dialog.setContentView(R.layout.add_type_de_compte);
         // Initialisation du formulaire
 
-        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle);
-        final EditText Code = (EditText) dialog.findViewById(R.id.Code);
+        final EditText Libelle = (EditText) dialog.findViewById(R.id.Libelle); 
         final EditText Description = (EditText) dialog.findViewById(R.id.Description);
-        Libelle.setText(typeLogement.getLibelle());
-        Code.setText(typeLogement.getCode());
-        Description.setText(typeLogement.getDescription());
+        Libelle.setText(typeCompte.getLibelle());
+        Description.setText(typeCompte.getDescription());
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
@@ -318,28 +302,15 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
                     Libelle.setError("Velliez remplir le libelle");
                     return;
 
-                }
-                if (Code.getText().toString().trim().equals("")) {
-                    Code.setError("Velliez remplir le code");
-                    return;
-
-                }
-                if (Description.getText().toString().trim().equals("")) {
-                    Description.setError("Velliez remplir la description");
-                    return;
-
-                }
+                } 
                 try {
 
-                    typeLogement.setId(typeLogement.getId());
-                    typeLogement.setCode(Code.getText().toString().trim());
-                    typeLogement.setLibelle(Libelle.getText().toString().trim());
-                    typeLogement.setDescription(Description.getText().toString().trim());
-                    typeLogement.save();
-                    mAdapter.actualiser(typeLogement.findAll());
-                    System.out.println("good");
-                } catch (Exception e) {
-                    System.out.println("erroo");
+                    typeCompte.setId(typeCompte.getId());
+                    typeCompte.setLibelle(Libelle.getText().toString().trim());
+                    typeCompte.setDescription(Description.getText().toString().trim());
+                    typeCompte.save();
+                    mAdapter.actualiser(typeCompte.findAll());
+                } catch (Exception e) { 
                     System.out.println(e.getMessage());
                 }
 
@@ -353,8 +324,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
             @Override
             public void onClick(View v) {
 
-                Libelle.setText("");
-                Code.setText("");
+                Libelle.setText(""); 
                 Description.setText("");
 
                 dialog.dismiss();
@@ -370,15 +340,15 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
             paginate.unbind();
         }
         handler.removeCallbacks(fakeCallback);
-        mAdapter = new TypeLogementAdapter(this, (ArrayList<TypeLogement>) TypeLogement.findAll(), this);
+        mAdapter = new TypeComptedapter(this, (ArrayList<TypeCompte>) TypeCompte.findAll(), this);
         loading = false;
         page = 0;
 
-        mAdapter = new TypeLogementAdapter(this, TypeLogement.getInitData(initItem), this);
+        mAdapter = new TypeComptedapter(this, TypeCompte.getInitData(initItem), this);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        ((TypeLogementAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        ((TypeComptedapter) mAdapter).setMode(Attributes.Mode.Single);
         paginate = Paginate.with(mRecyclerView, this)
                 .setLoadingTriggerThreshold(threshold)
                 .addLoadingListItem(addLoadingRow)
@@ -429,7 +399,7 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<TypeLogement> filteredModelList = filter(TypeLogement.findAll(), query);
+        final List<TypeCompte> filteredModelList = filter(TypeCompte.findAll(), query);
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
         return true;
@@ -442,11 +412,11 @@ public class TypeCompteActivity extends BaseActivity implements Paginate.Callbac
     }
 
 
-    private List<TypeLogement> filter(List<TypeLogement> models, String query) {
+    private List<TypeCompte> filter(List<TypeCompte> models, String query) {
         query = query.toLowerCase();
         System.out.println(models);
-        final List<TypeLogement> filteredModelList = new ArrayList<>();
-        for (TypeLogement model : models) {
+        final List<TypeCompte> filteredModelList = new ArrayList<>();
+        for (TypeCompte model : models) {
             final String text = model.getLibelle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);

@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,41 +8,40 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
 
         <TextView
+            android:id="@+id/operation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ajouter un Loyer"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/activity_margin_half"
             android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter un Loyer"
             android:textColor="@color/white"
-            android:id="@+id/operation"/>
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <Spinner
             android:id="@+id/Annee"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Mois"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Logement"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <android.support.design.widget.TextInputLayout
@@ -59,28 +59,33 @@
                 android:inputType="numberDecimal" />
         </android.support.design.widget.TextInputLayout>
 
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_DatePayement"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <EditText
-                android:id="@+id/DatePayement"
-                android:layout_width="match_parent"
+                android:id="@+id/DateSortie"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Date Payement"
+                android:hint="date payement"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
 
-        <Spinner
+            <Button
+                android:id="@+id/dateSelectsort"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_date" />
+        </LinearLayout>
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/Observation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
+            android:hint="Observation"
+            android:textColorHint="@color/lightGray"
+            app:met_floatingLabel="normal" />
 
         <include
             layout="@layout/btn_valider_annuler"

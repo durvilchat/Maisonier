@@ -399,9 +399,9 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
             nom = (TextView) itemView.findViewById(R.id.libelle);
             desc = (TextView) itemView.findViewById(R.id.titre);
             //   tel = (TextView) itemView.findViewById(R.id.titre);
-           /* libele = (TextView) itemView.findViewById(R.id.libelle);
-            libele = (TextView) itemView.findViewById(R.id.libelle);
-            libele = (TextView) itemView.findViewById(R.id.libelle);*/
+           /* num = (TextView) itemView.findViewById(R.id.contratBailleur);
+            num = (TextView) itemView.findViewById(R.id.contratBailleur);
+            num = (TextView) itemView.findViewById(R.id.contratBailleur);*/
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

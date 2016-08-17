@@ -14,20 +14,26 @@ import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.annotation.UniqueGroup;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true, uniqueColumnGroups = {@UniqueGroup(groupNumber = 1, uniqueConflict = ConflictAction.FAIL)})
 public class Cable extends BaseModel {
 
 
+    public static List<Cable> cables = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -79,6 +85,35 @@ public class Cable extends BaseModel {
         this.montantPayer = montantPayer;
     }
 
+    public static List<Cable> getCables() {
+        return cables;
+    }
+
+    public static List<Cable> getInitData(int size) {
+        List<Cable> Cable = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Cable.add(createRandomPerson());
+        }
+        return Cable;
+    }
+
+    public static Cable createRandomPerson() {
+        Cable Cable = null;
+        try {
+            Cable = cables.get(0);
+            cables.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return Cable;
+
+    }
+
+    public static List<Cable> findAll() {
+        return SQLite.select().from(Cable.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -111,7 +146,6 @@ public class Cable extends BaseModel {
         this.observation = observation;
     }
 
-
     public void assoMois(Mois mois1) {
         mois = new ForeignKeyContainer<>(Mois.class);
         mois.setModel(mois1);
@@ -132,5 +166,18 @@ public class Cable extends BaseModel {
         occupation.put(Occupation_Table.id, occupation1.id);
 
     }
+
+    public ForeignKeyContainer<Mois> getMois() {
+        return mois;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<Parametre> getParametre() {
+        return parametre;
+    }
+
 
 }

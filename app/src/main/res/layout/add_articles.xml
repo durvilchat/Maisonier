@@ -7,36 +7,32 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
 
-
-  <TextView
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:text="Ajouter un Article"
-     android:textSize="25dp"
-     android:textStyle="bold"
-     android:gravity="center"
-     android:background="@color/colorPrimary"
-     android:textColor="@color/white"
-      android:id="@+id/operation"/>
-
+        <TextView
+            android:id="@+id/operation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter un Article"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_layou_Liibelle"
+            android:id="@+id/desc_layou_Libelle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/Libelle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.31"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
                 android:ems="10"
                 android:hint="Libellé"
                 android:inputType="textMultiLine" />

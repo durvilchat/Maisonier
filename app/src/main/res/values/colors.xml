@@ -11,6 +11,7 @@
     <color name="bg_swipe_item_neutral">@android:color/transparent</color>
     <color name="blue_grey">#455A64</color>
     <color name="red">#F44336</color>
+    <color name="menu">#2e2e2e</color>
     <color name="pink">#E91E63</color>
     <color name="purple">#9C27B0</color>
     <color name="deep_purple">#673AB7</color>
@@ -29,7 +30,7 @@
     <color name="deep_orange">#FF5722</color>
     <color name="black_trans80">#14000000</color>
 
-    <color name="lightGray">#e0e0e0</color>
+    <color name="lightGray">#b7b5b5</color>
     <color name="indicator_unselected">#4D000000</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>

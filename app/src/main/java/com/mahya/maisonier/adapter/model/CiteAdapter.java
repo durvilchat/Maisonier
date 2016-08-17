@@ -30,7 +30,6 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
     int idSelect;
     int selectposition;
     private List<Cite> cites;
-    private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
@@ -43,8 +42,8 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
-        vue = view;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+
         return new SimpleViewHolder(view, clickListener);
     }
 
@@ -53,8 +52,8 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setText(cites.get(position).getNomCite());
-            viewHolder.libele.setText(cites.get(position).getBailleur().load().getNom());
+            viewHolder.nomCite.setText(cites.get(position).getNomCite());
+            viewHolder.bailleur.setText(cites.get(position).getBailleur().load().getNom() + " " + cites.get(position).getBailleur().load().getPrenom());
             viewHolder.desc.setText(cites.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(cites.get(position).getId()));
         } catch (Exception e) {
@@ -378,19 +377,19 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView tilte;
+        TextView bailleur;
         TextView desc;
         TextView id;
         ImageButton detail;
-        TextView libele;
+        TextView nomCite;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            tilte = (TextView) itemView.findViewById(R.id.titre);
-            libele = (TextView) itemView.findViewById(R.id.libelle);
+            bailleur = (TextView) itemView.findViewById(R.id.titre);
+            nomCite = (TextView) itemView.findViewById(R.id.libelle);
             desc = (TextView) itemView.findViewById(R.id.desc);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);

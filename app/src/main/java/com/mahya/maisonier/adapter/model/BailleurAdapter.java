@@ -1,6 +1,8 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -16,23 +18,27 @@ import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BailleurActivity;
 import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.mahya.maisonier.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.SimpleViewHolder> {
 
 
     private static final String TAG = BailleurAdapter.class.getSimpleName();
+    public static int idSelect;
     Context mContext;
-    int idSelect;
     int selectposition;
     private List<Bailleur> bailleurs;
     private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
+
 
     public BailleurAdapter(Context context, List<Bailleur> bailleurs, OnItemClickListener clickListener) {
         this.mContext = context;
@@ -53,15 +59,20 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.nom.setText(bailleurs.get(position).getNom());
-            viewHolder.prenom.setText(bailleurs.get(position).getPrenom());
+
+            if (bailleurs.get(position).getPhoto() != null) {
+
+                viewHolder.img.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + bailleurs.get(position).getPhoto()));
+            }
+            viewHolder.nom.setText(bailleurs.get(position).getNom() + " " + bailleurs.get(position).getPrenom());
+            viewHolder.prenom.setText(bailleurs.get(position).getTitre());
             viewHolder.tel.setText(bailleurs.get(position).getTel1());
             viewHolder.id.setText(String.valueOf(bailleurs.get(position).getId()));
+
+
         } catch (Exception e) {
-
-            return;
+            e.printStackTrace();
         }
-
 // Span the item if active
         final ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
         if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
@@ -80,10 +91,13 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
         viewHolder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, viewHolder.swipeLayout.findViewById(R.id.bottom_wrapper));
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
                 if (mContext instanceof BailleurActivity) {
                     ((BailleurActivity) mContext).onItemClicked(position);
+
+                    TextView id = (TextView) view.findViewById(R.id.idItem);
+                    idSelect = Integer.parseInt(id.getText().toString());
                 }
             }
         });
@@ -93,7 +107,8 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             public boolean onLongClick(View view) {
 
                 ((BailleurActivity) mContext).onItemLongClicked(position);
-
+                TextView id = (TextView) view.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 return true;
             }
 
@@ -381,6 +396,7 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
         TextView prenom;
         TextView tel;
         TextView id;
+        CircleImageView img;
         ImageButton detail;
         TextView nom;
         View selectedOverlay;
@@ -391,8 +407,9 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tel = (TextView) itemView.findViewById(R.id.tel);
             nom = (TextView) itemView.findViewById(R.id.nom);
-            prenom = (TextView) itemView.findViewById(R.id.prenom);
+            prenom = (TextView) itemView.findViewById(R.id.titre);
             id = (TextView) itemView.findViewById(R.id.idItem);
+            img = (CircleImageView) itemView.findViewById(R.id.useimg);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);

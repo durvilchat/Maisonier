@@ -7,40 +7,39 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/operation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ajouter un compte"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/activity_margin_half"
             android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter un compte"
             android:textColor="@color/white"
-            android:id="@+id/operation"/>
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
         <Spinner
             android:id="@+id/TypeDeCompte"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Habitant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Logement"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <android.support.design.widget.TextInputLayout

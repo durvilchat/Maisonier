@@ -3,6 +3,7 @@ package com.mahya.maisonier.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -72,7 +74,11 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
         public void run() {
             page++;
             mAdapter.add(Cite.getInitData(initItem));
+            paginate.setHasMoreDataToLoad(false);
             loading = false;
+            if (mAdapter.getItemCount() < initItem) {
+                loading = false;
+            }
         }
     };
 
@@ -145,7 +151,7 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
         dialog.setContentView(R.layout.add_cite);
         // Initialisation du formulaire
 
-        final TextView option = (TextView) dialog.findViewById(R.id.optionCite);
+        final TextView option = (TextView) dialog.findViewById(R.id.operation);
         final EditText nom = (EditText) dialog.findViewById(R.id.NomCite);
         final EditText tel = (EditText) dialog.findViewById(R.id.Telephone);
         final EditText email = (EditText) dialog.findViewById(R.id.Email);
@@ -156,8 +162,36 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
         final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
         final EditText desc = (EditText) dialog.findViewById(R.id.Description);
         option.setText(context.getText(R.string.ajouterCite));
-        ArrayAdapter<Bailleur> adapter =
-                new ArrayAdapter<Bailleur>(this, android.R.layout.simple_spinner_dropdown_item, Bailleur.findAll());
+        List<Bailleur> bailleurList = new ArrayList<>();
+        bailleurList.add(new Bailleur("Bailleur"));
+        bailleurList.addAll(Bailleur.findAll());
+        ArrayAdapter<Bailleur> adapter = new ArrayAdapter<Bailleur>(
+                this, R.layout.spinner_item, bailleurList) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         bailleur.setAdapter(adapter);
@@ -361,11 +395,12 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
         dialog.setContentView(R.layout.add_cite);
         // Initialisation du formulaire
 
-        final TextView option = (TextView) dialog.findViewById(R.id.optionCite);
+        final TextView option = (TextView) dialog.findViewById(R.id.operation);
         final EditText nom = (EditText) dialog.findViewById(R.id.NomCite);
         final EditText tel = (EditText) dialog.findViewById(R.id.Telephone);
         final EditText email = (EditText) dialog.findViewById(R.id.Email);
         final EditText Pcite = (EditText) dialog.findViewById(R.id.PoliceDeLaCite);
+        final EditText siege = (EditText) dialog.findViewById(R.id.Siege);
         final EditText Pcont = (EditText) dialog.findViewById(R.id.PoliceDesContacts);
         final EditText Pdesc = (EditText) dialog.findViewById(R.id.PoliceDeLaDescription);
         final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
@@ -421,6 +456,7 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
                 cite.setNomCite(nom.getText().toString().trim());
                 cite.setTels(tel.getText().toString().trim());
                 cite.setDescription(desc.getText().toString().trim());
+                cite.setSiege(siege.getText().toString().trim());
                 cite.setEmail(email.getText().toString().trim());
                 cite.assoBailleur((Bailleur) bailleur.getSelectedItem());
                 cite.setPoliceCite(Double.parseDouble(Pcite.getText().toString().trim()));
@@ -468,10 +504,9 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
             paginate.unbind();
         }
         handler.removeCallbacks(fakeCallback);
-        //  mAdapter = new CiteAdapter(this, (ArrayList<Cite>) Cite.findAll(), this);
+        mAdapter = new CiteAdapter(this, (ArrayList<Cite>) Cite.findAll(), this);
         loading = false;
         page = 0;
-
         mAdapter = new CiteAdapter(this, Cite.getInitData(initItem), this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -488,6 +523,8 @@ public class CiteActivity extends BaseActivity implements Paginate.Callbacks, Cr
                     }
                 })
                 .build();
+
+        paginate.setHasMoreDataToLoad(false);
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ModelContainer
@@ -26,6 +27,7 @@ import java.util.List;
 public class Annee extends BaseModel {
 
 
+    public static List<Annee> annees = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
@@ -56,6 +58,31 @@ public class Annee extends BaseModel {
         this.id = id;
         this.annee = annee;
         this.etat = etat;
+    }
+
+    public static List<Annee> getInitData(int size) {
+        List<Annee> articleBails = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            articleBails.add(createRandomPerson());
+        }
+        return articleBails;
+    }
+
+    public static Annee createRandomPerson() {
+        Annee batiment = null;
+        try {
+            batiment = annees.get(0);
+            annees.remove(0);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+
+        }
+
+        return batiment;
+
+    }
+
+    public static List<Annee> findAll() {
+        return SQLite.select().from(Annee.class).queryList();
     }
 
     public Integer getId() {
@@ -104,5 +131,10 @@ public class Annee extends BaseModel {
 
     public void setEtat(boolean etat) {
         this.etat = etat;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(annee);
     }
 }
