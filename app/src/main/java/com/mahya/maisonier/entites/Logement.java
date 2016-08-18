@@ -123,6 +123,18 @@ public class Logement extends BaseModel {
 
     }
 
+    public static List<Logement> getLogements() {
+        return logements;
+    }
+
+    public ForeignKeyContainer<Batiment> getBatiment() {
+        return batiment;
+    }
+
+    public ForeignKeyContainer<TypeLogement> getTypeLogement() {
+        return typeLogement;
+    }
+
     public Integer getId() {
         return id;
     }

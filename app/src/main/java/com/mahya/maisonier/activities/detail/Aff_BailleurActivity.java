@@ -50,6 +50,8 @@ public class Aff_BailleurActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         super.setContentView(R.layout.aff_bailleur);
+
+        initView();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

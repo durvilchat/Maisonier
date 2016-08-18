@@ -107,4 +107,12 @@ public class Compte extends BaseModel {
         typeCompte.put(TypeCompte_Table.id, typeCompte1.id);
 
     }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<TypeCompte> getTypeCompte() {
+        return typeCompte;
+    }
 }
