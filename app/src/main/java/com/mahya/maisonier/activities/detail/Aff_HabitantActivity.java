@@ -1,9 +1,7 @@
 package com.mahya.maisonier.activities.detail;
 
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
@@ -13,13 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.adapter.model.BailleurAdapter;
-import com.mahya.maisonier.adapter.model.HabitantAdapter;
-import com.mahya.maisonier.entites.Bailleur;
-import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Habitant_Table;
-import com.mahya.maisonier.utils.Constants;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -38,15 +31,17 @@ public class Aff_HabitantActivity extends AppCompatActivity {
     protected TextView NumeroCNI;
     protected TextView Genre;
     protected TextView Titre;
-    protected TextView Emails;
-    protected TextView Telephone;
-    protected TextView DateNaissance;
-    protected TextView LieuNaissance;
-    protected TextView NomPere;
-    protected TextView NomMere;
+    protected TextView Email1;
+    protected TextView Email2;
+    protected TextView Tel1;
+    protected TextView Tel2;
+    protected TextView Tel3;
+    protected TextView Tel4;
+    protected TextView DateDeNaissance;
+    protected TextView LieuDeNaissance;
+    protected TextView NomduPere;
+    protected TextView NomdelaMere;
     protected TextView Profession;
-    private ImageView imgBailleur;
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -67,25 +62,30 @@ public class Aff_HabitantActivity extends AppCompatActivity {
 
             if (habitant.getPhoto() != null) {
 
-                imgHabitant.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + habitant.getPhoto()));
+
             }
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
             Nom.setText(habitant.getNom());
             Prenom.setText(habitant.getPrenom());
             NumeroCNI.setText(habitant.getNumeroCNI());
             Genre.setText(habitant.getGenre());
             Titre.setText(habitant.getTitre());
-            Emails.setText(habitant.getEmail1());
-            Telephone.setText(habitant.getTel1());
-            DateNaissance.setText(sdf.format(habitant.getDateNaissance()));
-            LieuNaissance.setText(habitant.getLieuNaissance());
-            NomPere.setText(habitant.getNomDuPere());
-            NomMere.setText(habitant.getNomDeLaMere());
+            Email1.setText(habitant.getEmail1());
+            Email2.setText(habitant.getEmail2());
+            Tel1.setText(habitant.getTel1());
+            Tel2.setText(habitant.getTel2());
+            Tel3.setText(habitant.getTel3());
+            Tel4.setText(habitant.getTel4());
+            DateDeNaissance.setText(sdf.format(habitant.getDateNaissance()));
+            LieuDeNaissance.setText(habitant.getLieuNaissance());
+            NomduPere.setText(habitant.getNomDuPere());
+            NomdelaMere.setText(habitant.getNomDeLaMere());
             Profession.setText(habitant.getProfession());
+
+
         }
 
-        setTitle(this.getString(R.string.detail) + " " + Nom.getText().toString());
+
     }
 
     @Override
@@ -100,18 +100,24 @@ public class Aff_HabitantActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        imgHabitant = (ImageView) findViewById(R.id.imageView4);
+        imgHabitant = (ImageView) findViewById(R.id.imgHabitant);
         Nom = (TextView) findViewById(R.id.Nom);
         Prenom = (TextView) findViewById(R.id.Prenom);
         NumeroCNI = (TextView) findViewById(R.id.NumeroCNI);
         Genre = (TextView) findViewById(R.id.Genre);
         Titre = (TextView) findViewById(R.id.Titre);
-        Emails = (TextView) findViewById(R.id.Emails);
-        Telephone = (TextView) findViewById(R.id.Telephone);
-        DateNaissance = (TextView) findViewById(R.id.DateNaissance);
-        LieuNaissance = (TextView) findViewById(R.id.LieuNaissance);
-        NomPere = (TextView) findViewById(R.id.NomPere);
-        NomMere = (TextView) findViewById(R.id.NomMere);
+        Email1 = (TextView) findViewById(R.id.Email1);
+        Email2 = (TextView) findViewById(R.id.Email2);
+        Tel1 = (TextView) findViewById(R.id.Tel1);
+        Tel2 = (TextView) findViewById(R.id.Tel2);
+        Tel3 = (TextView) findViewById(R.id.Tel3);
+        Tel4 = (TextView) findViewById(R.id.Tel4);
+        DateDeNaissance = (TextView) findViewById(R.id.DateDeNaissance);
+        LieuDeNaissance = (TextView) findViewById(R.id.LieuDeNaissance);
+        NomduPere = (TextView) findViewById(R.id.NomduPere);
+        NomdelaMere = (TextView) findViewById(R.id.NomdelaMere);
         Profession = (TextView) findViewById(R.id.Profession);
+
+
     }
 }
