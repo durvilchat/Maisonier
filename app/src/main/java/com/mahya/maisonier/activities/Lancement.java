@@ -46,6 +46,7 @@ public class Lancement extends AppCompatActivity {
         thread.start();
         if (progress == 100) {
 
+
             startActivity(new Intent(this, MainActivity.class));
         }
     }

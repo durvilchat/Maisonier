@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +26,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.ContraBailAdapter;
@@ -41,9 +39,7 @@ import com.mahya.maisonier.entites.ContratBail_Table;
 import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -58,15 +54,15 @@ import me.srodrigo.androidhintspinner.HintSpinner;
 import static com.mahya.maisonier.utils.Utils.currentDate;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ContraBailActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class ContraBailActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = ContraBailActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     ContraBailAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     Bailleur bailleur1;
@@ -74,19 +70,6 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(ContratBail.getInitData(initItem));
-            loading = false;
-        }
-    };
-    private Occupation moccupation;
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -109,8 +92,29 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new ContraBailAdapter(this, (ArrayList<ContratBail>) ContratBail.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -119,7 +123,7 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -196,7 +200,7 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
 
                     @Override
                     public void onItemSelected(int position, Occupation itemAtPosition) {
-                        moccupation = itemAtPosition;
+
                     }
                 });
         occupationHint.init();
@@ -210,7 +214,6 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
 
                     @Override
                     public void onItemSelected(int position, Bailleur itemAtPosition) {
-                        bailleur1 = itemAtPosition;
                     }
                 });
         bailleurHint.init();
@@ -229,7 +232,8 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
                 }
 
                 ContratBail contratBail = new ContratBail();
-                contratBail.assoBailleur(bailleur1);
+                //contratBail.assoOccupation();
+                contratBail.assoBailleur((Bailleur) bailleur.getSelectedItem());
                 try {
                     contratBail.setDateEtablissement(sdf.parse(dateEtablissement.getText().toString().trim()));
                 } catch (ParseException e) {
@@ -421,7 +425,6 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
 
                     @Override
                     public void onItemSelected(int position, Occupation itemAtPosition) {
-                        moccupation = itemAtPosition;
                     }
                 });
         occupationHint.init();
@@ -504,52 +507,6 @@ public class ContraBailActivity extends BaseActivity implements Paginate.Callbac
         dialog.show();
     }
 
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        //  mAdapter = new ContraBailAdapter(this, (ArrayList<ContratBail>) ContratBail.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new ContraBailAdapter(this, ContratBail.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((ContraBailAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return 0;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
 
     @Override
     public void onBackPressed() {

@@ -1,8 +1,6 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +15,12 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.CiteActivity;
+import com.mahya.maisonier.activities.DepotActivity;
 import com.mahya.maisonier.entites.Depot;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,7 +46,7 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
@@ -58,9 +58,13 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
 
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            viewHolder.montant.setText(String.valueOf(depots.get(position).getMontant()));
-            viewHolder.logement.setText(depots.get(position).getOccupation().load().getLogement().load().getDescription());
-            viewHolder.habitant.setText(sdf.format(depots.get(position).getOccupation().load().getHabitant().load().getNom()));
+            viewHolder.titre1.setText(String.valueOf(depots.get(position).getMontant()) + " F CFA  ");
+            viewHolder.titre1.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.green));
+            viewHolder.tilte.setText(sdf.format(depots.get(position).getDateDepot()));
+            viewHolder.libele1.setText(depots.get(position).getMois().load().getMois() + " " + depots.get(position).getMois().load().getAnnee().load().getAnnee());
+            viewHolder.desc.setVisibility(View.GONE);
+            viewHolder.libele.setText(depots.get(position).getOccupation().load().getHabitant().load().getNom() + " " + depots.get(position).getOccupation().load().getHabitant().load().getPrenom());
             viewHolder.id.setText(String.valueOf(depots.get(position).getId()));
         } catch (Exception e) {
 
@@ -87,8 +91,8 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof CiteActivity) {
-                    ((CiteActivity) mContext).onItemClicked(position);
+                if (mContext instanceof DepotActivity) {
+                    ((DepotActivity) mContext).onItemClicked(position);
                 }
             }
         });
@@ -97,7 +101,7 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
             @Override
             public boolean onLongClick(View view) {
 
-                ((CiteActivity) mContext).onItemLongClicked(position);
+                ((DepotActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -146,7 +150,7 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
             @Override
             public void onClick(View view) {
 
-                ((CiteActivity) mContext).detail(idSelect);
+                ((DepotActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -155,7 +159,7 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).modifier(idSelect);
+                ((DepotActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -166,7 +170,7 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).supprimer(idSelect);
+                ((DepotActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -383,20 +387,23 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView montant;
-        TextView logement;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView habitant;
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView titre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            montant = (TextView) itemView.findViewById(R.id.titre);
-            habitant = (TextView) itemView.findViewById(R.id.libelle);
-            logement = (TextView) itemView.findViewById(R.id.desc);
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            titre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

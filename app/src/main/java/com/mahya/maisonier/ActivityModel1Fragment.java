@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ActivityModel1Fragment extends Fragment {
@@ -17,7 +16,6 @@ public class ActivityModel1Fragment extends Fragment {
     private RecyclerView list_item;
     private TextView empty_view;
     private View myfab_shadow;
-    private ImageButton myfab_main_btn;
     private FrameLayout myfab_main;
     private CoordinatorLayout activity_typelogement;
 

@@ -42,7 +42,7 @@ public class Aff_LoyerActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             Loyer loyer = SQLite.select().from(Loyer.class).where(Loyer_Table.id.eq(id)).querySingle();

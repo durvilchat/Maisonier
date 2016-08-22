@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/myfab_main"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_gravity="bottom|end">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/myfab_shadow"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center" />
 
-    <ImageButton
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/myfab_main_btn"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_gravity="center"
-        android:background="@drawable/fab_selector"
-        android:cropToPadding="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
         android:onClick="add"
-        android:padding="20dp"
         android:src="@drawable/ic_add"
-        android:stateListAnimator="@animator/fab_elevation_selector" />
+        fab:fab_colorNormal="@color/colorPrimary"
+        fab:fab_colorPressed="@color/colorPrimaryDark"
+        fab:fab_colorRipple="@color/colorPrimary" />
 
 </FrameLayout>

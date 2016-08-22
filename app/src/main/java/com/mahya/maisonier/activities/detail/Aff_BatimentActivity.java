@@ -1,9 +1,7 @@
 package com.mahya.maisonier.activities.detail;
 
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
@@ -13,10 +11,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.adapter.model.BatimentAdapter;
 import com.mahya.maisonier.entites.Batiment;
 import com.mahya.maisonier.entites.Habitant_Table;
-import com.mahya.maisonier.utils.Constants;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -46,7 +42,7 @@ public class Aff_BatimentActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             Batiment batiment = SQLite.select().from(Batiment.class).where(Habitant_Table.id.eq(id)).querySingle();

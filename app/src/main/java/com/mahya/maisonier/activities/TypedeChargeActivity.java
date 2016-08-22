@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +23,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.TypeDeChargeAdapter;
@@ -35,40 +33,26 @@ import com.mahya.maisonier.entites.TypeCharge;
 import com.mahya.maisonier.entites.TypeCompte_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypedeChargeActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class TypedeChargeActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = TypedeChargeActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     TypeDeChargeAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(TypeCharge.getInitData(itemsPerPage));
-            loading = false;
-        }
-    };
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -89,8 +73,29 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new TypeDeChargeAdapter(this, TypeCharge.findAll(), (OnItemClickListener) this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -99,7 +104,7 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -150,13 +155,14 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
                     return;
 
                 }
-                TypeCharge caracteristique = new TypeCharge();
-                caracteristique.setLibelle(libelle.getText().toString().trim());
+                TypeCharge typeCharge = new TypeCharge();
+                typeCharge.setMontant(Double.parseDouble(montant.getText().toString().trim()));
+                typeCharge.setLibelle(libelle.getText().toString().trim());
                 try {
-                    caracteristique.save();
+                    typeCharge.save();
                     Snackbar.make(view, "la typa de charge a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(0, caracteristique);
+                    mAdapter.addItem(0, typeCharge);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -272,14 +278,19 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
     @Override
     public void modifier(final int id) {
 
-        final TypeCharge TypeCharge = SQLite.select().from(TypeCharge.class).where(TypeCompte_Table.id.eq(id)).querySingle();
+        final TypeCharge typeCharge = SQLite.select().from(TypeCharge.class).where(TypeCompte_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_caracteristiques);
+        dialog.setContentView(R.layout.add_types_de_charges);
         // Initialisation du formulaire
 
         final EditText libelle = (EditText) dialog.findViewById(R.id.Libelle);
         final EditText montant = (EditText) dialog.findViewById(R.id.Montant);
+        final TextView oper = (TextView) dialog.findViewById(R.id.operation);
+        oper.setText("Modifier le type de charge");
+
+        libelle.setText(typeCharge.getLibelle());
+        montant.setText(String.valueOf(typeCharge.getMontant()));
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
@@ -299,14 +310,18 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
                 }
                 try {
 
-                    TypeCharge.setId(TypeCharge.getId());
-                    TypeCharge.setLibelle(libelle.getText().toString().trim());
-                    TypeCharge.setLibelle(montant.getText().toString().trim());
-                    TypeCharge.save();
+                    TypeCharge typeCharge = new TypeCharge();
+                    typeCharge.setId(id);
+                    typeCharge.setLibelle(libelle.getText().toString().trim());
+                    typeCharge.setLibelle(montant.getText().toString().trim());
+                    typeCharge.save();
+                    Snackbar.make(v, "la type de charge a été correctement modifiée", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                     mAdapter.actualiser(TypeCharge.findAll());
-                    System.out.println("good");
                 } catch (Exception e) {
-                    System.out.println("erroo");
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                     System.out.println(e.getMessage());
                 }
 
@@ -330,52 +345,6 @@ public class TypedeChargeActivity extends BaseActivity implements Paginate.Callb
         dialog.show();
     }
 
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        mAdapter = new TypeDeChargeAdapter(this, TypeCharge.findAll(), (OnItemClickListener) this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new TypeDeChargeAdapter(this, TypeCharge.getInitData(initItem), (OnItemClickListener) this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((TypeDeChargeAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
 
     @Override
     public void onBackPressed() {

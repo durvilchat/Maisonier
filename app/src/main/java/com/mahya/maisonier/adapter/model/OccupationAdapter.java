@@ -1,6 +1,7 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -14,6 +15,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.OccupationActivity;
+import com.mahya.maisonier.activities.detail.Aff_OccupationsActivity;
 import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -46,7 +48,7 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
         vue = view;
         return new SimpleViewHolder(view, clickListener);
     }
@@ -55,9 +57,11 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.logement.setText(occupations.get(position).getLogement().load().getReference());
-            viewHolder.habitant.setText(occupations.get(position).getHabitant().load().getNom() + " " + occupations.get(position).getHabitant().load().getPrenom());
-            viewHolder.delai.setText(String.valueOf(occupations.get(position).getLoyerBase()) + " F CFA \n" + sdf.format(occupations.get(position).getDateEntree()) + " - " + sdf.format(occupations.get(position).getDateSortie()));
+            viewHolder.libele.setText(occupations.get(position).getLogement().load().getReference());
+            viewHolder.libele1.setText(occupations.get(position).getHabitant().load().getNom() + " " + occupations.get(position).getHabitant().load().getPrenom());
+            viewHolder.tilte.setText(String.valueOf(occupations.get(position).getLoyerBase()) + " F CFA  ");
+            viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.titre1.setText(sdf.format(occupations.get(position).getDateEntree()) + " - " + sdf.format(occupations.get(position).getDateSortie()));
             viewHolder.id.setText(String.valueOf(occupations.get(position).getId()));
         } catch (Exception e) {
 
@@ -84,8 +88,13 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
             @Override
             public void onClick(View v) {
 
+                TextView id = (TextView) v.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof OccupationActivity) {
                     ((OccupationActivity) mContext).onItemClicked(position);
+                    Intent intent = new Intent(mContext, Aff_OccupationsActivity.class);
+                    intent.putExtra("id", idSelect);
+                    mContext.startActivity(intent);
                 }
             }
         });
@@ -290,9 +299,9 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
         notifyItemRemoved(index);
     }
 
-    public void actualiser(List<Occupation> typePenalites) {
+    public void actualiser(List<Occupation> occupations) {
         this.occupations.clear();
-        this.occupations.addAll(typePenalites);
+        this.occupations.addAll(occupations);
         notifyDataSetChanged();
     }
 
@@ -382,20 +391,24 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView logement;
-        TextView delai;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView habitant;
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView titre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            logement = (TextView) itemView.findViewById(R.id.titre);
-            habitant = (TextView) itemView.findViewById(R.id.libelle);
-            delai = (TextView) itemView.findViewById(R.id.desc);
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            titre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

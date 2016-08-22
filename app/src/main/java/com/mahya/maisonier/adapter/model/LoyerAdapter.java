@@ -44,7 +44,7 @@ public class LoyerAdapter extends RecyclerSwipeAdapter<LoyerAdapter.SimpleViewHo
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
@@ -54,9 +54,13 @@ public class LoyerAdapter extends RecyclerSwipeAdapter<LoyerAdapter.SimpleViewHo
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.habitant.setText(loyers.get(position).getOccupation().load().getHabitant().load().getNom());
-            viewHolder.logement.setText(loyers.get(position).getOccupation().load().getLogement().load().getDescription());
-            viewHolder.anneeMois.setText(loyers.get(position).getMois().load().getMois() + " " + String.valueOf(loyers.get(position).getMois().load().getAnnee().load().getAnnee()));
+            viewHolder.libele.setText(loyers.get(position).getOccupation().load().getHabitant().load().getNom());
+            viewHolder.libele1.setText(loyers.get(position).getObservation());
+            viewHolder.libele1.setTextColor((viewHolder.libele1.getText().equals("Complet") ? mContext.getResources().getColor(R.color.green) : mContext.getResources().getColor(R.color.red)));
+            viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.tilte.setText(String.valueOf(loyers.get(position).getMontantPayer() + " F CFA"));
+            viewHolder.desc.setText(loyers.get(position).getOccupation().load().getLogement().load().getDescription());
+            viewHolder.titre1.setText(loyers.get(position).getMois().load().getMois() + " " + String.valueOf(loyers.get(position).getMois().load().getAnnee().load().getAnnee()));
             viewHolder.id.setText(String.valueOf(loyers.get(position).getId()));
         } catch (Exception e) {
 
@@ -384,20 +388,24 @@ public class LoyerAdapter extends RecyclerSwipeAdapter<LoyerAdapter.SimpleViewHo
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView habitant;
-        TextView anneeMois;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView logement;
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView titre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            habitant = (TextView) itemView.findViewById(R.id.titre);
-            logement = (TextView) itemView.findViewById(R.id.libelle);
-            anneeMois = (TextView) itemView.findViewById(R.id.desc);
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            titre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
@@ -405,6 +413,7 @@ public class LoyerAdapter extends RecyclerSwipeAdapter<LoyerAdapter.SimpleViewHo
             detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;
+
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

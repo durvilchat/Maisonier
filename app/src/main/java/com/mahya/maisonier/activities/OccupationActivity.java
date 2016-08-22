@@ -1,6 +1,7 @@
 package com.mahya.maisonier.activities;
 
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,8 +9,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -25,65 +28,71 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.add.Add_OccupationActivity;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.OccupationAdapter;
+import com.mahya.maisonier.entites.Habitant;
+import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.entites.Occupation;
+import com.mahya.maisonier.entites.Occupation_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OccupationActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
+
+import static com.mahya.maisonier.utils.Utils.currentDate;
+
+
+public class OccupationActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
     //keep track of camera capture intent
     static final int CAMERA_CAPTURE = 1;
-    private static final int GRID_SPAN = 3;
     private static final String TAG = OccupationActivity.class.getSimpleName();
     //keep track of cropping intent
     final int PIC_CROP = 3;
     //keep track of gallery intent
     final int PICK_IMAGE_REQUEST = 2;
     protected RecyclerView mRecyclerView;
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     OccupationAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     ImageView photo;
     DatePicker datePicker;
     Button changeDate;
     Bitmap thePic = null;
+    Habitant h = null;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
     private boolean loading = false;
     private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Occupation.getInitData(initItem));
-            loading = false;
-        }
-    };
-    //captured picture uri
     private Uri picUri;
     private int month;
 
@@ -98,26 +107,37 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
 
-        Occupation.occupations.clear();
-        Occupation.occupations = Occupation.findAll();
-        System.out.println(Occupation.findAll());
-
-        totalPages = Occupation.occupations.size() / initItem;
-        if (totalPages < 0) {
-            if (initItem < 50) {
-                initItem = Occupation.occupations.size();
-            }
-            totalPages = 1;
-        }
-        setTitle(context.getString(R.string.Enregistrement));
+        setTitle(context.getString(R.string.Occupations));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new OccupationAdapter(this, (ArrayList<Occupation>) Occupation.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
+
     }
 
     private void initView() {
@@ -126,7 +146,7 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -152,9 +172,219 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
 
     @Override
     public void ajouter(final View view) {
-        startActivity(new Intent(this, Add_OccupationActivity.class));
+
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.add_occupation);
+        // Initialisation du formulaire
+        final Spinner habitant = (Spinner) dialog.findViewById(R.id.habitant);
+        final Spinner logement = (Spinner) dialog.findViewById(R.id.logement);
+        final EditText desc = (EditText) dialog.findViewById(R.id.desc);
+        final EditText loyerBase = (EditText) dialog.findViewById(R.id.loyerBase);
+        final EditText dateEntree = (EditText) dialog.findViewById(R.id.dateEntree);
+        Button dateSelectEntree = (Button) dialog.findViewById(R.id.dateSelectEntree);
+        final EditText dateSortie = (EditText) dialog.findViewById(R.id.DateSortie);
+        Button dateSelectsort = (Button) dialog.findViewById(R.id.dateSelectsort);
+
+
+        dateSelectEntree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                dateEntree.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateEntree.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateEntree.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+
+
+            }
+        });
+        dateSelectsort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                dateSortie.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateSortie.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateSortie.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+            }
+        });
+        CheckBox paieEaucheckBox = (CheckBox) dialog.findViewById(R.id.paieEaucheckBox);
+        final EditText indexEau = (EditText) dialog.findViewById(R.id.indexEau);
+        paieEaucheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexEau.setEnabled(b);
+            }
+        });
+        final CheckBox paieElectcheckBox = (CheckBox) dialog.findViewById(R.id.paieElectcheckBox);
+
+        final EditText indexElect = (EditText) dialog.findViewById(R.id.indexElect);
+        paieElectcheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexElect.setEnabled(b);
+            }
+        });
+        final CheckBox paieCablecheckBox = (CheckBox) dialog.findViewById(R.id.paieCablecheckBox);
+
+        final EditText indexCable = (EditText) dialog.findViewById(R.id.indexCable);
+        paieCablecheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexCable.setEnabled(b);
+            }
+        });
+        final ImageView imgBailleur = (ImageView) dialog.findViewById(R.id.imgBailleur);
+        final TextView Nom = (TextView) dialog.findViewById(R.id.Nom);
+        final TextView Prenom = (TextView) dialog.findViewById(R.id.Prenom);
+        final TextView Titre = (TextView) dialog.findViewById(R.id.Titre);
+        indexCable.setEnabled(false);
+        indexEau.setEnabled(false);
+        indexElect.setEnabled(false);
+        indexCable.setText("0");
+        indexElect.setText("0");
+        indexEau.setText("0");
+        final RadioGroup modereglement = (RadioGroup) dialog.findViewById(R.id.modereglement);
+        final Button valider = (Button) dialog.findViewById(R.id.valider);
+        final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+        final HintSpinner logementHint = new HintSpinner<>(
+                logement,
+                new HintAdapter<Logement>(context, "Logement ", Logement.findAll()),
+                new HintSpinner.Callback<Logement>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Logement itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
+        final HintSpinner habitantHint = new HintSpinner<>(
+                habitant,
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+                        h = itemAtPosition;
+                        Nom.setText(h.getNom());
+                        Prenom.setText(h.getPrenom());
+                        Titre.setText(h.getTitre());
+                        if (h.getPhoto() != null) {
+
+                            imgBailleur.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + h.getPhoto()));
+                        }
+                    }
+                });
+        habitantHint.init();
+        // Click cancel to dismiss android custom dialog box
+        final EditText finalDateSortie = dateSortie;
+        valider.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                int selectedId = modereglement.getCheckedRadioButtonId();
+                RadioButton moderegre = (RadioButton) dialog.findViewById(selectedId);
+
+                if (h == null) {
+                    Toast.makeText(context, "Verifier selectionner un habitant", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (loyerBase.getText().toString().trim().isEmpty() || Integer.parseInt(loyerBase.getText().toString().trim()) < 1) {
+                    loyerBase.setError("Verifier la valeur du loyer de base");
+                    return;
+                }
+                if (dateEntree.getText().toString().trim().isEmpty() || finalDateSortie.getText().toString().isEmpty()) {
+                    dateEntree.setError("Verifier les dates entrées");
+                    finalDateSortie.setError("Verifier les dates entrées");
+                    return;
+                }
+
+                Occupation occupation = new Occupation();
+                occupation.assoLogement((Logement) logement.getSelectedItem());
+                occupation.assoHabitant(h);
+                occupation.setModePaiement(moderegre.getText().toString());
+                occupation.setLoyerBase(Double.parseDouble(loyerBase.getText().toString().trim()));
+                occupation.setForfaitEau(paieElectcheckBox.isChecked());
+                occupation.setForfaitElectricte(paieElectcheckBox.isChecked());
+                occupation.setPaieCable(paieCablecheckBox.isChecked());
+                occupation.setDescription(desc.getText().toString().trim());
+                try {
+                    occupation.setDateEntree(sdf.parse(dateEntree.getText().toString()));
+                    occupation.setDateSortie(sdf.parse(finalDateSortie.getText().toString()));
+                } catch (ParseException e) {
+                    Toast.makeText(context, "Verifier la date d'entrée et la date de sortie", Toast.LENGTH_SHORT).show();
+                }
+                try {
+
+                    occupation.save();
+                    Snackbar.make(view, "l'occupation a été correctement crée", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, occupation);
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, occupation);
+                }
+
+                dialog.dismiss();
+            }
+        });
+
+        // Your android custom dialog ok action
+        // Action for custom dialog ok button click
+        annuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -164,12 +394,6 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
         // Delete.tables(Occupation.class);
     }
 
-    public String currentDate() {
-        StringBuilder mcurrentDate = new StringBuilder();
-        month = datePicker.getMonth() + 1;
-        mcurrentDate.append(datePicker.getDayOfMonth() + "/" + month + "/" + datePicker.getYear());
-        return mcurrentDate.toString();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -194,9 +418,9 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            Occupation cite = new Occupation();
-                            cite.setId(id);
-                            cite.delete();
+                            Occupation occupation = new Occupation();
+                            occupation.setId(id);
+                            occupation.delete();
 
                         } catch (Exception e) {
 
@@ -254,58 +478,231 @@ public class OccupationActivity extends BaseActivity implements Paginate.Callbac
 
     @Override
     public void modifier(final int id) {
-
-    }
-
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-
-        handler.removeCallbacks(fakeCallback);
-        mAdapter = new OccupationAdapter(this, (ArrayList<Occupation>) Occupation.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new OccupationAdapter(this, Occupation.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
+        final Occupation occupation = SQLite.select().from(Occupation.class).where(Occupation_Table.id.eq(id)).querySingle();
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.add_occupation);
+        // Initialisation du formulaire
+        final Spinner habitant = (Spinner) dialog.findViewById(R.id.habitant);
+        final Spinner logement = (Spinner) dialog.findViewById(R.id.logement);
+        final EditText desc = (EditText) dialog.findViewById(R.id.desc);
+        final EditText loyerBase = (EditText) dialog.findViewById(R.id.loyerBase);
+        final EditText dateEntree = (EditText) dialog.findViewById(R.id.dateEntree);
+        Button dateSelectEntree = (Button) dialog.findViewById(R.id.dateSelectEntree);
+        final EditText dateSortie = (EditText) dialog.findViewById(R.id.DateSortie);
+        Button dateSelectsort = (Button) dialog.findViewById(R.id.dateSelectsort);
 
 
-        ((OccupationAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
+        dateSelectEntree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                dateEntree.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
+                    public void onClick(View view) {
+                        dateEntree.setText(currentDate(datePicker));
                     }
-                })
-                .build();
+                });
+                dialog1.show();
 
-        paginate.setHasMoreDataToLoad(true);
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateEntree.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+
+
+            }
+        });
+        dateSelectsort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                dateSortie.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateEntree.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateSortie.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+            }
+        });
+        CheckBox paieEaucheckBox = (CheckBox) dialog.findViewById(R.id.paieEaucheckBox);
+        final EditText indexEau = (EditText) dialog.findViewById(R.id.indexEau);
+        paieEaucheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexEau.setEnabled(b);
+            }
+        });
+        final CheckBox paieElectcheckBox = (CheckBox) dialog.findViewById(R.id.paieElectcheckBox);
+
+        final EditText indexElect = (EditText) dialog.findViewById(R.id.indexElect);
+        paieElectcheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexElect.setEnabled(b);
+            }
+        });
+        final CheckBox paieCablecheckBox = (CheckBox) dialog.findViewById(R.id.paieCablecheckBox);
+
+        final EditText indexCable = (EditText) dialog.findViewById(R.id.indexCable);
+        paieCablecheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                indexCable.setEnabled(b);
+            }
+        });
+        final ImageView imgBailleur = (ImageView) dialog.findViewById(R.id.imgBailleur);
+        final TextView Nom = (TextView) dialog.findViewById(R.id.Nom);
+        final TextView Prenom = (TextView) dialog.findViewById(R.id.Prenom);
+        final TextView Titre = (TextView) dialog.findViewById(R.id.Titre);
+        indexCable.setEnabled(false);
+        indexEau.setEnabled(false);
+        indexElect.setEnabled(false);
+        indexCable.setText("0");
+        indexElect.setText("0");
+        indexEau.setText("0");
+
+        loyerBase.setText(String.valueOf(occupation.getLoyerBase()));
+        dateEntree.setText(sdf.format(occupation.getDateEntree()));
+        dateSortie.setText(sdf.format(occupation.getDateSortie()));
+        paieCablecheckBox.setChecked(occupation.isPaieCable());
+        paieElectcheckBox.setChecked(occupation.isPaieEau());
+        paieEaucheckBox.setChecked(occupation.isPaieEau());
+
+        final RadioGroup modereglement = (RadioGroup) dialog.findViewById(R.id.modereglement);
+        final Button valider = (Button) dialog.findViewById(R.id.valider);
+        final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+        final HintSpinner logementHint = new HintSpinner<>(
+                logement,
+                new HintAdapter<Logement>(context, "Logement ", Logement.findAll()),
+                new HintSpinner.Callback<Logement>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Logement itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
+        final HintSpinner habitantHint = new HintSpinner<>(
+                habitant,
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+                        h = itemAtPosition;
+                        Nom.setText(h.getNom());
+                        Prenom.setText(h.getPrenom());
+                        Titre.setText(h.getTitre());
+                        if (h.getPhoto() != null) {
+
+                            imgBailleur.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + h.getPhoto()));
+                        }
+                    }
+                });
+        habitantHint.init();
+        // Click cancel to dismiss android custom dialog box
+        final EditText finalDateSortie = dateSortie;
+        valider.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                int selectedId = modereglement.getCheckedRadioButtonId();
+                RadioButton moderegre = (RadioButton) dialog.findViewById(selectedId);
+
+                if (h == null) {
+                    Toast.makeText(context, "Verifier selectionner un habitant", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (((Logement) logement.getSelectedItem()) == null) {
+                    Toast.makeText(context, "Verifier selectionner un logement", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (loyerBase.getText().toString().trim().isEmpty() || Integer.parseInt(loyerBase.getText().toString().trim()) < 1) {
+                    loyerBase.setError("Verifier la valeur du loyer de base");
+                    return;
+                }
+                if (dateEntree.getText().toString().trim().isEmpty() || finalDateSortie.getText().toString().isEmpty()) {
+                    dateEntree.setError("Verifier les dates entrées");
+                    finalDateSortie.setError("Verifier les dates entrées");
+                    return;
+                }
+
+                Occupation occupation = new Occupation();
+                occupation.setId(id);
+                occupation.assoLogement((Logement) logement.getSelectedItem());
+                occupation.assoHabitant(h);
+                occupation.setModePaiement(moderegre.getText().toString());
+                occupation.setLoyerBase(Double.parseDouble(loyerBase.getText().toString().trim()));
+                occupation.setForfaitEau(paieElectcheckBox.isChecked());
+                occupation.setForfaitElectricte(paieElectcheckBox.isChecked());
+                occupation.setPaieCable(paieCablecheckBox.isChecked());
+                occupation.setDescription(desc.getText().toString().trim());
+                try {
+                    occupation.setDateEntree(sdf.parse(dateEntree.getText().toString()));
+                    occupation.setDateSortie(sdf.parse(finalDateSortie.getText().toString()));
+                } catch (ParseException e) {
+                    Toast.makeText(context, "Verifier la date d'entrée et la date de sortie", Toast.LENGTH_SHORT).show();
+                }
+                try {
+
+                    occupation.save();
+                    Snackbar.make(v, "l'occupation a été correctement modifié", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.actualiser(Occupation.findAll());
+                } catch (Exception e) {
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                }
+
+                dialog.dismiss();
+            }
+        });
+
+        // Your android custom dialog ok action
+        // Action for custom dialog ok button click
+        annuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
 
     @Override
     public void onBackPressed() {

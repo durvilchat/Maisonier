@@ -6,7 +6,6 @@
 package com.mahya.maisonier.entites;
 
 import android.support.annotation.Size;
-import android.widget.ArrayAdapter;
 
 import com.mahya.maisonier.dataBase.Maisonier;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -24,6 +23,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
 public class Penalite extends BaseModel {
 
 
-    public static ArrayAdapter penalites;
+    public static List<Penalite> penalites = new ArrayList<>();
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;

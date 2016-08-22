@@ -180,6 +180,11 @@ public class Add_OccupationActivity extends AppCompatActivity implements View.On
                 loyerBase.setError("Verifier la valeur du loyer de base");
                 return;
             }
+            if (dateEntree.getText().toString().trim().isEmpty() || DateSortie.getText().toString().isEmpty()) {
+                dateEntree.setError("Verifier les dates entrées");
+                DateSortie.setError("Verifier les dates entrées");
+                return;
+            }
 
             Occupation occupation = new Occupation();
             occupation.assoLogement(mlogement);

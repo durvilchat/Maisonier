@@ -1,10 +1,12 @@
 package com.mahya.maisonier.activities;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -28,28 +31,28 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.HabitantAdapter;
+import com.mahya.maisonier.entites.Caracteristique;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Habitant_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -62,12 +65,12 @@ import java.util.List;
 
 import static com.mahya.maisonier.utils.Utils.saveToInternalStorage;
 
-public class HabitantActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class HabitantActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
     //keep track of camera capture intent
     static final int CAMERA_CAPTURE = 1;
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = HabitantActivity.class.getSimpleName();
     //keep track of cropping intent
     final int PIC_CROP = 3;
@@ -76,29 +79,15 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
     protected RecyclerView mRecyclerView;
     HabitantAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     ImageView photo;
     DatePicker datePicker;
-    Button changeDate;
     Bitmap thePic = null;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Habitant.getInitData(initItem));
-            loading = false;
-        }
-    };
-    //captured picture uri
     private Uri picUri;
     private int month;
 
@@ -113,16 +102,7 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
 
-        Habitant.habitants.clear();
-        Habitant.habitants = Habitant.findAll();
 
-        totalPages = Habitant.habitants.size() / initItem;
-        if (totalPages < 0) {
-            if (initItem < 50) {
-                initItem = Habitant.habitants.size();
-            }
-            totalPages = 1;
-        }
         setTitle(context.getString(R.string.Enregistrement));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -130,8 +110,29 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new HabitantAdapter(this, (ArrayList<Habitant>) Habitant.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -140,7 +141,7 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -155,6 +156,37 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
         }
 
     }
+
+    public void call(List<String> contact) {
+        ArrayAdapter<String> stringArrayAdapter;
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.call);
+        final ListView listView = (ListView) dialog.findViewById(R.id.call);
+        stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, contact);
+        listView.setAdapter(stringArrayAdapter);
+        dialog.show();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + listView.getItemAtPosition(i).toString()));//change the number
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                startActivity(callIntent);
+            }
+        });
+
+
+    }
+
 
     public void add(final View view) {
         switch (view.getId()) {
@@ -258,7 +290,14 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
                 Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 mAdapter.addItem(0, bailleur);
+                if (new Caracteristique().findAll().isEmpty()) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    tvEmptyView.setVisibility(View.VISIBLE);
 
+                } else {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    tvEmptyView.setVisibility(View.GONE);
+                }
                 dialog.dismiss();
             }
         });
@@ -494,56 +533,6 @@ public class HabitantActivity extends BaseActivity implements Paginate.Callbacks
             }
         });
         dialog.show();
-    }
-
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-
-        handler.removeCallbacks(fakeCallback);
-        mAdapter = new HabitantAdapter(this, (ArrayList<Habitant>) Habitant.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new HabitantAdapter(this, Habitant.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((HabitantAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
-                .build();
-
-        paginate.setHasMoreDataToLoad(true);
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
     }
 
     @Override

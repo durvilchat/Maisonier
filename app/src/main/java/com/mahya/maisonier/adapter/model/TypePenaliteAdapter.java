@@ -53,6 +53,7 @@ public class TypePenaliteAdapter extends RecyclerSwipeAdapter<TypePenaliteAdapte
         try {
             viewHolder.libelle.setText(typePenalites.get(position).getLibelle());
             viewHolder.tilte.setText(String.valueOf(typePenalites.get(position).getDelai()));
+            viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.red));
             viewHolder.delai.setText(String.valueOf(typePenalites.get(position).getTaux() + "%"));
             viewHolder.id.setText(String.valueOf(typePenalites.get(position).getId()));
         } catch (Exception e) {

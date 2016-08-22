@@ -13,10 +13,12 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.CiteActivity;
-import com.mahya.maisonier.entites.Cite;
+import com.mahya.maisonier.activities.CompteActivity;
+import com.mahya.maisonier.entites.Compte;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,21 +31,20 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
     Context mContext;
     int idSelect;
     int selectposition;
-    private List<Cite> cites;
-    private View vue;
+    private List<Compte> comptes;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
-    public CompteAdapter(Context context, List<Cite> cites, OnItemClickListener clickListener) {
+    public CompteAdapter(Context context, List<Compte> comptes, OnItemClickListener clickListener) {
         this.mContext = context;
-        this.cites = cites;
+        this.comptes = comptes;
         this.clickListener = clickListener;
         selectedItems = new SparseBooleanArray();
     }
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
@@ -51,13 +52,15 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
 
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
-
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            viewHolder.nom.setText(cites.get(position).getNomCite());
-            viewHolder.email.setText(cites.get(position).getEmail());
-            viewHolder.desc.setText(cites.get(position).getNomCite());
-            viewHolder.tel.setText(cites.get(position).getTels());
-            viewHolder.id.setText(String.valueOf(cites.get(position).getId()));
+            viewHolder.libele.setText(comptes.get(position).getOccupation().load().getHabitant().load().getNom() + " " + comptes.get(position).getOccupation().load().getHabitant().load().getPrenom());
+            viewHolder.libele1.setText(comptes.get(position).getTypeCompte().load().getLibelle());
+            viewHolder.titre1.setText(String.valueOf(comptes.get(position).getSolde() + " F CFA"));
+            viewHolder.desc.setVisibility(View.GONE);
+            viewHolder.titre1.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.tilte.setText(sdf.format(comptes.get(position).getDateoperaion()));
+            viewHolder.id.setText(String.valueOf(comptes.get(position).getId()));
         } catch (Exception e) {
 
             return;
@@ -83,8 +86,8 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof CiteActivity) {
-                    ((CiteActivity) mContext).onItemClicked(position);
+                if (mContext instanceof CompteActivity) {
+                    ((CompteActivity) mContext).onItemClicked(position);
                 }
             }
         });
@@ -93,7 +96,7 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
             @Override
             public boolean onLongClick(View view) {
 
-                ((CiteActivity) mContext).onItemLongClicked(position);
+                ((CompteActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -142,7 +145,7 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
             @Override
             public void onClick(View view) {
 
-                ((CiteActivity) mContext).detail(idSelect);
+                ((CompteActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -151,7 +154,7 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).modifier(idSelect);
+                ((CompteActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -162,7 +165,7 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).supprimer(idSelect);
+                ((CompteActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -174,34 +177,34 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
 
     }
 
-    public void animateTo(List<Cite> cites) {
+    public void animateTo(List<Compte> cites) {
         applyAndAnimateRemovals(cites);
         applyAndAnimateAdditions(cites);
         applyAndAnimateMovedItems(cites);
     }
 
-    private void applyAndAnimateRemovals(List<Cite> cites) {
-        for (int i = this.cites.size() - 1; i >= 0; i--) {
-            final Cite model = this.cites.get(i);
+    private void applyAndAnimateRemovals(List<Compte> cites) {
+        for (int i = this.comptes.size() - 1; i >= 0; i--) {
+            final Compte model = this.comptes.get(i);
             if (!cites.contains(model)) {
                 deleteItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Cite> cites) {
+    private void applyAndAnimateAdditions(List<Compte> cites) {
         for (int i = 0, count = cites.size(); i < count; i++) {
-            final Cite Cite = cites.get(i);
-            if (!this.cites.contains(Cite)) {
-                addItem(i, Cite);
+            final Compte Compte = cites.get(i);
+            if (!this.comptes.contains(Compte)) {
+                addItem(i, Compte);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Cite> cites) {
+    private void applyAndAnimateMovedItems(List<Compte> cites) {
         for (int toPosition = cites.size() - 1; toPosition >= 0; toPosition--) {
-            final Cite model = cites.get(toPosition);
-            final int fromPosition = this.cites.indexOf(model);
+            final Compte model = cites.get(toPosition);
+            final int fromPosition = this.comptes.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
@@ -209,8 +212,8 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
     }
 
 
-    public void addItem(int position, Cite model) {
-        cites.add(position, model);
+    public void addItem(int position, Compte model) {
+        comptes.add(position, model);
         notifyItemInserted(position);
     }
 
@@ -250,22 +253,22 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
 
     private void removeRange(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; ++i) {
-            cites.remove(positionStart);
+            comptes.remove(positionStart);
         }
         notifyItemRangeRemoved(positionStart, itemCount);
     }
 
     @Override
     public int getItemViewType(int position) {
-        final Cite item = cites.get(position);
+        final Compte item = comptes.get(position);
 
         return 0;
     }
 
 
-    public void add(List<Cite> items) {
-        int previousDataSize = this.cites.size();
-        this.cites.addAll(items);
+    public void add(List<Compte> items) {
+        int previousDataSize = this.comptes.size();
+        this.comptes.addAll(items);
         notifyItemRangeInserted(previousDataSize, items.size());
     }
 
@@ -277,21 +280,21 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
         return selectposition;
     }
 
-    public Cite getItem(int idx) {
-        return cites.get(idx);
+    public Compte getItem(int idx) {
+        return comptes.get(idx);
     }
 
-    public void addItem(Cite Cite, int index) {
-        cites.add(Cite);
+    public void addItem(Compte Compte, int index) {
+        comptes.add(Compte);
         notifyItemInserted(index);
     }
 
     public void deleteItem(int index) {
-        cites.remove(index);
+        comptes.remove(index);
         notifyItemRemoved(index);
     }
 
-    public void actualiser(List<Cite> cites) {
+    public void actualiser(List<Compte> cites) {
         cites.clear();
         cites.addAll(cites);
         notifyDataSetChanged();
@@ -299,8 +302,8 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
 
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Cite model = cites.remove(fromPosition);
-        cites.add(toPosition, model);
+        final Compte model = comptes.remove(fromPosition);
+        comptes.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -366,7 +369,7 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
 
     @Override
     public int getItemCount() {
-        return cites.size();
+        return comptes.size();
     }
 
     @Override
@@ -383,25 +386,24 @@ public class CompteAdapter extends RecyclerSwipeAdapter<CompteAdapter.SimpleView
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView nom;
-        TextView desc;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView tel;
-        TextView email;
-
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView titre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            nom = (TextView) itemView.findViewById(R.id.libelle);
-            desc = (TextView) itemView.findViewById(R.id.titre);
-            //   tel = (TextView) itemView.findViewById(R.id.titre);
-           /* num = (TextView) itemView.findViewById(R.id.contratBailleur);
-            num = (TextView) itemView.findViewById(R.id.contratBailleur);
-            num = (TextView) itemView.findViewById(R.id.contratBailleur);*/
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            titre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

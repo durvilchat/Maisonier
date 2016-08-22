@@ -7,7 +7,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mahya.maisonier.R;
@@ -43,7 +42,7 @@ public class Aff_ContratBailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             ContratBail contrat_de_bail = SQLite.select().from(ContratBail.class).where(ContratBail_Table.id.eq(id)).querySingle();
@@ -53,7 +52,7 @@ public class Aff_ContratBailActivity extends AppCompatActivity {
             Bailleur.setText(contrat_de_bail.getBailleur().load().getNom());
             Habitant.setText(contrat_de_bail.getOccupation().load().getHabitant().load().getNom());
             Logement.setText(contrat_de_bail.getOccupation().load().getHabitant().load().getNom());
-          //  Observations.setText(contrat_de_bail.getOccupation().load().);
+            //  Observations.setText(contrat_de_bail.getOccupation().load().);
         }
 
     }

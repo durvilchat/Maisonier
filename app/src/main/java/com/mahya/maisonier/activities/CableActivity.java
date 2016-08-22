@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +27,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.CableAdapter;
@@ -45,9 +43,7 @@ import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.entites.Mois;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -55,32 +51,23 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CableActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
+
+public class CableActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = CableActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     CableAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Cable.getInitData(initItem));
-            loading = false;
-        }
-    };
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -92,16 +79,6 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
-        Cable.cables.clear();
-        Cable.cables = Cable.findAll();
-        if (Cable.cables.size() < 50) {
-            initItem = Cable.cables.size();
-        }
-        totalPages = Cable.cables.size() / initItem;
-        if (totalPages < 0) {
-
-            totalPages = 1;
-        }
         setTitle(context.getString(R.string.Contratdebail));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -109,8 +86,29 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new CableAdapter(this, (ArrayList<Cable>) Cable.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -119,7 +117,7 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -161,8 +159,32 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         final EditText mDatePayement = (EditText) dialog.findViewById(R.id.DatePayement);
         final MaterialBetterSpinner mObservation = (MaterialBetterSpinner) dialog.findViewById(R.id.observation);
 
-        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
-        mLogement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        final HintSpinner habHint = new HintSpinner<>(
+                mHabitant,
+                new HintAdapter<Habitant>(this, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+
+                    }
+                });
+        habHint.init();
+        final HintSpinner logementHint = new HintSpinner<>(
+                mLogement,
+                new HintAdapter<Logement>(this, "Logement ", Logement.findAll()),
+                new HintSpinner.Callback<Logement>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Logement itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
         mMois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
         mAnnee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
 
@@ -351,8 +373,33 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         final EditText mDatePayement = (EditText) dialog.findViewById(R.id.DatePayement);
         final MaterialBetterSpinner mObservation = (MaterialBetterSpinner) dialog.findViewById(R.id.observation);
 
-        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
-        mLogement.setAdapter(new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll()));
+        final HintSpinner habHint = new HintSpinner<>(
+                mHabitant,
+                new HintAdapter<Habitant>(this, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+
+                    }
+                });
+        habHint.init();
+
+        final HintSpinner logementHint = new HintSpinner<>(
+                mLogement,
+                new HintAdapter<Logement>(this, "Logement ", Logement.findAll()),
+                new HintSpinner.Callback<Logement>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Logement itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
         mMois.setAdapter(new ArrayAdapter<Mois>(this, R.layout.spinner_item, Mois.findAll()));
         mAnnee.setAdapter(new ArrayAdapter<Annee>(this, R.layout.spinner_item, Annee.findAll()));
 
@@ -432,52 +479,6 @@ public class CableActivity extends BaseActivity implements Paginate.Callbacks, C
         dialog.show();
     }
 
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        //  mAdapter = new CableAdapter(this, (ArrayList<Cable>) Cable.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new CableAdapter(this, Cable.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((CableAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return 0;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
 
     @Override
     public void onBackPressed() {

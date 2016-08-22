@@ -46,29 +46,29 @@ public class Aff_OccupationsActivity extends AppCompatActivity {
 
         super.setContentView(R.layout.aff_occcupations);
 
+        initView();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Occupation occcupations = SQLite.select().from(Occupation.class).where(Occupation_Table.id.eq(id)).querySingle();
-            Habitant.setText(occcupations.getHabitant().load().getNom());
-            Logement.setText(occcupations.getLogement().load().getReference());
-            LoyerDeBase.setText(String.valueOf(occcupations.getLoyerBase()));
-            //Etat.setText(occcupations.getE);
-            ModeDePayement.setText(String.valueOf(occcupations.getModePaiement()));
-            PaieEau.setText((occcupations.isPaieEau())?"oui":"non");
-            PaieElectricite.setText((occcupations.isPaieElectricite())?"oui":"non");
-            PaieCable.setText((occcupations.isPaieCable())?"oui":"non");
-            DateEntree.setText(sdf.format(occcupations.getDateEntree()));
-            DateSortie.setText(sdf.format(occcupations.getDateSortie()));
-            Description.setText(occcupations.getDescription());
+            Occupation occupation = SQLite.select().from(Occupation.class).where(Occupation_Table.id.eq(id)).querySingle();
+            Habitant.setText(occupation.getHabitant().load().getNom());
+            Logement.setText(occupation.getLogement().load().getReference());
+            LoyerDeBase.setText(String.valueOf(occupation.getLoyerBase()));
+            // Etat.setText(occupation.getE);
+            ModeDePayement.setText(String.valueOf(occupation.getModePaiement()));
+            PaieEau.setText((occupation.isPaieEau()) ? "oui" : "non");
+            PaieElectricite.setText((occupation.isPaieElectricite()) ? "oui" : "non");
+            PaieCable.setText((occupation.isPaieCable()) ? "oui" : "non");
+            DateEntree.setText(sdf.format(occupation.getDateEntree()));
+            DateSortie.setText(sdf.format(occupation.getDateSortie()));
+            Description.setText(occupation.getDescription());
         }
-        initView();
 
     }
 

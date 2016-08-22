@@ -39,6 +39,7 @@ public class TypeDeChargeAdapter extends RecyclerSwipeAdapter<TypeDeChargeAdapte
         this.typeCharges = typeCharges;
         this.clickListener = clickListener;
         selectedItems = new SparseBooleanArray();
+
     }
 
     @Override
@@ -53,9 +54,10 @@ public class TypeDeChargeAdapter extends RecyclerSwipeAdapter<TypeDeChargeAdapte
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.tilte.setVisibility(View.GONE);
+            viewHolder.montant.setVisibility(View.GONE);
             viewHolder.libele.setText(typeCharges.get(position).getLibelle());
-            viewHolder.montant.setText(String.valueOf(typeCharges.get(position).getMontant()));
+            viewHolder.tilte.setText(String.valueOf(typeCharges.get(position).getMontant()) + " F CFA");
+            viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.red));
             viewHolder.id.setText(String.valueOf(typeCharges.get(position).getId()));
         } catch (Exception e) {
 

@@ -1,8 +1,6 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +19,8 @@ import com.mahya.maisonier.activities.CiteActivity;
 import com.mahya.maisonier.entites.Caution;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,7 +46,7 @@ public class CautionAdapter extends RecyclerSwipeAdapter<CautionAdapter.SimpleVi
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
@@ -58,9 +58,13 @@ public class CautionAdapter extends RecyclerSwipeAdapter<CautionAdapter.SimpleVi
 
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            viewHolder.montant.setText(String.valueOf(cautions.get(position).getMontant()));
-            viewHolder.logement.setText(cautions.get(position).getOccupation().load().getLogement().load().getDescription());
-            viewHolder.habitant.setText(sdf.format(cautions.get(position).getOccupation().load().getHabitant().load().getNom()));
+            viewHolder.prix.setText(String.valueOf(cautions.get(position).getMontant()) + " F CFA");
+            viewHolder.prix.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.tilte.setText(cautions.get(position).getStatut());
+            viewHolder.libele1.setText(sdf.format(cautions.get(position).getDateCaution()));
+            viewHolder.tilte.setTextColor((cautions.get(position).getStatut() == "Retenue") ? mContext.getResources().getColor(R.color.green) : mContext.getResources().getColor(R.color.red));
+            viewHolder.desc.setText(cautions.get(position).getOccupation().load().getLogement().load().getDescription());
+            viewHolder.libele.setText(cautions.get(position).getOccupation().load().getHabitant().load().getNom() + " " + cautions.get(position).getOccupation().load().getHabitant().load().getPrenom());
             viewHolder.id.setText(String.valueOf(cautions.get(position).getId()));
         } catch (Exception e) {
 
@@ -383,20 +387,24 @@ public class CautionAdapter extends RecyclerSwipeAdapter<CautionAdapter.SimpleVi
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView montant;
-        TextView logement;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView habitant;
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView prix;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            montant = (TextView) itemView.findViewById(R.id.titre);
-            habitant = (TextView) itemView.findViewById(R.id.libelle);
-            logement = (TextView) itemView.findViewById(R.id.desc);
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            prix = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

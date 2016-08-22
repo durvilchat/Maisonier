@@ -1,18 +1,24 @@
 package com.mahya.maisonier.activities.detail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Habitant_Table;
+import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.ImageShow;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -49,19 +55,19 @@ public class Aff_HabitantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         super.setContentView(R.layout.aff_habitant);
+        int id = getIntent().getIntExtra("id", 0);
         initView();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
 
         if (id != 0) {
-            Habitant habitant = SQLite.select().from(Habitant.class).where(Habitant_Table.id.eq(id)).querySingle();
+            final Habitant habitant = SQLite.select().from(Habitant.class).where(Habitant_Table.id.eq(id)).querySingle();
 
             if (habitant.getPhoto() != null) {
-
+                imgHabitant.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + habitant.getPhoto()));
 
             }
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -76,13 +82,23 @@ public class Aff_HabitantActivity extends AppCompatActivity {
             Tel2.setText(habitant.getTel2());
             Tel3.setText(habitant.getTel3());
             Tel4.setText(habitant.getTel4());
-            DateDeNaissance.setText(sdf.format(habitant.getDateNaissance()));
+            // DateDeNaissance.setText(sdf.format(habitant.getDateNaissance()));
             LieuDeNaissance.setText(habitant.getLieuNaissance());
             NomduPere.setText(habitant.getNomDuPere());
             NomdelaMere.setText(habitant.getNomDeLaMere());
             Profession.setText(habitant.getProfession());
 
 
+            imgHabitant.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Aff_HabitantActivity.this, ImageShow.class);
+                    intent.putExtra("title", habitant.getNom());
+                    intent.putExtra("image", habitant.getPhoto());
+
+                    startActivity(intent);
+                }
+            });
         }
 
 

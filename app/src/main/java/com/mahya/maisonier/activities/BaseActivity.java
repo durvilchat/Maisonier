@@ -1,41 +1,27 @@
 package com.mahya.maisonier.activities;
 
+import android.Manifest;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
-import com.mahya.maisonier.R;
+import java.io.File;
 
 public abstract class BaseActivity extends AppCompatActivity {
-
+    public static final String filepath = Environment.getExternalStorageDirectory().getPath();
+    private static final String FILE_FOLDER = "Maisonier";
+    public static File file;
     // Common options
-    protected int threshold = 6;
-    protected int totalPages;
-    protected int itemsPerPage = 8;
-    protected int initItem = 20;
-    protected long networkDelay = 2000;
-    protected boolean addLoadingRow = true;
-    protected boolean customLoadingListItem = false;
-    protected Orientation orientation = Orientation.VERTICAL;
+    public int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    public boolean isPDFFromHTML = false;
+    String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private int mPreviousVisibleItem;
 
-    protected abstract void setupPagination();
-
-
-
-    public enum Orientation {
-        VERTICAL,
-        HORIZONTAL
-    }
-
-
-    public static class VH extends RecyclerView.ViewHolder {
-        TextView tvLoading;
-
-        public VH(View itemView) {
-            super(itemView);
-            tvLoading = (TextView) itemView.findViewById(R.id.tv_loading_text);
+    public void getFile() {
+        file = new File(filepath, FILE_FOLDER);
+        if (!file.exists()) {
+            file.mkdirs();
         }
+
     }
 
 

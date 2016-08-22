@@ -42,7 +42,7 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
@@ -52,7 +52,9 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         try {
-            viewHolder.nomCite.setText(cites.get(position).getNomCite());
+            viewHolder.libele.setText(cites.get(position).getNomCite());
+            viewHolder.siege.setText(cites.get(position).getSiege());
+            viewHolder.tittre1.setText(cites.get(position).getTels());
             viewHolder.bailleur.setText(cites.get(position).getBailleur().load().getNom() + " " + cites.get(position).getBailleur().load().getPrenom());
             viewHolder.desc.setText(cites.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(cites.get(position).getId()));
@@ -377,20 +379,24 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView bailleur;
-        TextView desc;
+        TextView siege;
         TextView id;
         ImageButton detail;
-        TextView nomCite;
+        TextView libele;
+        TextView desc;
+        TextView bailleur;
+        TextView tittre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            bailleur = (TextView) itemView.findViewById(R.id.titre);
-            nomCite = (TextView) itemView.findViewById(R.id.libelle);
+            siege = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
             desc = (TextView) itemView.findViewById(R.id.desc);
+            bailleur = (TextView) itemView.findViewById(R.id.libelle1);
+            tittre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

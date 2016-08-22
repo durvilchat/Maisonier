@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,12 +26,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.CautionAdapter;
@@ -43,9 +41,7 @@ import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.entites.TypeCaution;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -60,33 +56,21 @@ import me.srodrigo.androidhintspinner.HintSpinner;
 
 import static com.mahya.maisonier.utils.Utils.currentDate;
 
-public class CautionActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class CautionActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = CautionActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     CautionAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Caution.getInitData(initItem));
-            loading = false;
-        }
-    };
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -107,8 +91,29 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new CautionAdapter(this, (ArrayList<Caution>) Caution.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -117,7 +122,7 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -130,6 +135,7 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
             mRecyclerView.setVisibility(View.VISIBLE);
             tvEmptyView.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -191,9 +197,9 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
             }
         });
 
-        final HintSpinner habHint = new HintSpinner<>(
+        final HintSpinner habitantHint = new HintSpinner<>(
                 mHabitant,
-                new HintAdapter<Habitant>(this, "Habitant ", Habitant.findAll()),
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
                 new HintSpinner.Callback<Habitant>() {
 
 
@@ -201,24 +207,24 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
                     public void onItemSelected(int position, Habitant itemAtPosition) {
 
 
+                        final HintSpinner typeHint = new HintSpinner<>(
+                                mLogement,
+                                new HintAdapter<Occupation>(context, "Logement ", itemAtPosition.getOccupationList()),
+                                new HintSpinner.Callback<Occupation>() {
+
+
+                                    @Override
+                                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                                    }
+                                });
+                        typeHint.init();
+
                     }
                 });
-        habHint.init();
-        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        habitantHint.init();
 
-        final HintSpinner logementHint = new HintSpinner<>(
-                mLogement,
-                new HintAdapter<Occupation>(this, "logement ", Occupation.findAll()),
-                new HintSpinner.Callback<Occupation>() {
-
-
-                    @Override
-                    public void onItemSelected(int position, Occupation itemAtPosition) {
-
-
-                    }
-                });
-        logementHint.init();
 
         final HintSpinner cautionHint = new HintSpinner<>(
                 mTypeDeCaution,
@@ -425,37 +431,9 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
         statuts.add("Retenue");
         mStatut.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item, statuts));
 
-        mDateSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                final Dialog dialog1 = new Dialog(context);
-                dialog1.setContentView(R.layout.dialog_date);
-                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
-                Button changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
-
-                mDateDeDepot.setText(currentDate(datePicker));
-                changeDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDateDeDepot.setText(currentDate(datePicker));
-                    }
-                });
-                dialog1.show();
-
-                changeDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDateDeDepot.setText(currentDate(datePicker));
-                        dialog1.dismiss();
-                    }
-                });
-            }
-        });
-
-        final HintSpinner habHint = new HintSpinner<>(
+        final HintSpinner habitantHint = new HintSpinner<>(
                 mHabitant,
-                new HintAdapter<Habitant>(this, "Habitant ", Habitant.findAll()),
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
                 new HintSpinner.Callback<Habitant>() {
 
 
@@ -463,24 +441,24 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
                     public void onItemSelected(int position, Habitant itemAtPosition) {
 
 
+                        final HintSpinner typeHint = new HintSpinner<>(
+                                mLogement,
+                                new HintAdapter<Occupation>(context, "Logement ", itemAtPosition.getOccupationList()),
+                                new HintSpinner.Callback<Occupation>() {
+
+
+                                    @Override
+                                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                                    }
+                                });
+                        typeHint.init();
+
                     }
                 });
-        habHint.init();
-        mHabitant.setAdapter(new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll()));
+        habitantHint.init();
 
-        final HintSpinner logementHint = new HintSpinner<>(
-                mLogement,
-                new HintAdapter<Occupation>(this, "logement ", Occupation.findAll()),
-                new HintSpinner.Callback<Occupation>() {
-
-
-                    @Override
-                    public void onItemSelected(int position, Occupation itemAtPosition) {
-
-
-                    }
-                });
-        logementHint.init();
 
         final HintSpinner cautionHint = new HintSpinner<>(
                 mTypeDeCaution,
@@ -571,52 +549,6 @@ public class CautionActivity extends BaseActivity implements Paginate.Callbacks,
         dialog.show();
     }
 
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        //  mAdapter = new TypeCautionAdapter(this, (ArrayList<Caution>) Caution.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new CautionAdapter(this, Caution.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((CautionAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return 0;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
 
     @Override
     public void onBackPressed() {

@@ -81,6 +81,9 @@
     <string name="ajouterContrat">Ajouter un contrat de bail</string>
     <string name="TypedeCaution">Type de caution</string>
     <string name="detail">Detail</string>
+    <string name="penalite">Pénalité</string>
+    <string name="parametrage">Paramétrage</string>
+    <string name="photo">Photo</string>
 
 
 </resources>

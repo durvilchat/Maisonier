@@ -5,454 +5,451 @@
     android:orientation="vertical">
 
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="513dp"
+        android:layout_marginBottom="20dp"
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="513dp"
-            android:layout_marginBottom="20dp"
-            android:columnCount="2"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/imgHabitant"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="0.47"
+            app:srcCompat="@drawable/avatar" />
 
 
-            <ImageView
-                android:id="@+id/imgHabitant"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="0.47"
-                app:srcCompat="@drawable/avatar" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Nom"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Nom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom" />
-
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/Nom"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Prénom"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Prenom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="prenom" />
+                    android:layout_height="wrap_content"
+                    android:text="Nom" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Prénom"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Numéro de CNI"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/NumeroCNI"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="NumeroCNI" />
+                <TextView
+                    android:id="@+id/Prenom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="prenom" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
 
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Numéro de CNI"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Genre"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Genre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Genre" />
+                <TextView
+                    android:id="@+id/NumeroCNI"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NumeroCNI" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Genre"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Titre"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Titre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Titre" />
+                <TextView
+                    android:id="@+id/Genre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Genre" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Titre"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Emails"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Email1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Titre1" />
-
-                    <TextView
-                        android:id="@+id/Email2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Titre2" />
+                <TextView
+                    android:id="@+id/Titre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titre" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Emails"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Téléphones"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/Email1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titre1" />
 
-                    <TextView
-                        android:id="@+id/Tel1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/Tel2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/Tel3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/Tel4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Titre" />
+                <TextView
+                    android:id="@+id/Email2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titre2" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Téléphones"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Date de Naissance"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/Tel1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/DateDeNaissance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Date de Naissance" />
+                <TextView
+                    android:id="@+id/Tel2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/Tel3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/Tel4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titre" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Date de Naissance"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Lieu de Naissance"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/LieuDeNaissance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Lieu de Naissance" />
+                <TextView
+                    android:id="@+id/DateDeNaissance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date de Naissance" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Lieu de Naissance"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom du Père"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/NomduPere"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom du Père" />
+                <TextView
+                    android:id="@+id/LieuDeNaissance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lieu de Naissance" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Nom du Père"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom de la Mère"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/NomdelaMere"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nom de la Mère" />
+                <TextView
+                    android:id="@+id/NomduPere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom du Père" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_margin_half"
-                android:layout_marginTop="@dimen/activity_margin_half"
-                android:paddingLeft="@dimen/activity_margin_half">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_margin_half"
-                    android:paddingLeft="@dimen/activity_margin_half"
-                    android:paddingTop="@dimen/activity_margin_half">
+                    android:layout_height="wrap_content"
+                    android:text="Nom de la Mère"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Profession"
-                        android:textSize="6pt"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/Profession"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Profession" />
+                <TextView
+                    android:id="@+id/NomdelaMere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom de la Mère" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_margin_half"
+                android:paddingLeft="@dimen/activity_margin_half"
+                android:paddingTop="@dimen/activity_margin_half">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Profession"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/Profession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Profession" />
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
 </ScrollView>

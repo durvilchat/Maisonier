@@ -277,6 +277,9 @@ public class Parametre extends BaseModel {
         this.consommationElectriciteList = consommationElectriciteList;
     }
 
+    public double gettVA() {
+        return tVA;
+    }
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "remiseList", isVariablePrivate = true)
     public List<Remise> getRemiseList() {

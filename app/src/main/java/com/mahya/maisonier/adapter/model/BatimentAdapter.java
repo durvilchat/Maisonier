@@ -1,6 +1,7 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -8,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BatimentActivity;
+import com.mahya.maisonier.activities.detail.Aff_BatimentActivity;
 import com.mahya.maisonier.entites.Batiment;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -30,7 +34,6 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     int idSelect;
     int selectposition;
     private List<Batiment> batiments;
-    private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
@@ -43,8 +46,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
-        vue = view;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bati, parent, false);
         return new SimpleViewHolder(view, clickListener);
     }
 
@@ -54,6 +56,9 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
 
         try {
             viewHolder.nom.setText(batiments.get(position).getCode());
+            viewHolder.code.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.citecode.setTextColor(mContext.getResources().getColor(R.color.red));
+            viewHolder.citecode.setText(batiments.get(position).getCite().load().getBailleur().load().getNom());
             viewHolder.code.setText(batiments.get(position).getNom());
             viewHolder.cite.setText(batiments.get(position).getCite().load().getNomCite() + " " + batiments.get(position).getCite().load().getSiege());
             viewHolder.id.setText(String.valueOf(batiments.get(position).getId()));
@@ -83,7 +88,14 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             public void onClick(View v) {
 
                 if (mContext instanceof BatimentActivity) {
-                    ((BatimentActivity) mContext).onItemClicked(position);
+                    TextView id = (TextView) v.findViewById(R.id.idItem);
+                    idSelect = Integer.parseInt(id.getText().toString());
+                    if (mContext instanceof BatimentActivity) {
+                        ((BatimentActivity) mContext).onItemClicked(position);
+                        Intent intent = new Intent(mContext, Aff_BatimentActivity.class);
+                        intent.putExtra("id", idSelect);
+                        mContext.startActivity(intent);
+                    }
                 }
             }
         });
@@ -165,6 +177,16 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
                 mItemManger.closeAllExcept(null);
 
             }
+        });
+
+        viewHolder.imgBat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(mContext, "bonjour", Toast.LENGTH_SHORT).show();
+            }
+
+
         });
 
 
@@ -379,6 +401,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     public static class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
         private static final String TAG = RecyclerView.ViewHolder.class.getSimpleName();
+        private final ImageView imgBat;
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
@@ -387,6 +410,8 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         TextView id;
         ImageButton detail;
         TextView cite;
+        TextView citecode;
+
         View selectedOverlay;
         OnItemClickListener listener;
 
@@ -395,7 +420,9 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             code = (TextView) itemView.findViewById(R.id.titre);
             nom = (TextView) itemView.findViewById(R.id.libelle);
-            cite = (TextView) itemView.findViewById(R.id.desc);
+            cite = (TextView) itemView.findViewById(R.id.libelle1);
+            imgBat = (ImageView) itemView.findViewById(R.id.imgbat);
+            citecode = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

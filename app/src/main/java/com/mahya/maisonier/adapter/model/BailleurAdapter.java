@@ -1,6 +1,7 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,13 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BailleurActivity;
+import com.mahya.maisonier.activities.detail.Aff_BailleurActivity;
 import com.mahya.maisonier.entites.Bailleur;
+import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.ImageShow;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,13 +68,28 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             if (bailleurs.get(position).getPhoto() != null) {
 
                 viewHolder.img.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + bailleurs.get(position).getPhoto()));
+            } else {
+                viewHolder.img.setImageResource(R.drawable.avatar);
+
             }
             viewHolder.nom.setText(bailleurs.get(position).getNom() + " " + bailleurs.get(position).getPrenom());
             viewHolder.prenom.setText(bailleurs.get(position).getTitre());
             viewHolder.tel.setText(bailleurs.get(position).getTel1());
             viewHolder.id.setText(String.valueOf(bailleurs.get(position).getId()));
 
-
+            viewHolder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mContext instanceof BailleurActivity) {
+                        ((BailleurActivity) mContext).onItemClicked(position);
+                        Intent intent = new Intent(mContext, ImageShow.class);
+                        intent.putExtra("image", bailleurs.get(position).getPhoto());
+                        if (bailleurs.get(position).getPhoto() == null)
+                            return;
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,12 +112,12 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                TextView id = (TextView) view.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof BailleurActivity) {
-                    ((BailleurActivity) mContext).onItemClicked(position);
-
-                    TextView id = (TextView) view.findViewById(R.id.idItem);
-                    idSelect = Integer.parseInt(id.getText().toString());
+                    Intent intent = new Intent(mContext, Aff_BailleurActivity.class);
+                    intent.putExtra("id", idSelect);
+                    mContext.startActivity(intent);
                 }
             }
         });
@@ -169,6 +189,25 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
                 mItemManger.closeAllExcept(null);
 
 
+            }
+        });
+        viewHolder.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> contqct = new ArrayList<String>();
+                Bailleur bailleur = SQLite.select().from(Bailleur.class).where(Bailleur_Table.id.eq(idSelect)).querySingle();
+                if (!bailleur.getTel1().isEmpty()) {
+                    contqct.add(bailleur.getTel1());
+                } else if (!bailleur.getTel2().isEmpty()) {
+                    contqct.add(bailleur.getTel2());
+                } else if (!bailleur.getTel3().isEmpty()) {
+                    contqct.add(bailleur.getTel3());
+                } else if (!bailleur.getTel4().isEmpty()) {
+                    contqct.add(bailleur.getTel4());
+                }
+
+                ((BailleurActivity) mContext).call(contqct);
+                mItemManger.closeAllExcept(null);
             }
         });
 
@@ -390,6 +429,7 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
     public static class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
         private static final String TAG = RecyclerView.ViewHolder.class.getSimpleName();
+        public ImageButton call;
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
@@ -413,6 +453,7 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
+            call = (ImageButton) itemView.findViewById(R.id.call);
             detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;

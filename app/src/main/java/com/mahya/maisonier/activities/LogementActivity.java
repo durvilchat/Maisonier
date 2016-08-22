@@ -3,6 +3,10 @@ package com.mahya.maisonier.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,11 +31,26 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.LogementAdapter;
@@ -41,47 +60,98 @@ import com.mahya.maisonier.entites.TypeLogement;
 import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
+import com.mahya.maisonier.utils.PermissionUtils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
 import static com.mahya.maisonier.utils.Utils.currentDate;
 
-public class LogementActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+public class LogementActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = LogementActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     Button changeDate;
     LogementAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Logement.getInitData(1));
-            loading = false;
+
+    private static void addContent(Document document) throws DocumentException {
+        Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+                Font.BOLD);
+        Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+                Font.BOLD);
+
+
+    }
+
+    private static void createTable(Section subCatPart)
+            throws BadElementException {
+        PdfPTable table = new PdfPTable(3);
+        // t.setBorderColor(BaseColor.GRAY);
+        // t.setPadding(4);
+        // t.setSpacing(4);
+        // t.setBorderWidth(1);
+
+        PdfPCell c1 = new PdfPCell(new Phrase("Reference"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Batiment"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Description"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        table.setHeaderRows(1);
+
+        for (Logement logement : Logement.findAll()) {
+            table.addCell(logement.getReference());
+            table.addCell(logement.getBatiment().load().getNom());
+            table.addCell(logement.getDescription());
         }
-    };
+
+
+        subCatPart.add(table);
+
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+
+    private static void createList(Section subCatPart) {
+        com.itextpdf.text.List list = new com.itextpdf.text.List(true, false, 10);
+        list.add(new ListItem("First point"));
+        list.add(new ListItem("Second point"));
+        list.add(new ListItem("Third point"));
+        subCatPart.add(list);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -93,8 +163,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
-        Logement.logements.clear();
-        Logement.logements = Logement.findAll();
         setTitle(context.getString(R.string.Logement));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -102,8 +170,29 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new LogementAdapter(this, (ArrayList<Logement>) Logement.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -112,7 +201,7 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -206,7 +295,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         typehint.init();
 
 
-
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
@@ -292,7 +380,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         dialog.show();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -306,6 +393,15 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
+            return true;
+        }
+        if (id == R.id.action_settings) {
+
+            if (Build.VERSION.SDK_INT >= 23)
+                if (!PermissionUtils.checkAndRequestPermission(LogementActivity.this, REQUEST_CODE_ASK_PERMISSIONS, "You need to grant access to Write Storage", permission[0]))
+
+                    isPDFFromHTML = false;
+            createPDF();
             return true;
         }
 
@@ -339,6 +435,254 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                 })
                 .setNegativeButton(android.R.string.no, null).show();
     }
+
+    private void createPDF() {
+
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        try {
+            getFile();
+            //Create time stamp
+            Date date = new Date();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date);
+            File myFile = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
+            myFile.createNewFile();
+
+            OutputStream output = new FileOutputStream(myFile);
+
+            Document doc = new Document();
+            PdfWriter writer = PdfWriter.getInstance(doc, output);
+            writer.setLinearPageMode();
+            writer.setFullCompression();
+            // document header attributes
+            doc.addAuthor(Constants.pdfAuteur);
+            doc.addCreationDate();
+            doc.addProducer();
+            doc.addCreator("DURVIL");
+            doc.addTitle("etat");
+            doc.setPageSize(PageSize.A4);
+            // left,right,top,bottom
+            doc.setMargins(36, 36, 36, 36);
+            doc.setMarginMirroring(true);
+            // open document
+            doc.open();
+
+            Font bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
+            Font bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+
+
+            //open document
+            doc.open();
+
+            //create a paragraph
+            Paragraph paragraph = new Paragraph("iText ® is a library that allows you to create and " +
+                    "manipulate PDF documents. It enables developers looking to enhance web and other " +
+                    "applications with dynamic PDF document generation and/or manipulation.");
+
+
+            //specify column widths
+            float[] columnWidths = {1.5f, 2f, 5f, 2f};
+            //create PDF table with the given widths
+            PdfPTable table = new PdfPTable(columnWidths);
+            // set table width a percentage of the page width
+            table.setWidthPercentage(90f);
+
+            //insert column headings
+            insertCell(table, "Order No", Element.ALIGN_RIGHT, 1, bfBold12);
+            insertCell(table, "Account No", Element.ALIGN_LEFT, 1, bfBold12);
+            insertCell(table, "Account Name", Element.ALIGN_LEFT, 1, bfBold12);
+            insertCell(table, "Order Total", Element.ALIGN_RIGHT, 1, bfBold12);
+            table.setHeaderRows(1);
+
+            //insert an empty row
+            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+            //create section heading by cell merging
+            insertCell(table, "New York Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+            double orderTotal, total = 0;
+
+            //just some random data to fill
+            for (int x = 1; x < 5; x++) {
+
+                insertCell(table, "10010" + x, Element.ALIGN_RIGHT, 1, bf12);
+                insertCell(table, "ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+                insertCell(table, "This is Customer Number ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+
+                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+                total = total + orderTotal;
+                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+
+            }
+            //merge the cells to create a footer for that section
+            insertCell(table, "New York Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+
+            //repeat the same as above to display another location
+            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+            insertCell(table, "California Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+            orderTotal = 0;
+
+            for (int x = 1; x < 7; x++) {
+
+                insertCell(table, "20020" + x, Element.ALIGN_RIGHT, 1, bf12);
+                insertCell(table, "XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+                insertCell(table, "This is Customer Number XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+
+                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+                total = total + orderTotal;
+                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+
+            }
+            insertCell(table, "California Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+
+            //add the PDF table to the paragraph
+            paragraph.add(table);
+            // add the paragraph to the document
+            doc.add(paragraph);
+
+            if (doc != null) {
+                //close the document
+                doc.close();
+            }
+            if (writer != null) {
+                //close the writer
+                writer.close();
+            }
+        } catch (DocumentException dex) {
+            dex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+
+        }
+    }
+
+    private void insertCell(PdfPTable table, String text, int align, int colspan, Font font) {
+
+        //create a new cell with the specified Text and Font
+        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+        //set the cell alignment
+        cell.setHorizontalAlignment(align);
+        //set the cell column span in case you want to merge two or more cells
+        cell.setColspan(colspan);
+        //in case there is no text and you wan to create an empty row
+        if (text.trim().equalsIgnoreCase("")) {
+            cell.setMinimumHeight(10f);
+        }
+        //add the call to the table
+        table.addCell(cell);
+
+    }
+
+    private void createPdf() {
+        try {
+            getFile();
+            //Create time stamp
+            Date date = new Date();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date);
+            File myFile = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
+            myFile.createNewFile();
+
+            OutputStream output = new FileOutputStream(myFile);
+
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, output);
+            writer.setLinearPageMode();
+            writer.setFullCompression();
+            // document header attributes
+            document.addAuthor(Constants.pdfAuteur);
+            document.addCreationDate();
+            document.addProducer();
+            document.addCreator("DURVIL");
+            document.addTitle("etat");
+            document.setPageSize(PageSize.A4);
+            // left,right,top,bottom
+            document.setMargins(36, 36, 36, 36);
+            document.setMarginMirroring(true);
+            // open document
+            document.open();
+
+            //Add content
+            if (!isPDFFromHTML) {
+
+
+                /* Inserting Image in PDF */
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                Bitmap bitmap = BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.ic_launcher);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                Image myImg = Image.getInstance(stream.toByteArray());
+                myImg.setAlignment(Image.MIDDLE);
+
+                //add image to document
+                document.add(myImg);
+
+                Chapter catPart = new Chapter(0);
+
+
+                // add a table
+                createTable(catPart);
+                //document.add(createTable(catPart))
+                addContent(document);
+
+
+                //set footer
+               /* Phrase footerText = new Phrase("This is an example of a footer");
+                HeaderFooter pdfFooter = new HeaderFooter(footerText, false);
+                document.(pdfFooter);*/
+            }
+
+            //Close the document
+            document.close();
+            viewPdf(myFile);
+
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+            Log.e("PDF--->", "exception", e);
+        }
+    }
+
+    private void emailNote(File myFile) {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_SUBJECT, "rostapig@gmail.com");
+        email.putExtra(Intent.EXTRA_TEXT, "rostapig@gmail.com");
+        Uri uri = Uri.parse(myFile.getAbsolutePath());
+        email.putExtra(Intent.EXTRA_STREAM, uri);
+        email.setType("message/rfc822");
+        startActivity(email);
+    }
+
+    private void viewPdf(File myFile) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(myFile), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+/*
+
+    private void promptForNextAction()
+    {
+        final String[] options = { getString(R.string.label_email), getString(R.string.label_preview),
+                getString(R.string.label_cancel) };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Note Saved, What Next?");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (options[which].equals(getString(R.string.label_email))){
+                    emailNote();
+                }else if (options[which].equals(getString(R.string.label_preview))){
+                    viewPdf();
+                }else if (options[which].equals(getString(R.string.label_cancel))){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        builder.show();
+
+    }*/
 
     private void toggleSelection(int position) {
         mAdapter.toggleSelection(position);
@@ -407,6 +751,9 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
         final EditText prixMin = (EditText) dialog.findViewById(R.id.PrixMin);
         final EditText priwMax = (EditText) dialog.findViewById(R.id.PrixMax);
         final EditText desc = (EditText) dialog.findViewById(R.id.Description);
+        ref.setText(logemen.getReference());
+        priwMax.setText(String.valueOf(logemen.getPrixMax()));
+        prixMin.setText(String.valueOf(logemen.getPrixMin()));
 
         final HintSpinner batimentHint = new HintSpinner<>(
                 batiment,
@@ -475,7 +822,7 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
                 try {
                     logement.save();
 
-                    Snackbar.make(v, "le logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "le logement a été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Logement.findAll());
                 } catch (Exception e) {
@@ -505,53 +852,6 @@ public class LogementActivity extends BaseActivity implements Paginate.Callbacks
             }
         });
         dialog.show();
-    }
-
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        mAdapter = new LogementAdapter(this, (ArrayList<Logement>) Logement.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new LogementAdapter(this, Logement.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((LogementAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
     }
 
     @Override

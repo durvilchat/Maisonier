@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         TypelogementActivity hello = new TypelogementActivity();
-        fragmentTransaction.add(R.id.content_main, hello, "HELLO");
+        //fragmentTransaction.replace(R.id.content_main, hello, "HELLO");
         fragmentTransaction.commit();
     }
 
@@ -174,5 +174,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLongClick(View view, int position) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

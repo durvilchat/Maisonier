@@ -44,8 +44,7 @@
         <include
             layout="@layout/btn_valider_annuler"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.28" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

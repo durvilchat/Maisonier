@@ -17,8 +17,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import static com.mahya.maisonier.R.string.Charges;
-
 /**
  * Created by LARUMEUR on 12/08/2016.
  */
@@ -53,8 +51,8 @@ public class Aff_ChargeActivity extends AppCompatActivity {
             Charge charge = SQLite.select().from(Charge.class).where(Charge_Table.id.eq(id)).querySingle();
 
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Habitant.setText(charge.getOccupation().load().getHabitant().load().getNom());
-            Mois.setText(charge.getMois().load().getMois());
+           /* Habitant.setText(charge.getOccupation().load().getHabitant().load().getNom());
+            Mois.setText(charge.getMois().load().getMois());*/
             Designation.setText(charge.getDesignation());
             Montant.setText(String.valueOf(charge.getMontant()));
             MontantPaye.setText(String.valueOf(charge.getMontantPayer()));
@@ -68,7 +66,7 @@ public class Aff_ChargeActivity extends AppCompatActivity {
 
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();

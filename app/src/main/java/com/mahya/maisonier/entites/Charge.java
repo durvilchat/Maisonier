@@ -148,18 +148,6 @@ public class Charge extends BaseModel {
 
     }
 
-    public ForeignKeyContainer<Mois> getMois() {
-        return mois;
-    }
-
-    public ForeignKeyContainer<TypeCharge> getTypeCharge() {
-        return typeCharge;
-    }
-
-    public ForeignKeyContainer<Occupation> getOccupation() {
-        return occupation;
-    }
-
     public void assoMois(Mois mois1) {
         mois = new ForeignKeyContainer<>(Mois.class);
         mois.setModel(mois1);

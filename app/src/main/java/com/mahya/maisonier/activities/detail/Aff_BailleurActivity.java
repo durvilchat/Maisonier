@@ -1,5 +1,6 @@
 package com.mahya.maisonier.activities.detail;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.mahya.maisonier.adapter.model.BailleurAdapter;
 import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.ImageShow;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -50,8 +53,6 @@ public class Aff_BailleurActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         super.setContentView(R.layout.aff_bailleur);
-
-        initView();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -61,17 +62,19 @@ public class Aff_BailleurActivity extends AppCompatActivity {
         int id = extras.getInt("idBailleur");
         System.out.println(id);
         if (id != BailleurAdapter.idSelect) {
-            Bailleur bailleur = SQLite.select().from(Bailleur.class).where(Bailleur_Table.id.eq(BailleurAdapter.idSelect)).querySingle();
+            final Bailleur bailleur = SQLite.select().from(Bailleur.class).where(Bailleur_Table.id.eq(BailleurAdapter.idSelect)).querySingle();
 
             if (bailleur.getPhoto() != null) {
 
                 imgBailleur.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + bailleur.getPhoto()));
+            } else {
+                imgBailleur.setImageResource(R.drawable.avatar);
             }
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Nom.setText(bailleur.getNom());
             Prenom.setText(bailleur.getPrenom());
             NumeroCNI.setText(bailleur.getNumeroCNI());
-            DateDelivranceCN.setText(sdf.format(bailleur.getDateDelivraisonCni()));
+            DateDelivranceCN.setText((bailleur.getDateDelivraisonCni() == null) ? "aucune" : sdf.format(bailleur.getDateDelivraisonCni()));
             LieuDelivranceCNI.setText(bailleur.getLieuDelivraisonCni());
             Genre.setText(bailleur.getGenre());
             Titre.setText(bailleur.getTitre());
@@ -81,6 +84,15 @@ public class Aff_BailleurActivity extends AppCompatActivity {
             Tel2.setText(bailleur.getTel2());
             Tel3.setText(bailleur.getTel3());
             Tel4.setText(bailleur.getTel4());
+            imgBailleur.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Aff_BailleurActivity.this, ImageShow.class);
+                    intent.putExtra("image", bailleur.getPhoto());
+
+                    startActivity(intent);
+                }
+            });
 
         }
 

@@ -1,6 +1,7 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,13 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.HabitantActivity;
+import com.mahya.maisonier.activities.detail.Aff_HabitantActivity;
 import com.mahya.maisonier.entites.Habitant;
+import com.mahya.maisonier.entites.Habitant_Table;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
+import com.mahya.maisonier.utils.ImageShow;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,14 +39,14 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
     Context mContext;
     int idSelect;
     int selectposition;
-    private List<Habitant> bailleurs;
+    private List<Habitant> habitants;
     private View vue;
     private SparseBooleanArray selectedItems;
     private OnItemClickListener clickListener;
 
     public HabitantAdapter(Context context, List<Habitant> habitants, OnItemClickListener clickListener) {
         this.mContext = context;
-        this.bailleurs = habitants;
+        this.habitants = habitants;
         this.clickListener = clickListener;
         selectedItems = new SparseBooleanArray();
     }
@@ -59,14 +64,27 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
 
         try {
 
-            if (bailleurs.get(position).getPhoto() != null) {
+            if (habitants.get(position).getPhoto() != null) {
 
-                viewHolder.img.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + bailleurs.get(position).getPhoto()));
+                viewHolder.img.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "" + habitants.get(position).getPhoto()));
             }
-            viewHolder.nom.setText(bailleurs.get(position).getNom() + " " + bailleurs.get(position).getPrenom());
-            viewHolder.prenom.setText(bailleurs.get(position).getTitre());
-            viewHolder.tel.setText(bailleurs.get(position).getTel1());
-            viewHolder.id.setText(String.valueOf(bailleurs.get(position).getId()));
+            viewHolder.nom.setText(habitants.get(position).getNom() + " " + habitants.get(position).getPrenom());
+            viewHolder.prenom.setText(habitants.get(position).getTitre());
+            viewHolder.tel.setText(habitants.get(position).getTel1());
+            viewHolder.id.setText(String.valueOf(habitants.get(position).getId()));
+            viewHolder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mContext instanceof HabitantActivity) {
+                        ((HabitantActivity) mContext).onItemClicked(position);
+                        Intent intent = new Intent(mContext, ImageShow.class);
+                        intent.putExtra("image", habitants.get(position).getPhoto());
+                        if (habitants.get(position).getPhoto() == null)
+                            return;
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
 
 
         } catch (Exception e) {
@@ -91,9 +109,12 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                TextView id = (TextView) v.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof HabitantActivity) {
-                    ((HabitantActivity) mContext).onItemClicked(position);
+                    Intent intent = new Intent(mContext, Aff_HabitantActivity.class);
+                    intent.putExtra("id", idSelect);
+                    mContext.startActivity(intent);
                 }
             }
         });
@@ -101,7 +122,8 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
         viewHolder.swipeLayout.getSurfaceView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
+                TextView id = (TextView) view.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 ((HabitantActivity) mContext).onItemLongClicked(position);
 
                 return true;
@@ -155,6 +177,25 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
                 mItemManger.closeAllExcept(null);
             }
         });
+        viewHolder.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> contqct = new ArrayList<String>();
+                Habitant habitant = SQLite.select().from(Habitant.class).where(Habitant_Table.id.eq(idSelect)).querySingle();
+                if (!habitant.getTel1().isEmpty()) {
+                    contqct.add(habitant.getTel1());
+                } else if (!habitant.getTel2().isEmpty()) {
+                    contqct.add(habitant.getTel2());
+                } else if (!habitant.getTel3().isEmpty()) {
+                    contqct.add(habitant.getTel3());
+                } else if (!habitant.getTel4().isEmpty()) {
+                    contqct.add(habitant.getTel4());
+                }
+
+                ((HabitantActivity) mContext).call(contqct);
+                mItemManger.closeAllExcept(null);
+            }
+        });
 
 
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
@@ -190,8 +231,8 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
     }
 
     private void applyAndAnimateRemovals(List<Habitant> typeLogements) {
-        for (int i = this.bailleurs.size() - 1; i >= 0; i--) {
-            final Habitant model = this.bailleurs.get(i);
+        for (int i = this.habitants.size() - 1; i >= 0; i--) {
+            final Habitant model = this.habitants.get(i);
             if (!typeLogements.contains(model)) {
                 deleteItem(i);
             }
@@ -201,7 +242,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
     private void applyAndAnimateAdditions(List<Habitant> typeLogements) {
         for (int i = 0, count = typeLogements.size(); i < count; i++) {
             final Habitant typeLogement = typeLogements.get(i);
-            if (!this.bailleurs.contains(typeLogement)) {
+            if (!this.habitants.contains(typeLogement)) {
                 addItem(i, typeLogement);
             }
         }
@@ -210,7 +251,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
     private void applyAndAnimateMovedItems(List<Habitant> typeLogements) {
         for (int toPosition = typeLogements.size() - 1; toPosition >= 0; toPosition--) {
             final Habitant model = typeLogements.get(toPosition);
-            final int fromPosition = this.bailleurs.indexOf(model);
+            final int fromPosition = this.habitants.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
@@ -219,7 +260,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
 
 
     public void addItem(int position, Habitant model) {
-        bailleurs.add(position, model);
+        habitants.add(position, model);
         notifyItemInserted(position);
     }
 
@@ -259,22 +300,22 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
 
     private void removeRange(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; ++i) {
-            bailleurs.remove(positionStart);
+            habitants.remove(positionStart);
         }
         notifyItemRangeRemoved(positionStart, itemCount);
     }
 
     @Override
     public int getItemViewType(int position) {
-        final Habitant item = bailleurs.get(position);
+        final Habitant item = habitants.get(position);
 
         return 0;
     }
 
 
     public void add(List<Habitant> items) {
-        int previousDataSize = this.bailleurs.size();
-        this.bailleurs.addAll(items);
+        int previousDataSize = this.habitants.size();
+        this.habitants.addAll(items);
         notifyItemRangeInserted(previousDataSize, items.size());
     }
 
@@ -287,25 +328,25 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
     }
 
     public Habitant getItem(int idx) {
-        return bailleurs.get(idx);
+        return habitants.get(idx);
     }
 
 
     public void deleteItem(int index) {
-        bailleurs.remove(index);
+        habitants.remove(index);
         notifyItemRemoved(index);
     }
 
     public void actualiser(List<Habitant> cites) {
-        this.bailleurs.clear();
-        this.bailleurs.addAll(cites);
+        this.habitants.clear();
+        this.habitants.addAll(cites);
         notifyDataSetChanged();
     }
 
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Habitant model = bailleurs.remove(fromPosition);
-        bailleurs.add(toPosition, model);
+        final Habitant model = habitants.remove(fromPosition);
+        habitants.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -371,7 +412,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
 
     @Override
     public int getItemCount() {
-        return bailleurs.size();
+        return habitants.size();
     }
 
     @Override
@@ -393,6 +434,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
         TextView id;
         CircleImageView img;
         ImageButton detail;
+        ImageButton call;
         TextView nom;
         View selectedOverlay;
         private OnItemClickListener listener;
@@ -408,6 +450,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
+            call = (ImageButton) itemView.findViewById(R.id.call);
             detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;

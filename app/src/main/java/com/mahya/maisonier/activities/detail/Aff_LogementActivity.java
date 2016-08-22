@@ -45,7 +45,7 @@ public class Aff_LogementActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             Logement logement = SQLite.select().from(Logement.class).where(Logement_Table.id.eq(id)).querySingle();
@@ -56,8 +56,8 @@ public class Aff_LogementActivity extends AppCompatActivity {
             PrixMin.setText(String.valueOf(logement.getPrixMin()));
             Type.setText(logement.getTypeLogement().load().getCode());
             Batiment.setText(logement.getBatiment().load().getCite().load().getNomCite());
-           // Etat.setText(logement.);
-           // PrixActuel.setText(String.valueOf(logement.getBatiment().load().));
+            // Etat.setText(logement.);
+            // PrixActuel.setText(String.valueOf(logement.getBatiment().load().));
         }
 
         initView();

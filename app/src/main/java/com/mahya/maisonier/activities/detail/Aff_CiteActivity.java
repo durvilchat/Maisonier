@@ -44,7 +44,7 @@ public class Aff_CiteActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             Cite cite = SQLite.select().from(Cite.class).where(Cite_Table.id.eq(id)).querySingle();

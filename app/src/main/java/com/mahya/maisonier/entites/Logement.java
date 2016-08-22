@@ -98,8 +98,13 @@ public class Logement extends BaseModel {
         this.prixMin = prixMin;
     }
 
+
     public static List<Logement> findAll() {
         return SQLite.select().from(Logement.class).queryList();
+    }
+
+    public static List<Logement> findLogementDispo() {
+        return SQLite.select().distinct().from(Logement.class).where(Logement_Table.id.notIn(SQLite.select(Occupation_Table.logement_id).from(Occupation.class))).queryList();
     }
 
     public static List<Logement> getInitData(int size) {
@@ -125,14 +130,6 @@ public class Logement extends BaseModel {
 
     public static List<Logement> getLogements() {
         return logements;
-    }
-
-    public ForeignKeyContainer<Batiment> getBatiment() {
-        return batiment;
-    }
-
-    public ForeignKeyContainer<TypeLogement> getTypeLogement() {
-        return typeLogement;
     }
 
     public Integer getId() {
@@ -279,6 +276,14 @@ public class Logement extends BaseModel {
         typeLogement.setModel(typeLogement1);
         typeLogement.put(TypeLogement_Table.id, typeLogement1.id);
 
+    }
+
+    public ForeignKeyContainer<Batiment> getBatiment() {
+        return batiment;
+    }
+
+    public ForeignKeyContainer<TypeLogement> getTypeLogement() {
+        return typeLogement;
     }
 
     @Override

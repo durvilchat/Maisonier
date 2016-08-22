@@ -20,7 +20,7 @@
     <com.daimajia.swipe.SwipeLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
         swipe:leftEdgeSwipeOffset="0dp"
         swipe:rightEdgeSwipeOffset="0dp">
 
@@ -40,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="@color/black"
                 android:gravity="center"
                 android:src="@drawable/ic_edit" />
 
@@ -50,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="@color/black"
                 android:gravity="center"
                 android:src="@drawable/ic_delete" />
         </LinearLayout>
@@ -60,9 +60,9 @@
 
         <LinearLayout
             android:id="@+id/bottom_wrapper1"
-            android:layout_width="80dp"
+            android:layout_width="160dp"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="2">
 
             <ImageButton
                 android:id="@+id/detail"
@@ -72,6 +72,15 @@
                 android:background="@null"
                 android:gravity="center"
                 android:src="@drawable/ic_info_indigo_900_18dp" />
+
+            <ImageButton
+                android:id="@+id/call"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:src="@drawable/ic_call" />
         </LinearLayout>
 
 

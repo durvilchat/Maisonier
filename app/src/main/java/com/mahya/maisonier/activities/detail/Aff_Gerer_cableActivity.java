@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.entites.Cable;
 import com.mahya.maisonier.entites.Cable_Table;
-import com.mahya.maisonier.entites.Habitant_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.text.DateFormat;
@@ -44,10 +43,10 @@ public class Aff_Gerer_cableActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
-            Cable gerer_cable  = SQLite.select().from(Cable.class).where(Cable_Table.id.eq(id)).querySingle();
+            Cable gerer_cable = SQLite.select().from(Cable.class).where(Cable_Table.id.eq(id)).querySingle();
 
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Habitant.setText(gerer_cable.getOccupation().load().getHabitant().load().getNom());

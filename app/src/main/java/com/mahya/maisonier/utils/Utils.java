@@ -1,6 +1,8 @@
 package com.mahya.maisonier.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -8,7 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.mahya.maisonier.R;
 
@@ -28,14 +33,14 @@ public class Utils {
     //keep track of camera capture intent
     static final int CAMERA_CAPTURE = 1;
 
-/*
-    public static int getStatusBarHeight(Context context) {
-        int height = (int) context.getResources().getDimension(R.dimen.statusbar_size);
-        return height;
-    }
-*/
+    /*
+        public static int getStatusBarHeight(Context context) {
+            int height = (int) context.getResources().getDimension(R.dimen.statusbar_size);
+            return height;
+        }
+    */
 //keep track of cropping intent
-final int PIC_CROP = 3;
+    final int PIC_CROP = 3;
     //keep track of gallery intent
     final int PICK_IMAGE_REQUEST = 2;
     //captured picture uri
@@ -103,5 +108,39 @@ final int PIC_CROP = 3;
         return mcurrentDate.toString();
     }
 
+
+    protected void sendEmail(Activity activity) {
+        Log.i("Send email", "");
+        String[] TO = {""};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+        try {
+            activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            //   Log.i("Finished sending email...", "");
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Toast.makeText(activity.class, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void sendSMSMessage(Activity activity, String tel, String msg) {
+        Log.i("Send SMS", "");
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(tel, null, msg, null, null);
+            Toast.makeText(activity.getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(activity.getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
 
 }

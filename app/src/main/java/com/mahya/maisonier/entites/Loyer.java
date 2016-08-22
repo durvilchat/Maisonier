@@ -132,9 +132,11 @@ public class Loyer extends BaseModel {
     public void setMontantPayer(double montantPayer) {
         this.montantPayer = montantPayer;
     }
+
     public String getObservation() {
         return observation;
     }
+
     public void setObservation(String observation) {
         this.observation = observation;
     }

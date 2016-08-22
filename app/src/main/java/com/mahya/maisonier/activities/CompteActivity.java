@@ -14,74 +14,58 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.util.Attributes;
+import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.CompteAdapter;
-import com.mahya.maisonier.entites.Bailleur;
-import com.mahya.maisonier.entites.Cite;
 import com.mahya.maisonier.entites.Compte;
 import com.mahya.maisonier.entites.Compte_Table;
 import com.mahya.maisonier.entites.Habitant;
-import com.mahya.maisonier.entites.Logement;
+import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.entites.TypeCompte;
-import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.CustomLoadingListItemCreator;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompteActivity extends BaseActivity implements Paginate.Callbacks, CrudActivity, SearchView.OnQueryTextListener,
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
+
+public class CompteActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
-    private static final int GRID_SPAN = 3;
+
     private static final String TAG = CompteActivity.class.getSimpleName();
     protected RecyclerView mRecyclerView;
     CompteAdapter mAdapter;
     FrameLayout fab;
-    ImageButton myfab_main_btn;
+    FloatingActionButton myfab_main_btn;
     Animation animation;
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
     private TextView tvEmptyView;
-    private boolean loading = false;
-    private int page = 0;
-    private Handler handler;
-    private Paginate paginate;
-    private Runnable fakeCallback = new Runnable() {
-        @Override
-        public void run() {
-            page++;
-            mAdapter.add(Cite.getInitData(1));
-            loading = false;
-        }
-    };
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -93,17 +77,36 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
-        Cite.cites.clear();
-        Cite.cites = Cite.findAll();
-        setTitle(context.getString(R.string.Cite));
+        setTitle(context.getString(R.string.Compte));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         initView();
         fab.startAnimation(animation);
-        handler = new Handler();
-        setupPagination();
+        mAdapter = new CompteAdapter(this, (ArrayList<Compte>) Compte.findAll(), this);
+        myfab_main_btn.hide(false);
+        mRecyclerView.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myfab_main_btn.show(true);
+                myfab_main_btn.setShowAnimation(AnimationUtils.loadAnimation(context, R.anim.show_from_bottom));
+                myfab_main_btn.setHideAnimation(AnimationUtils.loadAnimation(context, R.anim.hide_to_bottom));
+            }
+        }, 300);
+        mRecyclerView.addOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                myfab_main_btn.show(true);
+            }
+
+            @Override
+            public void hide() {
+                myfab_main_btn.hide(true);
+            }
+        });
+
     }
 
     private void initView() {
@@ -112,12 +115,12 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         mRecyclerView = (RecyclerView) findViewById(R.id.list_item);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setFilterTouchesWhenObscured(true);
-        myfab_main_btn = (ImageButton) findViewById(R.id.myfab_main_btn);
+        myfab_main_btn = (FloatingActionButton) findViewById(R.id.myfab_main_btn);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        if (Cite.findAll().isEmpty()) {
+        if (Compte.findAll().isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -125,6 +128,7 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
             mRecyclerView.setVisibility(View.VISIBLE);
             tvEmptyView.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -150,24 +154,47 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         final EditText solde = (EditText) dialog.findViewById(R.id.Solde);
         final EditText date = (EditText) dialog.findViewById(R.id.Date);
 
-        ArrayAdapter<TypeCompte> adapter1 =
-                new ArrayAdapter<TypeCompte>(this, R.layout.spinner_item, TypeCompte.findAll());
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        type.setAdapter(adapter1);
-
-        ArrayAdapter<Habitant> adapter2 =
-                new ArrayAdapter<Habitant>(this, R.layout.spinner_item, Habitant.findAll());
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        habitant.setAdapter(adapter2);
+        final HintSpinner logementHint = new HintSpinner<>(
+                type,
+                new HintAdapter<TypeCompte>(context, "Type de compte ", TypeCompte.findAll()),
+                new HintSpinner.Callback<TypeCompte>() {
 
 
-        ArrayAdapter<Logement> adapter3 =
-                new ArrayAdapter<Logement>(this, R.layout.spinner_item, Logement.findAll());
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    @Override
+                    public void onItemSelected(int position, TypeCompte itemAtPosition) {
 
-        logement.setAdapter(adapter3);
+
+                    }
+                });
+        logementHint.init();
+        final HintSpinner habitantHint = new HintSpinner<>(
+                habitant,
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+
+                        final HintSpinner typeHint = new HintSpinner<>(
+                                logement,
+                                new HintAdapter<Occupation>(context, "Logement ", itemAtPosition.getOccupationList()),
+                                new HintSpinner.Callback<Occupation>() {
+
+
+                                    @Override
+                                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                                    }
+                                });
+                        typeHint.init();
+
+                    }
+                });
+        habitantHint.init();
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
@@ -199,13 +226,20 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
                 }
 
                 Compte compte = new Compte();
+                compte.assoOccupation((Occupation) logement.getSelectedItem());
+                compte.assoTypeCompte((TypeCompte) type.getSelectedItem());
                 compte.setSolde(Double.parseDouble(solde.getText().toString()));
-                compte.setDateoperaion(Date.valueOf(date.getText().toString().trim()));
+                try {
+                    compte.setDateoperaion(sdf.parse(date.getText().toString().trim()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return;
+                }
 
 
                 try {
                     compte.save();
-                    if (Cite.findAll().isEmpty()) {
+                    if (Compte.findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -214,10 +248,10 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
                         tvEmptyView.setVisibility(View.GONE);
                     }
 
-                    Snackbar.make(view, "la cite a été correctement crée", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "le compte a été correctement crée", Snackbar.LENGTH_LONG)
 
                             .setAction("Action", null).show();
-                    // mAdapter.addItem(type, 0);
+                    mAdapter.addItem(compte, 0);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -246,7 +280,7 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
         super.onDestroy();
         mAdapter = null;
         //FlowManager.destroy();
-        // Delete.tables(Cite.class);
+        // Delete.tables(Compte.class);
     }
 
     @Override
@@ -272,7 +306,7 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         try {
 
-                            Cite typeLogement = new Cite();
+                            Compte typeLogement = new Compte();
                             typeLogement.setId(id);
                             typeLogement.delete();
 
@@ -326,86 +360,121 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
 
     @Override
     public void detail(final int id) {
-        final Cite typeLogement = SQLite.select().from(Cite.class).where(TypeLogement_Table.id.eq(id)).querySingle();
-
-        AlertDialog detail = new AlertDialog.Builder(this)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getEmail() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
-                .setIcon(R.drawable.ic_info_indigo_900_18dp)
-                .setTitle("Detail " + typeLogement.getNomCite())
-                .setNeutralButton("OK", null)
-                .setCancelable(false)
-                .create();
-        detail.show();
 
     }
 
     @Override
     public void modifier(final int id) {
-
-        final Cite typeLogement = SQLite.select().from(Cite.class).where(Compte_Table.id.eq(id)).querySingle();
+        final Compte compte = SQLite.select().from(Compte.class).where(Compte_Table.id.eq(id)).querySingle();
+        // custom dialog
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_cite);
+        dialog.setContentView(R.layout.add_compte);
         // Initialisation du formulaire
 
-        final EditText nom = (EditText) dialog.findViewById(R.id.NomCite);
-        final EditText tel = (EditText) dialog.findViewById(R.id.Telephone);
-        final EditText email = (EditText) dialog.findViewById(R.id.Email);
-        final EditText Pcite = (EditText) dialog.findViewById(R.id.PoliceDeLaCite);
-        final EditText Pcont = (EditText) dialog.findViewById(R.id.PoliceDesContacts);
-        final EditText Pdesc = (EditText) dialog.findViewById(R.id.PoliceDeLaDescription);
-        final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
-        final EditText desc = (EditText) dialog.findViewById(R.id.Description);
+        final Spinner type = (Spinner) dialog.findViewById(R.id.TypeDeCompte);
+        final Spinner habitant = (Spinner) dialog.findViewById(R.id.Habitant);
+        final Spinner logement = (Spinner) dialog.findViewById(R.id.Logement);
+        final EditText solde = (EditText) dialog.findViewById(R.id.Solde);
+        final EditText date = (EditText) dialog.findViewById(R.id.Date);
+
+
+        solde.setText(String.valueOf(compte.getSolde()));
+        date.setText(sdf.format(compte.getDateoperaion()));
+
+
+        final HintSpinner logementHint = new HintSpinner<>(
+                type,
+                new HintAdapter<TypeCompte>(context, "Type de compte ", TypeCompte.findAll()),
+                new HintSpinner.Callback<TypeCompte>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, TypeCompte itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
+        final HintSpinner habitantHint = new HintSpinner<>(
+                habitant,
+                new HintAdapter<Habitant>(context, "Habitant ", Habitant.findAll()),
+                new HintSpinner.Callback<Habitant>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Habitant itemAtPosition) {
+
+
+                        final HintSpinner typeHint = new HintSpinner<>(
+                                logement,
+                                new HintAdapter<Occupation>(context, "Logement ", itemAtPosition.getOccupationList()),
+                                new HintSpinner.Callback<Occupation>() {
+
+
+                                    @Override
+                                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                                    }
+                                });
+                        typeHint.init();
+
+                    }
+                });
+        habitantHint.init();
 
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (nom.getText().toString().trim().equals("")) {
-                    nom.setError("Velliez remplir le nom");
+            public void onClick(View v) {
+                if (type.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un type de compte", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (logement.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un logement", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (habitant.getSelectedItem().equals(null)) {
+                    Toast.makeText(context, "Veillez selectionner un habitant", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (solde.getText().toString().trim().equals("")) {
+                    solde.setError("Velliez remplir le solde");
                     return;
 
                 }
-                if (tel.getText().toString().trim().equals("")) {
-                    tel.setError("Velliez remplir le telephone");
-                    return;
-
-                }
-                if (email.getText().toString().trim().equals("")) {
-                    email.setError("Velliez remplir le email");
-                    return;
-
-                }
-                if (desc.getText().toString().trim().equals("")) {
-                    desc.setError("Velliez remplir la description");
-                    return;
-
-                }
-                if (bailleur.getSelectedItem().toString().trim().equals("")) {
-                    // bailleur.setEr("Velliez remplir le code");
+                if (date.getText().toString().trim().equals("")) {
+                    date.setError("Velliez remplir la date");
                     return;
 
                 }
 
-                Cite cite = new Cite();
-                cite.setNomCite(nom.getText().toString().trim());
-                cite.setTels(tel.getText().toString().trim());
-                cite.setDescription(desc.getText().toString().trim());
-                cite.setEmail(email.getText().toString().trim());
-                cite.setBailleur((ForeignKeyContainer<Bailleur>) bailleur.getSelectedItem());
-                cite.setPoliceCite(Double.parseDouble(Pcite.getText().toString().trim()));
-                cite.setPoliceContact(Double.parseDouble(Pcont.getText().toString().trim()));
-                cite.setPoliceDescription(Double.parseDouble(Pdesc.getText().toString().trim()));
+                Compte compte = new Compte();
+                compte.setId(id);
+                compte.assoOccupation((Occupation) logement.getSelectedItem());
+                compte.assoTypeCompte((TypeCompte) type.getSelectedItem());
+                compte.setSolde(Double.parseDouble(solde.getText().toString()));
                 try {
-                    cite.save();
-                    // mAdapter.actualiser(Compte.findAll());
-                    Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
+                    compte.setDateoperaion(sdf.parse(date.getText().toString().trim()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+
+                try {
+                    compte.save();
+
+                    Snackbar.make(v, "le compte a été correctement modifié", Snackbar.LENGTH_LONG)
+
                             .setAction("Action", null).show();
-                    mAdapter.addItem(cite, 0);
+                    mAdapter.actualiser(Compte.findAll());
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -420,65 +489,12 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
             @Override
             public void onClick(View v) {
 
-                nom.setText("");
-                desc.setText("");
-                tel.setText("");
-                email.setText("");
-                Pcite.setText("");
-                Pdesc.setText("");
-                Pcont.setText("");
 
                 dialog.dismiss();
             }
         });
         dialog.show();
-    }
 
-    @Override
-    protected void setupPagination() {
-        // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        handler.removeCallbacks(fakeCallback);
-        mAdapter = new CompteAdapter(this, (ArrayList<Cite>) Cite.findAll(), this);
-        loading = false;
-        page = 0;
-
-        mAdapter = new CompteAdapter(this, Cite.getInitData(initItem), this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        ((CompteAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        paginate = Paginate.with(mRecyclerView, this)
-                .setLoadingTriggerThreshold(threshold)
-                .addLoadingListItem(addLoadingRow)
-                .setLoadingListItemCreator(customLoadingListItem ? new CustomLoadingListItemCreator(mRecyclerView) : null)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        // Fake asynchronous loading that will generate page of random data after some delay
-        handler.postDelayed(fakeCallback, networkDelay);
-    }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
     }
 
     @Override
@@ -500,7 +516,7 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<Cite> filteredModelList = filter(Cite.findAll(), query);
+        final List<Compte> filteredModelList = filter(Compte.findAll(), query);
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
         return true;
@@ -513,12 +529,12 @@ public class CompteActivity extends BaseActivity implements Paginate.Callbacks, 
     }
 
 
-    private List<Cite> filter(List<Cite> models, String query) {
+    private List<Compte> filter(List<Compte> models, String query) {
         query = query.toLowerCase();
         System.out.println(models);
-        final List<Cite> filteredModelList = new ArrayList<>();
-        for (Cite model : models) {
-            final String text = model.getNomCite().toLowerCase();
+        final List<Compte> filteredModelList = new ArrayList<>();
+        for (Compte model : models) {
+            final String text = model.getOccupation().load().getHabitant().load().getNom().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }

@@ -42,11 +42,11 @@
 
 
         <CheckBox
-                android:id="@+id/Valeur"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
+            android:id="@+id/Valeur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
             android:hint="Valeur" />
 
 

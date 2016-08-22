@@ -22,17 +22,20 @@ import com.mahya.maisonier.activities.ContraBailActivity;
 import com.mahya.maisonier.activities.DepenseActivity;
 import com.mahya.maisonier.activities.DepotActivity;
 import com.mahya.maisonier.activities.HabitantActivity;
+import com.mahya.maisonier.activities.HabitantListActivity;
 import com.mahya.maisonier.activities.LogementActivity;
+import com.mahya.maisonier.activities.LogementDispoActivity;
 import com.mahya.maisonier.activities.LoyerActivity;
-import com.mahya.maisonier.activities.MainActivity;
 import com.mahya.maisonier.activities.MoisActivity;
 import com.mahya.maisonier.activities.OccupationActivity;
+import com.mahya.maisonier.activities.ParametrageActivity;
 import com.mahya.maisonier.activities.RubriqueActivity;
 import com.mahya.maisonier.activities.RubriqueContratActivity;
 import com.mahya.maisonier.activities.TypeCautionActivity;
 import com.mahya.maisonier.activities.TypeCompteActivity;
 import com.mahya.maisonier.activities.TypePenaliteActivity;
 import com.mahya.maisonier.activities.TypedeChargeActivity;
+import com.mahya.maisonier.activities.TypelogementActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -83,7 +86,8 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
                         TextView name = (TextView) view.findViewById(R.id.item_name);
                         if (name.getText().toString().trim().equals(context.getString(R.string.typelogement))) {
 
-                            ((MainActivity) mContext).onClick();
+                            //   ((MainActivity) mContext).onClick();
+                            context.startActivity(new Intent(context, TypelogementActivity.class));
 
                         } else if (name.getText().toString().trim().equals(context.getString(R.string.Caracteristiques))) {
                             context.startActivity(new Intent(context, CaracteristiqueActivity.class));
@@ -172,6 +176,18 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
                             context.startActivity(new Intent(context, CompteActivity.class));
 
 
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.disponibles).trim())) {
+                            context.startActivity(new Intent(context, LogementDispoActivity.class));
+
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.Listedeshablitants).trim())) {
+                            context.startActivity(new Intent(context, HabitantListActivity.class));
+
+
+                        } else if (name.getText().toString().trim().equals(context.getString(R.string.parametrage).trim())) {
+                            context.startActivity(new Intent(context, ParametrageActivity.class));
+
+
                         }
 
 
@@ -236,10 +252,10 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
         items.add(new ItemMenu(context.getText(R.string.Mois).toString(), " "));
         items.add(new ItemMenu(context.getText(R.string.Année).toString(), " "));
         items.add(new ItemMenu(R.drawable.ic_settings_applications_white_18dp, context.getText(R.string.Parametres).toString()));
+        items.add(new ItemMenu(context.getText(R.string.parametrage).toString(), " "));
         items.add(new ItemMenu(context.getText(R.string.Mois).toString(), " "));
         items.add(new ItemMenu(context.getText(R.string.Année).toString(), " "));
         items.add(new ItemMenu(context.getText(R.string.TypedeCaution).toString(), " "));
-
         items.add(new ItemMenu(context.getText(R.string.Historiquedeparametrage).toString(), " "));
         return items;
     }

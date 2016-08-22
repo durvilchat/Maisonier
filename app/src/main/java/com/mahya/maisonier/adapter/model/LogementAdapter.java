@@ -1,6 +1,7 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -14,6 +15,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.LogementActivity;
+import com.mahya.maisonier.activities.detail.Aff_LogementActivity;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -45,7 +47,7 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
         return new SimpleViewHolder(view, clickListener);
     }
 
@@ -53,15 +55,18 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
-        try {
-            viewHolder.tilte.setText(formatter.format(logements.get(position).getDatecreation()));
-            viewHolder.libele.setText(logements.get(position).getReference());
-            viewHolder.desc.setText(logements.get(position).getDescription());
-            viewHolder.id.setText(String.valueOf(logements.get(position).getId()));
-        } catch (Exception e) {
 
-            return;
-        }
+        viewHolder.prix.setTextColor(mContext.getResources().getColor(R.color.green));
+        viewHolder.libele.setTextColor(mContext.getResources().getColor(R.color.blue));
+        viewHolder.prix.setText(String.valueOf(logements.get(position).getPrixMin() + "F CFA - " + logements.get(position).getPrixMax() + " F CFA"));
+        viewHolder.libele1.setText(logements.get(position).getBatiment().load().getNom());
+        viewHolder.libele.setText(logements.get(position).getReference());
+        viewHolder.desc.setText(logements.get(position).getDescription());
+
+        viewHolder.tilte.setVisibility(View.GONE);
+
+        viewHolder.id.setText(String.valueOf(logements.get(position).getId()));
+
 
 // Span the item if active
         final ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
@@ -83,8 +88,13 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             @Override
             public void onClick(View v) {
 
+                TextView id = (TextView) v.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof LogementActivity) {
                     ((LogementActivity) mContext).onItemClicked(position);
+                    Intent intent = new Intent(mContext, Aff_LogementActivity.class);
+                    intent.putExtra("id", idSelect);
+                    mContext.startActivity(intent);
                 }
             }
         });
@@ -380,10 +390,12 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
         ImageButton tvDelete;
         ImageButton tvEdit;
         TextView tilte;
-        TextView desc;
         TextView id;
         ImageButton detail;
         TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView prix;
         View selectedOverlay;
         private OnItemClickListener listener;
 
@@ -393,6 +405,8 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             tilte = (TextView) itemView.findViewById(R.id.titre);
             libele = (TextView) itemView.findViewById(R.id.libelle);
             desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            prix = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);

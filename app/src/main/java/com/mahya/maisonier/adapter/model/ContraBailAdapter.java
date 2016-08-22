@@ -46,7 +46,7 @@ public class ContraBailAdapter extends RecyclerSwipeAdapter<ContraBailAdapter.Si
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }

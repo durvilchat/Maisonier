@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.activities.TypelogementActivity;
 import com.mahya.maisonier.entites.TypeLogement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -26,8 +27,14 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
 
     private static final String TAG = TypeLogementAdapter.class.getSimpleName();
     Context mContext;
-    int idSelect;
+    Integer idSelect;
     int selectposition;
+    /**
+     * Toggle the selection status of the item at a given position
+     *
+     * @param position Position of the item to toggle the selection status for
+     */
+    List<Integer> integers = new ArrayList<>();
     private List<TypeLogement> typeLogements;
     private View vue;
     private SparseBooleanArray selectedItems;
@@ -46,7 +53,6 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         vue = view;
         return new SimpleViewHolder(view, clickListener);
     }
-
 
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
@@ -82,9 +88,9 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public void onClick(View v) {
 
-              /*  if (mContext instanceof TypelogementActivity) {
+                if (mContext instanceof TypelogementActivity) {
                     ((TypelogementActivity) mContext).onItemClicked(position);
-                }*/
+                }
             }
         });
 
@@ -92,7 +98,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public boolean onLongClick(View view) {
 
-                //  ((TypelogementActivity) mContext).onItemLongClicked(position);
+                ((TypelogementActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -141,7 +147,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
             @Override
             public void onClick(View view) {
 
-                // ((TypelogementActivity) mContext).detail(idSelect);
+                ((TypelogementActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -150,7 +156,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  ((TypelogementActivity) mContext).modifier(idSelect);
+                ((TypelogementActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -161,7 +167,7 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //((TypelogementActivity) mContext).supprimer(idSelect);
+                ((TypelogementActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -207,15 +213,16 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         }
     }
 
-
     public void addItem(int position, TypeLogement model) {
         typeLogements.add(position, model);
         notifyItemInserted(position);
     }
 
-
     public void removeItems(List<Integer> positions) {
         // Reverse-sort the list
+
+        for (Integer id : positions) {
+        }
         Collections.sort(positions, new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {
@@ -261,7 +268,6 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         return 0;
     }
 
-
     public void add(List<TypeLogement> items) {
         int previousDataSize = this.typeLogements.size();
         this.typeLogements.addAll(items);
@@ -296,13 +302,11 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         notifyDataSetChanged();
     }
 
-
     public void moveItem(int fromPosition, int toPosition) {
         final TypeLogement model = typeLogements.remove(fromPosition);
         typeLogements.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
-
 
     /**
      * Indicates if the item at position position is selected
@@ -314,12 +318,21 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         return getSelectedItems().contains(position);
     }
 
-    /**
-     * Toggle the selection status of the item at a given position
-     *
-     * @param position Position of the item to toggle the selection status for
-     */
     public void toggleSelection(int position) {
+
+        TextView id = (TextView) vue.findViewById(R.id.idItem);
+        idSelect = Integer.parseInt(id.getText().toString());
+
+
+        if (integers.contains(idSelect)) {
+            integers.remove(idSelect);
+
+            System.out.println(integers);
+        } else {
+            integers.add(idSelect);
+        }
+
+
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);
         } else {
