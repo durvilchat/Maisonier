@@ -14,9 +14,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:onClick="add"
-        android:src="@drawable/ic_add"
-        fab:fab_colorNormal="@color/colorPrimary"
-        fab:fab_colorPressed="@color/colorPrimaryDark"
-        fab:fab_colorRipple="@color/colorPrimary" />
+        android:src="@drawable/ic_add" />
 
 </FrameLayout>
