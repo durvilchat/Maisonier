@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/entretientEau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Entretien Eau"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/prixUEau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Prix unitaire Eau"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/entretientElect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Entretien Electricité"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/prixUElect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Prix Unitaire Electricité"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/cable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cablage"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/tva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="T.V.A"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/casse"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="CASSE" />
+
+            <CheckBox
+                android:id="@+id/majuscule"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Majuscule" />
+
+            <CheckBox
+                android:id="@+id/etat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ETAT" />
+
+        </LinearLayout>
+
+
+        <include
+            layout="@layout/btn_valider_annuler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</ScrollView>
