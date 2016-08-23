@@ -54,14 +54,14 @@ public class Cable extends BaseModel {
             references = {@ForeignKeyReference(columnName = "mois_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Mois> mois;
 
 
     @Column
     @Unique(unique = false, uniqueGroups = 1)
     @ForeignKey(references = {@ForeignKeyReference(columnName = "occupation_id", columnType = Integer.class, foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Occupation> occupation;
 
 
@@ -70,7 +70,7 @@ public class Cable extends BaseModel {
             references = {@ForeignKeyReference(columnName = "parametre_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Parametre> parametre;
 
     public Cable() {

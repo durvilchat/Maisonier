@@ -53,7 +53,7 @@ public class Batiment extends BaseModel {
             references = {@ForeignKeyReference(columnName = "cite_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Cite> cite;
     List<Logement> logementList;
     List<PhotoBatiment> photoBatimentList;

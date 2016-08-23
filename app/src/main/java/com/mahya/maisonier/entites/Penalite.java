@@ -64,7 +64,7 @@ public class Penalite extends BaseModel {
             references = {@ForeignKeyReference(columnName = "mois_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Mois> mois;
 
 
@@ -72,14 +72,14 @@ public class Penalite extends BaseModel {
     @Unique(unique = false, uniqueGroups = 1)
     @ForeignKey(references = {@ForeignKeyReference(columnName = "occupation_id",
             columnType = Integer.class, foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Occupation> occupation;
 
     @Column
     @Unique(unique = false, uniqueGroups = 1)
     @ForeignKey(references = {@ForeignKeyReference(columnName = "typepenalite_id",
             columnType = Integer.class, foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<TypePenalite> typePenalite;
 
     public Penalite() {

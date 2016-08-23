@@ -66,7 +66,7 @@ public class Mois extends BaseModel {
             references = {@ForeignKeyReference(columnName = "annee_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Annee> annee;
 
     public Mois() {

@@ -83,7 +83,7 @@ public class Occupation extends BaseModel {
             references = {@ForeignKeyReference(columnName = "habitant_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Habitant> habitant;
 
 
@@ -92,7 +92,7 @@ public class Occupation extends BaseModel {
             references = {@ForeignKeyReference(columnName = "logement_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Logement> logement;
 
     List<Depot> depotList;

@@ -28,7 +28,7 @@ public class Conflit extends BaseModel {
             references = {@ForeignKeyReference(columnName = "privilege1_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Privilege> privilege1;
 
 
@@ -37,7 +37,7 @@ public class Conflit extends BaseModel {
             references = {@ForeignKeyReference(columnName = "privilege2_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Privilege> privilege2;
 
     public Conflit() {

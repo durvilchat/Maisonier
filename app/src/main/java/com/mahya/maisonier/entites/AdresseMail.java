@@ -45,7 +45,7 @@ public class AdresseMail extends BaseModel {
             references = {@ForeignKeyReference(columnName = "serveurmail_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION  ,onUpdate = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<ServeurMail> serveurMail;
 
     public AdresseMail() {

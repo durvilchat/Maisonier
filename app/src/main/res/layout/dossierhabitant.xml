@@ -1,0 +1,77 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+
+        <Button
+            android:text="Loyer"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button9" />
+
+        <Button
+            android:text="Comptes"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button10" />
+
+        <Button
+            android:text="@string/Dépot"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button8" />
+
+        <Button
+            android:text="Cable"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/cable" />
+
+        <Button
+            android:text="@string/Consommationenélectricité"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/prixUElect" />
+
+        <Button
+            android:text="@string/Consommationeneau"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/prixUEau" />
+
+        <Button
+            android:text="Facture client"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/facture" />
+
+        <Button
+            android:text="@string/Caution"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/caution" />
+
+        <Button
+            android:text="@string/Occupations"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/Occupation" />
+
+        <Button
+            android:text="@string/Charges"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/charge" />
+    </LinearLayout>
+
+</ScrollView>

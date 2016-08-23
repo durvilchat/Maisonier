@@ -14,8 +14,14 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.TypelogementActivity;
+import com.mahya.maisonier.dataBase.Maisonier;
 import com.mahya.maisonier.entites.TypeLogement;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
+import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -218,11 +224,20 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
         notifyItemInserted(position);
     }
 
-    public void removeItems(List<Integer> positions) {
+    public void removeItems(final List<Integer> positions) {
+        FlowManager.getDatabase(Maisonier.class).executeTransaction(new ITransaction() {
+            @Override
+            public void execute(DatabaseWrapper databaseWrapper) {
+
+            }
+        });
+
+
+
+
         // Reverse-sort the list
 
-        for (Integer id : positions) {
-        }
+
         Collections.sort(positions, new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {
@@ -243,12 +258,14 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
 
                 if (count == 1) {
                     deleteItem(positions.get(0));
+
                 } else {
                     removeRange(positions.get(count - 1), count);
                 }
 
                 for (int i = 0; i < count; ++i) {
                     positions.remove(0);
+
                 }
             }
         }
@@ -319,19 +336,6 @@ public class TypeLogementAdapter extends RecyclerSwipeAdapter<TypeLogementAdapte
     }
 
     public void toggleSelection(int position) {
-
-        TextView id = (TextView) vue.findViewById(R.id.idItem);
-        idSelect = Integer.parseInt(id.getText().toString());
-
-
-        if (integers.contains(idSelect)) {
-            integers.remove(idSelect);
-
-            System.out.println(integers);
-        } else {
-            integers.add(idSelect);
-        }
-
 
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);

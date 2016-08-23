@@ -21,6 +21,7 @@ import com.mahya.maisonier.activities.CompteActivity;
 import com.mahya.maisonier.activities.ContraBailActivity;
 import com.mahya.maisonier.activities.DepenseActivity;
 import com.mahya.maisonier.activities.DepotActivity;
+import com.mahya.maisonier.activities.DossierHablitant;
 import com.mahya.maisonier.activities.HabitantActivity;
 import com.mahya.maisonier.activities.HabitantListActivity;
 import com.mahya.maisonier.activities.LogementActivity;
@@ -186,6 +187,10 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
 
                         } else if (name.getText().toString().trim().equals(context.getString(R.string.parametrage).trim())) {
                             context.startActivity(new Intent(context, ParametrageActivity.class));
+
+
+                        }else if (name.getText().toString().trim().equals(context.getString(R.string.Dossierdunhabitant).trim())) {
+                            context.startActivity(new Intent(context, DossierHablitant.class));
 
 
                         }

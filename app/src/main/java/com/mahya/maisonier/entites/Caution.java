@@ -59,7 +59,7 @@ public class Caution extends BaseModel {
             references = {@ForeignKeyReference(columnName = "occupation_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Occupation> occupation;
 
     @Column
@@ -67,7 +67,7 @@ public class Caution extends BaseModel {
             references = {@ForeignKeyReference(columnName = "typecaution_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<TypeCaution> typeCaution;
 
     public Caution() {

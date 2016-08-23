@@ -34,7 +34,7 @@ public class CaracteristiqueLogement extends BaseModel {
             references = {@ForeignKeyReference(columnName = "caracteristique_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Caracteristique> caracteristique;
 
 
@@ -43,7 +43,7 @@ public class CaracteristiqueLogement extends BaseModel {
             references = {@ForeignKeyReference(columnName = "logement_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Logement> logement;
 
     public CaracteristiqueLogement() {

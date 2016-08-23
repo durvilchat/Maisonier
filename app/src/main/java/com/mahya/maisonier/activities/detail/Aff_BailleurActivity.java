@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.model.BailleurAdapter;
 import com.mahya.maisonier.entites.Bailleur;
@@ -46,7 +47,7 @@ public class Aff_BailleurActivity extends AppCompatActivity {
     private TextView Tel2;
     private TextView Tel3;
     private TextView Tel4;
-
+    private FloatingActionMenu menuLabelsRight;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

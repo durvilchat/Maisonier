@@ -43,7 +43,7 @@ public class Compte extends BaseModel {
     @ForeignKey(references = {@ForeignKeyReference(columnName = "occupation_id",
             columnType = Integer.class,
             foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Occupation> occupation;
 
     @Column
@@ -51,7 +51,7 @@ public class Compte extends BaseModel {
     @ForeignKey(references = {@ForeignKeyReference(columnName = "typecompte_id",
             columnType = Integer.class,
             foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<TypeCompte> typeCompte;
 
     public Compte() {

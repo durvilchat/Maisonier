@@ -51,6 +51,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.mahya.maisonier.PdfRegion;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.LogementAdapter;
@@ -401,7 +402,7 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
                 if (!PermissionUtils.checkAndRequestPermission(LogementActivity.this, REQUEST_CODE_ASK_PERMISSIONS, "You need to grant access to Write Storage", permission[0]))
 
                     isPDFFromHTML = false;
-            createPDF();
+            new PdfRegion(this).etatsRegion(Logement.findAll());
             return true;
         }
 

@@ -65,7 +65,7 @@ public class Personnel extends BaseModel {
             references = {@ForeignKeyReference(columnName = "utilisateur_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<CompteUtilisateur> compteUtilisateur;
 
     @Column
@@ -73,7 +73,7 @@ public class Personnel extends BaseModel {
             references = {@ForeignKeyReference(columnName = "poste_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Poste> poste;
 
     public Personnel() {

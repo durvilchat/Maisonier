@@ -44,7 +44,7 @@ public class Mouchard extends BaseModel {
             references = {@ForeignKeyReference(columnName = "utilisateur_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<CompteUtilisateur> utilisateur;
 
     public Mouchard() {

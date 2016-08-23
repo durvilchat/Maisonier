@@ -40,7 +40,7 @@ public class ContratRubrique extends BaseModel {
             references = {@ForeignKeyReference(columnName = "contratbail_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<ContratBail> contratBail;
 
 
@@ -49,7 +49,7 @@ public class ContratRubrique extends BaseModel {
             references = {@ForeignKeyReference(columnName = "rubrique_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Rubrique> rubrique;
 
     public ContratRubrique() {

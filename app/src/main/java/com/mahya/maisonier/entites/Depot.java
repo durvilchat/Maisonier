@@ -53,7 +53,7 @@ public class Depot extends BaseModel {
             references = {@ForeignKeyReference(columnName = "mois_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Mois> mois;
 
 
@@ -62,7 +62,7 @@ public class Depot extends BaseModel {
             references = {@ForeignKeyReference(columnName = "occupation_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Occupation> occupation;
 
     public Depot() {

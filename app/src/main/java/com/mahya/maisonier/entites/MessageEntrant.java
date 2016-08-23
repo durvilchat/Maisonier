@@ -36,7 +36,7 @@ public class MessageEntrant extends BaseModel {
             references = {@ForeignKeyReference(columnName = "telephone_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Telephone> telephone;
 
     public MessageEntrant() {

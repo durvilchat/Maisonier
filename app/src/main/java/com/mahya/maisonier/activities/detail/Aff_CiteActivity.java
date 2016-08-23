@@ -39,7 +39,7 @@ public class Aff_CiteActivity extends AppCompatActivity {
 
         super.setContentView(R.layout.aff_cite);
 
-
+        initView();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

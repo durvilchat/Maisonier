@@ -2,283 +2,328 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="511870d6c6649eb3987f32cd2dbbc25e716f1113">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_6da0bbde32a21c7bb93320d1bde24301f13888c6\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\fanie\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\6.1.0\63735f48b82bcd24cdd33821342428252eb1ca5a\butterknife-6.1.0.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="63735f48b82bcd24cdd33821342428252eb1ca5a">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\butterknife-6.1.0_66ef577ca7b9cfed12ca5866410eeefb492f5202\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.0-alpha4\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="2a25fdd20d5f75558b6011724bbfbb7d97c7f5b7">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support.constraint-constraint-layout-1.0.0-alpha4_b37cf4bd4dd323a6f4be7107655a87bd09e795f0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.github.Raizlabs.DBFlow\dbflow-kotlinextensions\3.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="6bcfdb1a4c08cc650593fc5b3f86ee11304da3f2">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.Raizlabs.DBFlow-dbflow-kotlinextensions-3.1.1_e9fd427cff19bbf1c93faecab454c478e733d462\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\fanie\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\library-2.4.0_10de99dcbc60932b081cbedd80b9dc26ae080770\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\fanie\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\1.0.2\22063f19bfd8e50f21fc310842a91ff5b31bb272\kotlin-stdlib-1.0.2.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="22063f19bfd8e50f21fc310842a91ff5b31bb272">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\kotlin-stdlib-1.0.2_a9b248ff569e2f31dab0b6311397dd55e815c1f5\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-8.4.0_1fb05fbf331a37d662498516fb219d348f03d0c3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="F:\set up des programmes\android studio\android-studio\gradle\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.0-alpha4\constraint-layout-solver-1.0.0-alpha4.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="cdeb2aecf7557aa5f8d2ac0e37a0e7760f48c513">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\constraint-layout-solver-1.0.0-alpha4_7e8e4facc5aec355a7d5e13717213dfc648b6f42\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="894922f67adeaaef51f077a29e315da21a3382d3">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-24.0.0_d48d58c9c95ee72c8b86c2c24fc8a5fafb385cb3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.github.markomilos\paginate\0.5.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="239bbc360f222b90822c6f85f6ff203d57763382">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.markomilos-paginate-0.5.1_4bb90df5976c31b3a0bc78512ea1705daa54ac87\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_ffec35e0683848f9392d0bd9714b3ad812000ba6\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\fanie\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-runtime\1.0.2\8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55\kotlin-runtime-1.0.2.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\kotlin-runtime-1.0.2_806f1872f378d8de7c5e68cda31539e27c3836e2\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\24.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="8dd49930e4f9dde1a42d37e362b9fea8b1b69c0d">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-cardview-v7-24.0.0_000066f743947c268c7220be9ddfc7309b471a17\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.github.zhaokaiqiang.klog\library\1.5.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="b0320408c54f5124a881ab10ee27a10d3fb73de8">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.zhaokaiqiang.klog-library-1.5.0_b789c062c7650c8c4b4ddef215d5660e6523fd62\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\fanie\.gradle\caches\modules-2\files-2.1\com.github.Raizlabs.DBFlow\dbflow-core\3.1.1\f205bcc63da15f536f333e1c82de622fdbb35956\dbflow-core-3.1.1.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="f205bcc63da15f536f333e1c82de622fdbb35956">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\dbflow-core-3.1.1_efbd4d3a5bb100f4bcfa3a63e2d5705ebebc18d8\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\design\24.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="fc29308a7a8f6d4407b34634eb48fb8b817f9b23">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-24.0.0_6f06b2869575727f9d517c68dd4cee7083593623\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.0.0_10164cc0305759f84461334abfbcf01d4edb97b1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\me.srodrigo\androidhintspinner\1.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="2df3ec030275f4d1f940012b325bbd6fdc46d598">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\me.srodrigo-androidhintspinner-1.0.0_e53a632642d3c510c6081ed920552fb0d064dd44\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\2.1.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\2.1.0\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="a2af9c72ccaa4c5c049b500ca6ea664a4ce1f7d4">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\de.hdodenhof-circleimageview-2.1.0_d2411a0475ea1b361c9b70710503eafca62bffb7\classes.dex" />
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\de.hdodenhof-circleimageview-2.1.0_d1ecbceb35ed3d88bc90cc7b24393a83d45bc7fd.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.0.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.Raizlabs.DBFlow\dbflow-kotlinextensions\3.1.1\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.0.0_c90f572d602513711a5514994da0f36dffad58f9\classes.dex" />
+        sha1="6bcfdb1a4c08cc650593fc5b3f86ee11304da3f2">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.Raizlabs.DBFlow-dbflow-kotlinextensions-3.1.1_d084178671e29c3db4cd9174ab618b899402eb04.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.0.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\1.0.2\22063f19bfd8e50f21fc310842a91ff5b31bb272\kotlin-stdlib-1.0.2.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.0.0_7e5586a56e5688cb4d587efc24e662e9e316fa47\classes.dex" />
+        sha1="22063f19bfd8e50f21fc310842a91ff5b31bb272">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\kotlin-stdlib-1.0.2_124b845cd62c39cb90bf6ea903059ece675706df.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.daimajia.swipelayout\library\1.2.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="e84b30031d4bab89a2b5c45af4eb9213828524dd">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.daimajia.swipelayout-library-1.2.0_7fc5e76255e772b314ef118c85941ac434f81c53\classes.dex" />
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\picasso-2.5.2_cf00468de0c7632dd7cffebefc9f158d86e5bf15.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.0.0_b541de6bdabe9852e82aef2d57d467025989c67c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\2.0.3\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\2.0.3\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="052802ed198178e7133de387fbc87d3f2998482a">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.rengwuxian.materialedittext-library-2.0.3_689e3a7a6e75bdb8dd114bc2cf6fc041fd5d6850\classes.dex" />
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.rengwuxian.materialedittext-library-2.0.3_63c334c484c2ffbca73e067c218759a3b78f0369.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\Users\fanie\AppData\Local\Android\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_57d3210c2d2e567bcb6c320ac72a0d42311261c9\classes.dex" />
+        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.0.0_b919e3771a45dfabce8ae8ec3022d2666f6b3ca7.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.weiwangcn.betterspinner\library-material\1.1.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.itextpdf.tool\xmlworker\5.5.8\76af6723aab518045cf03f07520a51a8d54f65c9\xmlworker-5.5.8.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="8d8c5463a1a50691e2cf66cd7ce4751c8545b584">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.weiwangcn.betterspinner-library-material-1.1.0_27a17ea0c3365c71e6b42b6fab7741ba6557b837\classes.dex" />
+        sha1="76af6723aab518045cf03f07520a51a8d54f65c9">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\xmlworker-5.5.8_50e7fc482794e1c09d89c2d85e1d339081a0e976.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.github.Raizlabs.DBFlow\dbflow\3.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="23.0.3"
-        sha1="58342b97007b49e4a536bdd30b9c3928be81ae59">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.Raizlabs.DBFlow-dbflow-3.1.1_f0771ddb310e8b3fc59426f789f05aabcb96a4b0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\net.zetetic\android-database-sqlcipher\3.5.1\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\net.zetetic\android-database-sqlcipher\3.5.1\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="82e052d6fb37e582997668005a8a1264dffe57ea">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\net.zetetic-android-database-sqlcipher-3.5.1_e6ce9853465d66ada9f6e6e0269db24ffe37e98a\classes.dex" />
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\net.zetetic-android-database-sqlcipher-3.5.1_7c9d740ebad5ca8a50755639264f23de255016d7.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.daimajia.swipelayout\library\1.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="e84b30031d4bab89a2b5c45af4eb9213828524dd">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.daimajia.swipelayout-library-1.2.0_bbe45be030e38a4c962d3f858161b39f559d4883.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="894922f67adeaaef51f077a29e315da21a3382d3">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-24.0.0_5a6db9616261c5791dbe6e78601af7b4a50aea5b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.github.Raizlabs.DBFlow\dbflow-core\3.1.1\f205bcc63da15f536f333e1c82de622fdbb35956\dbflow-core-3.1.1.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="f205bcc63da15f536f333e1c82de622fdbb35956">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\dbflow-core-3.1.1_050be23872521627fc3f3b672b152e6043cb4e7f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\me.srodrigo\androidhintspinner\1.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="2df3ec030275f4d1f940012b325bbd6fdc46d598">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\me.srodrigo-androidhintspinner-1.0.0_499dd187197b09ed9021aae2510d182c5452f5b8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_b0f436d4e04d95f35184399f7d8000cec245fd66\classes.dex" />
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-8.4.0_8fbf24d70765fb81b5f62348afd074ebf9725888.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.0.0\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="e13f21459d1a80c7829c18a226973794f9b4ce75">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_9146e1569080a980855b4ea9944c729cddb471e4\classes.dex" />
+        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.0.0_e948e706caf8090a6b28c05ef8a8e9e1b7f44a4e.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\durvil\Maisonier1\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.4.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.itextpdf\itextpdf\5.5.8\329e8b0c76b3265cea48e746ac794eaee6828b7b\itextpdf-5.5.8.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="329e8b0c76b3265cea48e746ac794eaee6828b7b">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\itextpdf-5.5.8_7f208ae59e1aa3eda063cd9c6b4e7a510aac0f17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\6.1.0\63735f48b82bcd24cdd33821342428252eb1ca5a\butterknife-6.1.0.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="63735f48b82bcd24cdd33821342428252eb1ca5a">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\butterknife-6.1.0_8716dad0a84c71b2b4273c34b4815239e5cc80ea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.lawloretienne\imagegallery\0.0.15\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="317aae484ddf1429dfb0be832f0a133e906a2f9a">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.lawloretienne-imagegallery-0.0.15_2dbfee60128da90dcd39995c6953aaa79400a39c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="8dd49930e4f9dde1a42d37e362b9fea8b1b69c0d">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-24.0.0_b3df8b8c69ef3f40fac41d70bc38ce8201c9b49b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.0-alpha4\constraint-layout-solver-1.0.0-alpha4.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="a882fef6a6b9e3efbb0b6b001895a5fc7c35b391">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.0-alpha4_75d2590c4e3a8194de3f73e2406ae046f7aff9bc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.zhaokaiqiang.klog\library\1.5.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="b0320408c54f5124a881ab10ee27a10d3fb73de8">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.zhaokaiqiang.klog-library-1.5.0_9f00ec7764dfee024fda00185b07c4f747c0cd14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\design\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="fc29308a7a8f6d4407b34634eb48fb8b817f9b23">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-design-24.0.0_d7a247fcbe4aad0ad036fe5c7669c98fa406be45.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\library-2.4.0_ce633b3278c0c93185652d9494d88058a28e39be.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.clans\fab\1.6.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="1c3b9743fe8bb166a90a7e98b9b9f1f8021d80cd">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.clans-fab-1.6.4_ff9d8626eed618fa12bb1a06a0362861fc7d1686.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.Raizlabs.DBFlow\dbflow\3.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="58342b97007b49e4a536bdd30b9c3928be81ae59">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.Raizlabs.DBFlow-dbflow-3.1.1_2786c9c6bbfc20a0be4785dffd4eaec8a00918e8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.0.0_165c6e4101229fe040f7c7bad8bcfe0d68aaec71.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\support-annotations-24.0.0_72e7c929aa3d7e1576315995398854997f5a049f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\com.itextpdf\itext-pdfa\5.5.8\714c04d62c114b989aec4f4fe3cc210ab7138c2e\itext-pdfa-5.5.8.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="714c04d62c114b989aec4f4fe3cc210ab7138c2e">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\itext-pdfa-5.5.8_bebb2b69da2c0906f27895c3686a6e7505a6f19d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-appindexing-8.4.0_5cf647fb1ba26ab0082f2ae00683b7270b9c0a55.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.markomilos\paginate\0.5.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="239bbc360f222b90822c6f85f6ff203d57763382">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.github.markomilos-paginate-0.5.1_19c1cc099243f3665b4826930eac472d51a21e8f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.weiwangcn.betterspinner\library-material\1.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="8d8c5463a1a50691e2cf66cd7ce4751c8545b584">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.weiwangcn.betterspinner-library-material-1.1.0_fd67c72ace7f2a2d25eeffa1a7d172550fae07ac.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.0-alpha4\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="affe29a90a2a709bfd2b8d6411aa99c05a2be96f">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support.constraint-constraint-layout-1.0.0-alpha4_7e35e19ae1473995b3f67e658d78647eccbe4963.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.4.0\jars\classes.jar"
+        jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
-        <dex dex="D:\durvil\Maisonier1\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.4.0_535b1aae972998cfb0416a96f254ab22f47cbab4\classes.dex" />
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-8.4.0_af7e78cb89bae18b83ae7eb9ad5fe398d2dc1de1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\palette-v7\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="734e80dffea7bd76c18ae256822a124c30d85850">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-palette-v7-24.0.0_5182bc8cd0b36b9843e2bd1500eaabb5ef5d7159.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\internal_impl-24.0.0_12bf54c95d7a8aec2875b6b599125992a471d48d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-runtime\1.0.2\8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55\kotlin-runtime-1.0.2.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\kotlin-runtime-1.0.2_1b381019778a6ba1692aef35dbc764235880526f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.0.0_6f42efcc22ab0efebc0959ab175e076994448df6.jar" />
     </item>
 
 </items>

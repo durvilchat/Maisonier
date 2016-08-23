@@ -83,7 +83,6 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
     FloatingActionButton myfab_main_btn;
     Animation animation;
     ImageView photo;
-    DatePicker datePicker;
     Button changeDate;
     Bitmap thePic = null;
     Habitant h = null;
@@ -283,7 +282,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         final HintSpinner logementHint = new HintSpinner<>(
                 logement,
-                new HintAdapter<Logement>(context, "Logement ", Logement.findAll()),
+                new HintAdapter<Logement>(context, "Logement ", Logement.findLogementDispo()),
                 new HintSpinner.Callback<Logement>() {
 
 
@@ -597,7 +596,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
         final HintSpinner logementHint = new HintSpinner<>(
                 logement,
-                new HintAdapter<Logement>(context, "Logement ", Logement.findAll()),
+                new HintAdapter<Logement>(context, "Logement ", Logement.findLogementDispo()),
                 new HintSpinner.Callback<Logement>() {
 
 

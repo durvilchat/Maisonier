@@ -62,7 +62,7 @@ public class ConsommationEau extends BaseModel {
             references = {@ForeignKeyReference(columnName = "consommationeau_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<ConsommationEau> consommationEau;
 
     @Column
@@ -70,7 +70,7 @@ public class ConsommationEau extends BaseModel {
             references = {@ForeignKeyReference(columnName = "habitant_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Habitant> habitant;
 
     @Column
@@ -78,7 +78,7 @@ public class ConsommationEau extends BaseModel {
             references = {@ForeignKeyReference(columnName = "logement_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Logement> logement;
 
     @Column
@@ -86,7 +86,7 @@ public class ConsommationEau extends BaseModel {
             references = {@ForeignKeyReference(columnName = "mois_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Mois> mois;
 
     @Column
@@ -94,7 +94,7 @@ public class ConsommationEau extends BaseModel {
             references = {@ForeignKeyReference(columnName = "parametre_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Parametre> parametre;
 
     public ConsommationEau() {

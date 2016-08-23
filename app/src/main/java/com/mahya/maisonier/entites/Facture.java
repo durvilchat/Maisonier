@@ -49,7 +49,7 @@ public class Facture extends BaseModel {
             references = {@ForeignKeyReference(columnName = "habitant_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Habitant> habitant;
 
 
@@ -59,7 +59,7 @@ public class Facture extends BaseModel {
             references = {@ForeignKeyReference(columnName = "mois_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Mois> mois;
 
     public Facture() {

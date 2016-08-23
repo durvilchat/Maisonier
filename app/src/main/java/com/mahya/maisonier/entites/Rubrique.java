@@ -61,7 +61,7 @@ public class Rubrique extends BaseModel {
             references = {@ForeignKeyReference(columnName = "articlebail_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<ArticleBail> articleBail;
 
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "rubrique")

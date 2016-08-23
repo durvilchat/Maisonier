@@ -50,7 +50,7 @@ public class Privilege extends BaseModel {
             references = {@ForeignKeyReference(columnName = "hierarchie_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Privilege> hierarchie;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "privilege")
     List<RolePrivilege> rolePrivilegeList;

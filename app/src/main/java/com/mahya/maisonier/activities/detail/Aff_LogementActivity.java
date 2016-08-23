@@ -45,6 +45,7 @@ public class Aff_LogementActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        initView();
         int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
@@ -60,7 +61,7 @@ public class Aff_LogementActivity extends AppCompatActivity {
             // PrixActuel.setText(String.valueOf(logement.getBatiment().load().));
         }
 
-        initView();
+
 
     }
 

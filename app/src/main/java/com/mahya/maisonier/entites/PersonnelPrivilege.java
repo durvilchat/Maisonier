@@ -49,7 +49,7 @@ public class PersonnelPrivilege extends BaseModel {
             references = {@ForeignKeyReference(columnName = "personnel_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Personnel> personnel;
 
 
@@ -58,7 +58,7 @@ public class PersonnelPrivilege extends BaseModel {
             references = {@ForeignKeyReference(columnName = "privilege_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Privilege> privilege;
 
     @Column
@@ -66,7 +66,7 @@ public class PersonnelPrivilege extends BaseModel {
             references = {@ForeignKeyReference(columnName = "role_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Role> role;
 
     public PersonnelPrivilege() {

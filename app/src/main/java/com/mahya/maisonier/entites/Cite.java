@@ -68,7 +68,7 @@ public class Cite extends BaseModel {
             references = {@ForeignKeyReference(columnName = "bailleur_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Bailleur> bailleur;
 
     public Cite() {

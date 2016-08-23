@@ -41,7 +41,7 @@ public class PhotoLogement extends BaseModel {
     @ForeignKey(
             references = {@ForeignKeyReference(columnName = "logement_id",
                     columnType = Integer.class, foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Logement> logement;
 
     public PhotoLogement() {

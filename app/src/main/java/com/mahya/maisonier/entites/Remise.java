@@ -39,7 +39,7 @@ public class Remise extends BaseModel {
             references = {@ForeignKeyReference(columnName = "loyer_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Loyer> loyer;
 
     @Column
@@ -47,7 +47,7 @@ public class Remise extends BaseModel {
             references = {@ForeignKeyReference(columnName = "parametre_id",
                     columnType = Integer.class,
                     foreignKeyColumnName = "id")},
-            saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            saveForeignKeyModel = false, onDelete = ForeignKeyAction.NO_ACTION)
     ForeignKeyContainer<Parametre> parametre;
 
     public Remise() {
