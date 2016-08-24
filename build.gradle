@@ -16,6 +16,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'http://raw.github.com/bassaer/ChatMessageView/master/repository' }
         maven { url "https://www.jitpack.io" }
     }
 }

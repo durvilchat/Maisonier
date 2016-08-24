@@ -9,4 +9,13 @@
     tools:showIn="@layout/app_bar_main">
 
 
+    <Button
+        android:text="SMS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="bien"
+        android:id="@+id/sms" />
 </RelativeLayout>

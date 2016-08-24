@@ -19,7 +19,10 @@ package com.mahya.maisonier.utils.content;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
+
+import com.mahya.maisonier.utils.Constants;
 
 /**
  * This class encapsulates a content item. Referencing the content's type, and the differing way
@@ -65,7 +68,7 @@ public class ContentItem {
     public Uri getContentUri() {
         if (!TextUtils.isEmpty(contentAssetFilePath)) {
             // If this content has an asset, then return a AssetProvider Uri
-            return Uri.parse("content://" + AssetProvider.CONTENT_URI + "/" + contentAssetFilePath);
+            return Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch  + contentAssetFilePath);
         } else {
             return null;
         }

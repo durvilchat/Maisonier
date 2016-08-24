@@ -39,21 +39,21 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.1.1_66a236435c27feef583db663c388fb4ffa1976ef.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\2.0.3\jars\classes.jar"
         jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="052802ed198178e7133de387fbc87d3f2998482a">
         <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.rengwuxian.materialedittext-library-2.0.3_63c334c484c2ffbca73e067c218759a3b78f0369.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.0.0_b919e3771a45dfabce8ae8ec3022d2666f6b3ca7.jar" />
     </item>
     <item
         is-multidex="false"
@@ -111,21 +111,21 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.1.1_a5071c5b6a53a32eb07d7305617d4029103aa19e.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
         jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
         <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-8.4.0_8fbf24d70765fb81b5f62348afd074ebf9725888.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.0.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.0.0_e948e706caf8090a6b28c05ef8a8e9e1b7f44a4e.jar" />
     </item>
     <item
         is-multidex="false"
@@ -174,6 +174,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\internal_impl-24.1.1_94ef0bd8788d640359d85895c2295f0874a516e4.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.zhaokaiqiang.klog\library\1.5.0\jars\classes.jar"
         jumboMode="false"
         optimize="false"
@@ -201,6 +210,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="f62e763609f65e47dc6c498760a4accf02776788">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.1.1_c61c6f7a0fd7c02403ba65713a95b275be92c8ec.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.github.clans\fab\1.6.4\jars\classes.jar"
         jumboMode="false"
         optimize="false"
@@ -219,21 +237,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.0.0\jars\classes.jar"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\jp.bassaer.chatmessageview\chatmessageview\1.0.0\jars\classes.jar"
         jumboMode="false"
         optimize="false"
         revision="23.0.3"
-        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.0.0_165c6e4101229fe040f7c7bad8bcfe0d68aaec71.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\LARUMEUR\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\support-annotations-24.0.0_72e7c929aa3d7e1576315995398854997f5a049f.jar" />
+        sha1="6742b98834e2aade7b378f6c30e676d90a7a4786">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\jp.bassaer.chatmessageview-chatmessageview-1.0.0_9d124acc79a1771237396136ef5bedb5cf9f1778.jar" />
     </item>
     <item
         is-multidex="false"
@@ -273,6 +282,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\LARUMEUR\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.1.1\support-annotations-24.1.1.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\support-annotations-24.1.1_ddfc55856b42677b2e982aac54d0fc1fc43f418f.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.0-alpha4\jars\classes.jar"
         jumboMode="false"
         optimize="false"
@@ -291,6 +309,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="false"
+        revision="23.0.3"
+        sha1="1256c10604bb098490eab070d76754ac5ceab35c">
+        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.1.1_caa1860c937153f25b52fbecba2ce3d7f56c3c0e.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\palette-v7\24.0.0\jars\classes.jar"
         jumboMode="false"
         optimize="false"
@@ -300,30 +327,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\internal_impl-24.0.0_12bf54c95d7a8aec2875b6b599125992a471d48d.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\LARUMEUR\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-runtime\1.0.2\8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55\kotlin-runtime-1.0.2.jar"
         jumboMode="false"
         optimize="false"
         revision="23.0.3"
         sha1="8ec2d49a780ddba5e9b6860a72969e4d5bbc0c55">
         <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\kotlin-runtime-1.0.2_1b381019778a6ba1692aef35dbc764235880526f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.0.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.0.0_6f42efcc22ab0efebc0959ab175e076994448df6.jar" />
     </item>
 
 </items>

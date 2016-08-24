@@ -2,11 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/pic"
-        android:icon="@drawable/ic_photo_camera_white_24dp"
+        android:icon="@drawable/ic_add_a_photo"
         android:title="ajouter une photo"
         android:visible="false" />
     <item
+        android:id="@+id/print"
+        android:icon="@drawable/ic_print"
+        android:title="Imprimer"
+        android:visible="false" />
+    <item
         android:id="@+id/menu_supp"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_delete_white_24dp"
         android:title="Supprimer" />
 </menu>

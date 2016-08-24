@@ -39,7 +39,7 @@ dependencies {
 
     compile 'com.itextpdf:itext-pdfa:5.5.8'
     compile 'com.itextpdf.tool:xmlworker:5.5.8'
-
+    compile 'jp.bassaer.chatmessageview:chatmessageview:1.0.0'
     compile 'com.github.lawloretienne:imagegallery:0.0.15'
     compile "com.android.support:palette-v7:24.0.0"
     compile 'com.squareup.picasso:picasso:2.5.2'

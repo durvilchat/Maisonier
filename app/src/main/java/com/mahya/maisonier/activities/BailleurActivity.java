@@ -647,36 +647,6 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
         }
     }
 
-    public void call(List<String> contact) {
-        ArrayAdapter<String> stringArrayAdapter;
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.call);
-        final ListView listView = (ListView) dialog.findViewById(R.id.call);
-        stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, contact);
-        listView.setAdapter(stringArrayAdapter);
-        dialog.show();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + listView.getItemAtPosition(i).toString()));//change the number
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
-                dialog.dismiss();
-            }
-        });
-
-
-    }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
