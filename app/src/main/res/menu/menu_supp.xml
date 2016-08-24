@@ -9,7 +9,7 @@
         android:id="@+id/print"
         android:icon="@drawable/ic_print"
         android:title="Imprimer"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/menu_supp"
         android:icon="@drawable/ic_delete_white_24dp"

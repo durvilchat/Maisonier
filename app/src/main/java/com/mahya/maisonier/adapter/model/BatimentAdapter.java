@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.mahya.maisonier.GalleryDemoActivity;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BatimentActivity;
 import com.mahya.maisonier.activities.detail.Aff_BatimentActivity;
@@ -182,8 +183,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         viewHolder.imgBat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(mContext, "bonjour", Toast.LENGTH_SHORT).show();
+                ((BatimentActivity) mContext).startActivity(new Intent(mContext, GalleryDemoActivity.class));
             }
 
 

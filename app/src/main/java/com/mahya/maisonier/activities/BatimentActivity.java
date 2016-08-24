@@ -60,7 +60,7 @@ import java.util.List;
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
-public class BatimentActivity extends BaseActivity implements ImageGalleryAdapter.ImageThumbnailLoader, FullScreenImageGalleryAdapter.FullScreenImageLoader, CrudActivity, SearchView.OnQueryTextListener,
+public class BatimentActivity extends BaseActivity implements  CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
 
@@ -87,11 +87,6 @@ public class BatimentActivity extends BaseActivity implements ImageGalleryAdapte
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         super.setContentView(R.layout.activity_model1);
 
-
-        ImageGalleryActivity.setImageThumbnailLoader(this);
-        ImageGalleryFragment.setImageThumbnailLoader(this);
-        FullScreenImageGalleryActivity.setFullScreenImageLoader(this);
-        paletteColorType = PaletteColorType.VIBRANT;
         setTitle("Batiment");
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -461,167 +456,7 @@ public class BatimentActivity extends BaseActivity implements ImageGalleryAdapte
         return filteredModelList;
     }
 
-    // region ImageGalleryAdapter.ImageThumbnailLoader Methods
-    @Override
-    public void loadImageThumbnail(ImageView iv, String imageUrl, int dimension) {
-        if (!TextUtils.isEmpty(imageUrl)) {
-            Picasso.with(iv.getContext())
-                    .load(imageUrl)
-                    .resize(dimension, dimension)
-                    .centerCrop()
-                    .into(iv);
-        } else {
-            iv.setImageDrawable(null);
-        }
-    }
-    // endregion
 
-    // region FullScreenImageGalleryAdapter.FullScreenImageLoader
-    @Override
-    public void loadFullScreenImage(final ImageView iv, String imageUrl, int width, final LinearLayout bgLinearLayout) {
-        if (!TextUtils.isEmpty(imageUrl)) {
-            Picasso.with(iv.getContext())
-                    .load(imageUrl)
-                    .resize(width, 0)
-                    .into(iv, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette palette) {
-                                    applyPalette(palette, bgLinearLayout);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-        } else {
-            iv.setImageDrawable(null);
-        }
-    }
-    // endregion
-
-    // region Helper Methods
-    private void applyPalette(Palette palette, LinearLayout bgLinearLayout) {
-        int bgColor = getBackgroundColor(palette);
-        if (bgColor != -1)
-            bgLinearLayout.setBackgroundColor(bgColor);
-    }
-
-    private int getBackgroundColor(Palette palette) {
-        int bgColor = -1;
-
-        int vibrantColor = palette.getVibrantColor(0x000000);
-        int lightVibrantColor = palette.getLightVibrantColor(0x000000);
-        int darkVibrantColor = palette.getDarkVibrantColor(0x000000);
-
-        int mutedColor = palette.getMutedColor(0x000000);
-        int lightMutedColor = palette.getLightMutedColor(0x000000);
-        int darkMutedColor = palette.getDarkMutedColor(0x000000);
-
-        if (paletteColorType != null) {
-            switch (paletteColorType) {
-                case VIBRANT:
-                    if (vibrantColor != 0) { // primary option
-                        bgColor = vibrantColor;
-                    } else if (lightVibrantColor != 0) { // fallback options
-                        bgColor = lightVibrantColor;
-                    } else if (darkVibrantColor != 0) {
-                        bgColor = darkVibrantColor;
-                    } else if (mutedColor != 0) {
-                        bgColor = mutedColor;
-                    } else if (lightMutedColor != 0) {
-                        bgColor = lightMutedColor;
-                    } else if (darkMutedColor != 0) {
-                        bgColor = darkMutedColor;
-                    }
-                    break;
-                case LIGHT_VIBRANT:
-                    if (lightVibrantColor != 0) { // primary option
-                        bgColor = lightVibrantColor;
-                    } else if (vibrantColor != 0) { // fallback options
-                        bgColor = vibrantColor;
-                    } else if (darkVibrantColor != 0) {
-                        bgColor = darkVibrantColor;
-                    } else if (mutedColor != 0) {
-                        bgColor = mutedColor;
-                    } else if (lightMutedColor != 0) {
-                        bgColor = lightMutedColor;
-                    } else if (darkMutedColor != 0) {
-                        bgColor = darkMutedColor;
-                    }
-                    break;
-                case DARK_VIBRANT:
-                    if (darkVibrantColor != 0) { // primary option
-                        bgColor = darkVibrantColor;
-                    } else if (vibrantColor != 0) { // fallback options
-                        bgColor = vibrantColor;
-                    } else if (lightVibrantColor != 0) {
-                        bgColor = lightVibrantColor;
-                    } else if (mutedColor != 0) {
-                        bgColor = mutedColor;
-                    } else if (lightMutedColor != 0) {
-                        bgColor = lightMutedColor;
-                    } else if (darkMutedColor != 0) {
-                        bgColor = darkMutedColor;
-                    }
-                    break;
-                case MUTED:
-                    if (mutedColor != 0) { // primary option
-                        bgColor = mutedColor;
-                    } else if (lightMutedColor != 0) { // fallback options
-                        bgColor = lightMutedColor;
-                    } else if (darkMutedColor != 0) {
-                        bgColor = darkMutedColor;
-                    } else if (vibrantColor != 0) {
-                        bgColor = vibrantColor;
-                    } else if (lightVibrantColor != 0) {
-                        bgColor = lightVibrantColor;
-                    } else if (darkVibrantColor != 0) {
-                        bgColor = darkVibrantColor;
-                    }
-                    break;
-                case LIGHT_MUTED:
-                    if (lightMutedColor != 0) { // primary option
-                        bgColor = lightMutedColor;
-                    } else if (mutedColor != 0) { // fallback options
-                        bgColor = mutedColor;
-                    } else if (darkMutedColor != 0) {
-                        bgColor = darkMutedColor;
-                    } else if (vibrantColor != 0) {
-                        bgColor = vibrantColor;
-                    } else if (lightVibrantColor != 0) {
-                        bgColor = lightVibrantColor;
-                    } else if (darkVibrantColor != 0) {
-                        bgColor = darkVibrantColor;
-                    }
-                    break;
-                case DARK_MUTED:
-                    if (darkMutedColor != 0) { // primary option
-                        bgColor = darkMutedColor;
-                    } else if (mutedColor != 0) { // fallback options
-                        bgColor = mutedColor;
-                    } else if (lightMutedColor != 0) {
-                        bgColor = lightMutedColor;
-                    } else if (vibrantColor != 0) {
-                        bgColor = vibrantColor;
-                    } else if (lightVibrantColor != 0) {
-                        bgColor = lightVibrantColor;
-                    } else if (darkVibrantColor != 0) {
-                        bgColor = darkVibrantColor;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return bgColor;
-    }
 
 
     private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {

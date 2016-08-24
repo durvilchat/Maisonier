@@ -197,6 +197,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
                     } else {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
+
                     }
                 } catch (android.database.sqlite.SQLiteConstraintException e) {
 

@@ -452,7 +452,7 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
-          //  call = (ImageButton) itemView.findViewById(R.id.call);
+            call = (ImageButton) itemView.findViewById(R.id.call);
             detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
             this.listener = listener;
