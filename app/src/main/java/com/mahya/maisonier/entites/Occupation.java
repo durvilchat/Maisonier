@@ -398,6 +398,10 @@ public class Occupation extends BaseModel {
         this.forfaitElectricte = forfaitElectricte;
     }
 
+    public static List<Occupation> getOccupations() {
+        return occupations;
+    }
+
     @Override
     public String toString() {
         return getLogement().load().getReference();

@@ -2,9 +2,6 @@ package com.mahya.maisonier.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +10,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.transition.ChangeTransform;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,20 +21,15 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.etiennelawlor.imagegallery.library.ImageGalleryFragment;
-import com.etiennelawlor.imagegallery.library.activities.FullScreenImageGalleryActivity;
-import com.etiennelawlor.imagegallery.library.activities.ImageGalleryActivity;
-import com.etiennelawlor.imagegallery.library.adapters.FullScreenImageGalleryAdapter;
-import com.etiennelawlor.imagegallery.library.adapters.ImageGalleryAdapter;
 import com.etiennelawlor.imagegallery.library.enums.PaletteColorType;
 import com.github.clans.fab.FloatingActionButton;
+import com.mahya.maisonier.GalleryDemoActivity;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.BatimentAdapter;
@@ -51,16 +41,16 @@ import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
-public class BatimentActivity extends BaseActivity implements  CrudActivity, SearchView.OnQueryTextListener,
+public class BatimentActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
 
 
@@ -119,6 +109,7 @@ public class BatimentActivity extends BaseActivity implements  CrudActivity, Sea
         });
 
     }
+
 
     private void initView() {
 
@@ -233,25 +224,45 @@ public class BatimentActivity extends BaseActivity implements  CrudActivity, Sea
 
     @Override
     public void detail(int i) {
+        {
+            TextView Code;
+            TextView Nom;
+            TextView Cite;
+            CheckBox Etat;
+            final Batiment batiment = SQLite.select().from(Batiment.class).where(Batiment_Table.id.eq(i)).querySingle();
+            final Dialog dialog = new Dialog(context);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.aff_batiment);
+            // Initialisation du formulaire
+
+            Code = (TextView) dialog.findViewById(R.id.Code);
+            Nom = (TextView) dialog.findViewById(R.id.Nom);
+            Cite = (TextView) dialog.findViewById(R.id.Cite);
+            Etat = (CheckBox) dialog.findViewById(R.id.Etat);
+           final Button fermer  = (Button) dialog.findViewById(R.id.fermer);
+
+
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Code.setText(batiment.getCode());
+            Nom.setText(batiment.getNom());
+            Cite.setText(batiment.getCite().load().getNomCite());
+            dialog.show();
+            fermer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    dialog.dismiss();
+                }
+            });
+        }
 
     }
 
-
-    public void photo(ArrayList<String> images) {
-        Intent intent = new Intent(this, ImageGalleryActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(ImageGalleryActivity.KEY_IMAGES, images);
-        bundle.putString(ImageGalleryActivity.KEY_TITLE, "Unsplash Images");
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mAdapter = null;
-        //FlowManager.destroy();
-        // Delete.tables(Batiment.class);
     }
 
     @Override
@@ -457,8 +468,6 @@ public class BatimentActivity extends BaseActivity implements  CrudActivity, Sea
     }
 
 
-
-
     private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {
         @SuppressWarnings("unused")
         private final String TAG = ActionModeCallback.class.getSimpleName();
@@ -502,7 +511,9 @@ public class BatimentActivity extends BaseActivity implements  CrudActivity, Sea
                             .setNegativeButton(android.R.string.no, null).show();
 
                     return true;
-                case R.id.add:
+                case R.id.pic:
+
+                    new GalleryDemoActivity().film(1);
 
                 default:
                     return false;

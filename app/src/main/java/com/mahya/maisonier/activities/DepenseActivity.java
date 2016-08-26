@@ -376,11 +376,50 @@ public class DepenseActivity extends BaseActivity implements CrudActivity, Searc
 
     }
 
+
     @Override
     public void detail(final int id) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.aff_depense);
+        TextView Cite;
+        TextView Batiment;
+        TextView Mois;
+        TextView Bailleur;
+        TextView Montant;
+        TextView Description;
+        TextView Designation;
+        TextView DateEnregistrement;
 
+        Cite = (TextView) dialog.findViewById(R.id.Cite);
+        Batiment = (TextView) dialog.findViewById(R.id.Batiment);
+        Bailleur = (TextView) dialog.findViewById(R.id.Bailleur);
+        Montant = (TextView) dialog.findViewById(R.id.Montant);
+        Description = (TextView) dialog.findViewById(R.id.Description);
+        Designation = (TextView) dialog.findViewById(R.id.Designation);
+        DateEnregistrement = (TextView) dialog.findViewById(R.id.DateEnregistrement);
+        final Depense depense = SQLite.select().from(Depense.class).where(Depense_Table.id.eq(id)).querySingle();
 
-    }
+        // Initialisation du formulaire
+        Button fermer = (Button) dialog.findViewById(R.id.fermer);
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Cite.setText(depense.getBatiment().load().getCite().load().getNomCite());
+        Batiment.setText(depense.getBatiment().load().getNom());
+        //  Mois.setText(depense.getMois().load().getMois());
+        Bailleur.setText(depense.getBailleur().load().getNom() +" "+depense.getBailleur().load().getPrenom());
+        Montant.setText(String.valueOf(depense.getMontant()));
+        Description.setText(depense.getDescription());
+        Designation.setText(depense.getDesignation());
+        DateEnregistrement.setText(sdf.format(depense.getDateEnregistrement()));
+        fermer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+
+}
 
     @Override
     public void modifier(final int id) {
@@ -531,59 +570,59 @@ public class DepenseActivity extends BaseActivity implements CrudActivity, Searc
     }
 
 
-    private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {
-        @SuppressWarnings("unused")
-        private final String TAG = ActionModeCallback.class.getSimpleName();
+private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {
+    @SuppressWarnings("unused")
+    private final String TAG = ActionModeCallback.class.getSimpleName();
 
-        @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+    @Override
+    public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
 
-            mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
-            return true;
-        }
+        mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
+        return true;
+    }
 
-        @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
-            return false;
-        }
+    @Override
+    public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        return false;
+    }
 
 
-        @Override
-        public boolean onActionItemClicked(final android.support.v7.view.ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.menu_supp:
-                    new AlertDialog.Builder(context)
-                            .setTitle("Avertissement")
-                            .setMessage("Voulez vous vraimment supprimer ?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    @Override
+    public boolean onActionItemClicked(final android.support.v7.view.ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_supp:
+                new AlertDialog.Builder(context)
+                        .setTitle("Avertissement")
+                        .setMessage("Voulez vous vraimment supprimer ?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    try {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                try {
 
-                                        mAdapter.removeItems(mAdapter.getSelectedItems());
-                                        mode.finish();
+                                    mAdapter.removeItems(mAdapter.getSelectedItems());
+                                    mode.finish();
 
-                                    } catch (Exception e) {
-
-                                    }
-
+                                } catch (Exception e) {
 
                                 }
-                            })
-                            .setNegativeButton(android.R.string.no, null).show();
 
-                    return true;
 
-                default:
-                    return false;
-            }
-        }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
 
-        @Override
-        public void onDestroyActionMode(android.support.v7.view.ActionMode mode) {
-            mAdapter.clearSelection();
-            actionMode = null;
+                return true;
+
+            default:
+                return false;
         }
     }
+
+    @Override
+    public void onDestroyActionMode(android.support.v7.view.ActionMode mode) {
+        mAdapter.clearSelection();
+        actionMode = null;
+    }
+}
 }

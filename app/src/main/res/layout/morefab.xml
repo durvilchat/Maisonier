@@ -11,16 +11,4 @@
         android:layout_height="@dimen/fab_size"
         android:layout_gravity="center" />
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/myfab_main_btn"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_gravity="center"
-        android:background="@drawable/fab_selector"
-        android:cropToPadding="true"
-        android:onClick="add"
-        android:padding="2dp"
-        android:src="@drawable/ic_more_white_36dp"
-        android:stateListAnimator="@animator/fab_elevation_selector" />
-
 </FrameLayout>

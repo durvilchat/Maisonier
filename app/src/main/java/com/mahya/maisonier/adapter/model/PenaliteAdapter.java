@@ -8,15 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.activities.CiteActivity;
+import com.mahya.maisonier.activities.PenaliteActivity;
+import com.mahya.maisonier.activities.PenaliteActivity;
 import com.mahya.maisonier.entites.Penalite;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,25 +47,28 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_simple, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_compose2, parent, false);
 
         return new SimpleViewHolder(view, clickListener);
     }
 
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
-        try {/*
-            viewHolder.nom.setText(penalites.get(position).getNomCite());
-            viewHolder.email.setText(penalites.get(position).getEmail());
-            viewHolder.delai.setText(penalites.get(position).getNomCite());
-            viewHolder.tel.setText(penalites.get(position).getTels());*/
-            viewHolder.id.setText(String.valueOf(penalites.get(position).getId()));
-        } catch (Exception e) {
-
-            return;
-        }
+        viewHolder.titre1.setText(String.valueOf(penalites.get(position).getMontant()) + " F CFA  ");
+        viewHolder.titre2.setText(String.valueOf(penalites.get(position).getMontantPayer()) + " F CFA  ");
+        viewHolder.titre1.setTextColor(mContext.getResources().getColor(R.color.red));
+        viewHolder.titre2.setTextColor(mContext.getResources().getColor(R.color.green));
+        viewHolder.tilte.setTextColor(mContext.getResources().getColor(R.color.green));
+        viewHolder.tilte.setText(sdf.format(penalites.get(position).getDatePaiement()));
+        viewHolder.libele2.setText((penalites.get(position).getObservation()));
+        viewHolder.libele2.setTextColor((penalites.get(position).getObservation().equals("Complet"))?mContext.getResources().getColor(R.color.green):mContext.getResources().getColor(R.color.red));
+        viewHolder.libele1.setText(penalites.get(position).getMois().load().getMois() + " " + penalites.get(position).getMois().load().getAnnee().load().getAnnee());
+        viewHolder.desc.setVisibility(View.GONE);
+        viewHolder.libele.setText(penalites.get(position).getOccupation().load().getHabitant().load().getNom() + " " + penalites.get(position).getOccupation().load().getHabitant().load().getPrenom());
+        viewHolder.id.setText(String.valueOf(penalites.get(position).getId()));
 
 // Span the item if active
         final ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
@@ -83,8 +90,8 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof CiteActivity) {
-                    ((CiteActivity) mContext).onItemClicked(position);
+                if (mContext instanceof PenaliteActivity) {
+                    ((PenaliteActivity) mContext).onItemClicked(position);
                 }
             }
         });
@@ -93,7 +100,7 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
             @Override
             public boolean onLongClick(View view) {
 
-                ((CiteActivity) mContext).onItemLongClicked(position);
+                ((PenaliteActivity) mContext).onItemLongClicked(position);
 
                 return true;
             }
@@ -142,7 +149,7 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
             @Override
             public void onClick(View view) {
 
-                ((CiteActivity) mContext).detail(idSelect);
+                ((PenaliteActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }
         });
@@ -151,7 +158,7 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).modifier(idSelect);
+                ((PenaliteActivity) mContext).modifier(idSelect);
                 mItemManger.closeAllExcept(null);
 
 
@@ -162,7 +169,7 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CiteActivity) mContext).supprimer(idSelect);
+                ((PenaliteActivity) mContext).supprimer(idSelect);
                 mItemManger.closeAllExcept(null);
 
             }
@@ -383,31 +390,35 @@ public class PenaliteAdapter extends RecyclerSwipeAdapter<PenaliteAdapter.Simple
         SwipeLayout swipeLayout;
         ImageButton tvDelete;
         ImageButton tvEdit;
-        TextView nom;
-        TextView desc;
+        TextView tilte;
         TextView id;
         ImageButton detail;
-        TextView tel;
-        TextView email;
-
+        TextView libele;
+        TextView desc;
+        TextView libele1;
+        TextView libele2;
+        TextView titre2;
+        TextView titre1;
         View selectedOverlay;
         private OnItemClickListener listener;
 
         public SimpleViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            nom = (TextView) itemView.findViewById(R.id.libelle);
-            desc = (TextView) itemView.findViewById(R.id.titre);
-            //   tel = (TextView) itemView.findViewById(R.id.titre);
-           /* num = (TextView) itemView.findViewById(R.id.contratBailleur);
-            num = (TextView) itemView.findViewById(R.id.contratBailleur);
-            num = (TextView) itemView.findViewById(R.id.contratBailleur);*/
+            tilte = (TextView) itemView.findViewById(R.id.titre);
+            libele = (TextView) itemView.findViewById(R.id.libelle);
+            desc = (TextView) itemView.findViewById(R.id.desc);
+            libele1 = (TextView) itemView.findViewById(R.id.libelle1);
+            titre1 = (TextView) itemView.findViewById(R.id.titre1);
             id = (TextView) itemView.findViewById(R.id.idItem);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             tvDelete = (ImageButton) itemView.findViewById(R.id.tvDelete);
             tvEdit = (ImageButton) itemView.findViewById(R.id.tvEdit);
             detail = (ImageButton) itemView.findViewById(R.id.detail);
             selectedOverlay = itemView.findViewById(R.id.selected_overlay);
+            LinearLayout font = (LinearLayout) itemView.findViewById(R.id.data);
+            libele2 = (TextView) itemView.findViewById(R.id.libelle2);
+            titre2 = (TextView) itemView.findViewById(R.id.titre2);
+            font.setVisibility(View.VISIBLE);
             this.listener = listener;
 
             itemView.setOnClickListener(this);

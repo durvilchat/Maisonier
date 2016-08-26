@@ -93,6 +93,9 @@ public class DepotAdapter extends RecyclerSwipeAdapter<DepotAdapter.SimpleViewHo
 
                 if (mContext instanceof DepotActivity) {
                     ((DepotActivity) mContext).onItemClicked(position);
+                    TextView id = (TextView) v.findViewById(R.id.idItem);
+                    idSelect = Integer.parseInt(id.getText().toString());
+
                 }
             }
         });

@@ -371,6 +371,10 @@ public class Habitant extends BaseModel {
         this.consommationElectriciteList = consommationElectriciteList;
     }
 
+    public static List<Habitant> getHabitants() {
+        return habitants;
+    }
+
     @Override
     public String toString() {
         return nom + " " + prenom;

@@ -9,6 +9,7 @@ import android.support.annotation.Size;
 
 import com.mahya.maisonier.dataBase.Maisonier;
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -19,7 +20,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class TypePenalite extends BaseModel {
 
@@ -146,4 +147,8 @@ public class TypePenalite extends BaseModel {
     }
 
 
+    @Override
+    public String toString() {
+        return  libelle +" "+taux +"%";
+    }
 }

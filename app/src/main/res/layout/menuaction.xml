@@ -10,7 +10,7 @@
 
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu_labels_right"
+        android:id="@+id/menuAction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -27,23 +27,35 @@
         fab:menu_colorRipple="#62B2FF">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/print"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_print"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorPrimary"
             fab:fab_size="mini"
             fab:fab_label="Imprimer" />
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_msg"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorPrimary"
             fab:fab_size="mini"
             fab:fab_label="Sms" />
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_email"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorPrimary"
             fab:fab_size="mini"
             fab:fab_label="Email" />
 

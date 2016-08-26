@@ -83,8 +83,11 @@ public class CiteAdapter extends RecyclerSwipeAdapter<CiteAdapter.SimpleViewHold
             @Override
             public void onClick(View v) {
 
+                TextView id = (TextView) v.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof CiteActivity) {
                     ((CiteActivity) mContext).onItemClicked(position);
+                    ((CiteActivity) mContext).detail(idSelect);
                 }
             }
         });

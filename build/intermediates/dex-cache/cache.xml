@@ -165,15 +165,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\LARUMEUR\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.0-alpha4\constraint-layout-solver-1.0.0-alpha4.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="a882fef6a6b9e3efbb0b6b001895a5fc7c35b391">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.0-alpha4_75d2590c4e3a8194de3f73e2406ae046f7aff9bc.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
         jumboMode="false"
         optimize="false"
@@ -288,15 +279,6 @@
         revision="23.0.3"
         sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
         <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\support-annotations-24.1.1_ddfc55856b42677b2e982aac54d0fc1fc43f418f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\project\Maisonier\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.0-alpha4\jars\classes.jar"
-        jumboMode="false"
-        optimize="false"
-        revision="23.0.3"
-        sha1="affe29a90a2a709bfd2b8d6411aa99c05a2be96f">
-        <dex dex="D:\project\Maisonier\app\build\intermediates\pre-dexed\debug\com.android.support.constraint-constraint-layout-1.0.0-alpha4_7e35e19ae1473995b3f67e658d78647eccbe4963.jar" />
     </item>
     <item
         is-multidex="false"

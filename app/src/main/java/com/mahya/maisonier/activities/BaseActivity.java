@@ -4,6 +4,8 @@ import android.Manifest;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mahya.maisonier.utils.Constants;
+
 import java.io.File;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -17,11 +19,48 @@ public abstract class BaseActivity extends AppCompatActivity {
     private int mPreviousVisibleItem;
 
     public void getFile() {
-        file = new File(filepath, FILE_FOLDER);
+        file = new File(filepath+"/"+Constants.patch, FILE_FOLDER);
         if (!file.exists()) {
             file.mkdirs();
         }
 
+    }
+    public String getFolderBat(String folder) {
+
+        String bat="batiments";
+        File bati = new File(filepath+"/"+Constants.patch,bat );
+
+
+        if (!bati.exists()) {
+            bati.mkdirs();
+        }
+
+       File file = new File(bati.getPath(), folder);
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        return file.getPath();
+    }
+
+    public String getFolderLog(String folder) {
+
+        String log="logements";
+        File bati = new File(file.getPath(),log );
+
+
+        if (!bati.exists()) {
+            bati.mkdirs();
+        }
+
+        file = new File(bati.getPath(), folder);
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        return file.getPath();
     }
 
 

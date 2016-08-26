@@ -37,6 +37,7 @@ public class ContentItem {
     public final int contentType;
     public final int contentResourceId;
     public final String contentAssetFilePath;
+    int type;
 
     /**
      * Creates a ContentItem with the specified type, referencing a resource id.
@@ -56,20 +57,32 @@ public class ContentItem {
      * @param type - One of {@link #CONTENT_TYPE_IMAGE} or {@link #CONTENT_TYPE_TEXT}
      * @param assetFilePath - File path from the application's asset for this item's content
      */
-    public ContentItem(int type, String assetFilePath) {
+    public ContentItem(int type, String assetFilePath,int typ) {
         contentType = type;
         contentAssetFilePath = assetFilePath;
         contentResourceId = 0;
+        this.type=typ;
     }
 
     /**
      * @return Uri to the content
      */
     public Uri getContentUri() {
+
         if (!TextUtils.isEmpty(contentAssetFilePath)) {
-            // If this content has an asset, then return a AssetProvider Uri
-            return Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch  + contentAssetFilePath);
-        } else {
+            if (type==1){
+                // If this content has an asset, then return a AssetProvider Uri
+                return Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch+"batiments/"  + contentAssetFilePath);
+
+            }else if (type==2){
+                // If this content has an asset, then return a AssetProvider Uri
+                return Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch +"logements/" + contentAssetFilePath);
+
+            }else {
+                return Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + contentAssetFilePath);
+
+            }
+           } else {
             return null;
         }
     }

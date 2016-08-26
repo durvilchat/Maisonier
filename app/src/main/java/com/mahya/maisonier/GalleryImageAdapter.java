@@ -23,11 +23,13 @@ public class GalleryImageAdapter extends BaseAdapter {
 	private List<String> plotsImages;
 
 	private static ViewHolder holder;
+	int type;
 
-	public GalleryImageAdapter(Activity context, List<String> plotsImages) {
+	public GalleryImageAdapter(Activity context, List<String> plotsImages,int type) {
 
 		this.context = context;
 		this.plotsImages = plotsImages;
+		this.type=type;
 
 	}
 
@@ -68,7 +70,13 @@ public class GalleryImageAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.imageView.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + plotsImages.get(position)));
+		if (type==1){
+			holder.imageView.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch+"batiments/"+  plotsImages.get(position)));
+
+		}else if (type==2){
+			holder.imageView.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch +"logements/"+ plotsImages.get(position)));
+
+		}
 
 		holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 		holder.imageView.setLayoutParams(new Gallery.LayoutParams(150, 90));

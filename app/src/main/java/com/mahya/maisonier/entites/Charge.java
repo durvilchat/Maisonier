@@ -16,10 +16,12 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
 public class Charge extends BaseModel {
@@ -155,4 +157,25 @@ public class Charge extends BaseModel {
 
     }
 
+
+    public ForeignKeyContainer<Mois> getMois() {
+        return mois;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<TypeCharge> getTypeCharge() {
+        return typeCharge;
+    }
+
+    @Override
+    public String toString() {
+        return designation ;
+    }
+
+    public static List<Charge>findAll(){
+        return SQLite.select().from(Charge.class).queryList();
+    }
 }

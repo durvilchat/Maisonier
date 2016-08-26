@@ -23,24 +23,39 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.PenaliteAdapter;
-import com.mahya.maisonier.entites.Bailleur;
+import com.mahya.maisonier.entites.Mois;
+import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.entites.Penalite;
 import com.mahya.maisonier.entites.Penalite_Table;
 import com.mahya.maisonier.entites.TypeLogement_Table;
+import com.mahya.maisonier.entites.TypePenalite;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.srodrigo.androidhintspinner.HintAdapter;
+import me.srodrigo.androidhintspinner.HintSpinner;
+
+import static com.mahya.maisonier.utils.Utils.currentDate;
 
 public class PenaliteActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
         OnItemClickListener {
@@ -132,72 +147,160 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
         }
     }
 
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     @Override
     public void ajouter(final View view) {
         // custom dialog
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_cite);
+        dialog.setContentView(R.layout.add_penalites);
         // Initialisation du formulaire
-/*
-        final EditText nom = (EditText) dialog.findViewById(R.id.NomPenalite);
-        final EditText tel = (EditText) dialog.findViewById(R.id.Telephone);
-        final EditText email = (EditText) dialog.findViewById(R.id.Email);
-        final EditText Pcite = (EditText) dialog.findViewById(R.id.PoliceDeLaPenalite);
-        final EditText Pcont = (EditText) dialog.findViewById(R.id.PoliceDesContacts);
-        final EditText Pdesc = (EditText) dialog.findViewById(R.id.PoliceDeLaDescription);
-        final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
-        final EditText desc = (EditText) dialog.findViewById(R.id.Description);*/
 
-        ArrayAdapter<Bailleur> adapter =
-                new ArrayAdapter<Bailleur>(this, R.layout.spinner_item, Bailleur.findAll());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        //bailleur.setAdapter(adapter);
-
+        final TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final Spinner occupation = (Spinner) dialog.findViewById(R.id.Occupation);
+        final Spinner typepenalite = (Spinner) dialog.findViewById(R.id.TypeDePenalite);
+        final Spinner mois = (Spinner) dialog.findViewById(R.id.Mois);
+        final EditText Montant = (EditText) dialog.findViewById(R.id.Montant);
+        final EditText MontantPaye = (EditText) dialog.findViewById(R.id.MontantPaye);
+        final EditText DateDeDePaiement = (EditText) dialog.findViewById(R.id.DateDeDePaiement);
+        final MaterialBetterSpinner Observation = (MaterialBetterSpinner) dialog.findViewById(R.id.Observation);
+        Button dateSelectEntree = (Button) dialog.findViewById(R.id.dateSelectEntree);
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+
+        final HintSpinner logementHint = new HintSpinner<>(
+                occupation,
+                new HintAdapter<Occupation>(context, "Occupation ", com.mahya.maisonier.entites.Occupation.findAll()),
+                new HintSpinner.Callback<Occupation>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
+
+
+        final HintSpinner typePeHint = new HintSpinner<>(
+                typepenalite,
+                new HintAdapter<TypePenalite>(context, "Type de pénalité ", com.mahya.maisonier.entites.TypePenalite.findAll()),
+                new HintSpinner.Callback<TypePenalite>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, TypePenalite itemAtPosition) {
+
+
+                    }
+                });
+        typePeHint.init();
+
+        final HintSpinner MoisPeHint = new HintSpinner<>(
+                mois,
+                new HintAdapter<com.mahya.maisonier.entites.Mois>(context, "Mois ", com.mahya.maisonier.entites.Mois.findAll()),
+                new HintSpinner.Callback<Mois>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Mois itemAtPosition) {
+
+
+                    }
+                });
+        MoisPeHint.init();
+        List<String> strings = new ArrayList<>();
+        strings.add("Incomplet");
+        strings.add("Complet");
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, strings);
+        Observation.setAdapter(stringArrayAdapter);
+
+
+        dateSelectEntree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                Button changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                DateDeDePaiement.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDeDePaiement.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDeDePaiement.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+
+
+            }
+        });
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (nom.getText().toString().trim().equals("")) {
-                    nom.setError("Velliez remplir le nom");
+                if (occupation.getSelectedItemPosition() < 0) {
+                    Toast.makeText(context, " Veillez sélectionner une occupation", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (tel.getText().toString().trim().equals("")) {
-                    tel.setError("Velliez remplir le telephone");
+                if (typepenalite.getSelectedItem() == null) {
+                    Toast.makeText(context, " Veillez sélectionner un type de pénalitée", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (email.getText().toString().trim().equals("")) {
-                    email.setError("Velliez remplir le email");
+                if (mois.getSelectedItem() == null) {
+                    Toast.makeText(context, " Veillez sélectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (desc.getText().toString().trim().equals("")) {
-                    desc.setError("Velliez remplir la description");
+                if (Montant.getText().toString().trim().equals("")) {
+                    Montant.setError("Velliez remplir le montant");
                     return;
 
                 }
-                if (bailleur.getSelectedItem().toString().trim().equals("")) {
-                    // bailleur.setEr("Velliez remplir le code");
+                if (MontantPaye.getText().toString().trim().equals("")) {
+                    MontantPaye.setError("Velliez remplir le montant payé");
+                    return;
+
+                }
+                if (DateDeDePaiement.getText().toString().trim().equals("")) {
+                    DateDeDePaiement.setError("Velliez remplir la date de paimentr");
+                    return;
+
+                }
+                if (Observation.getText().toString().trim().equals("")) {
+                    Observation.setError("Velliez remplir la date de paimentr");
                     return;
 
                 }
 
-                Penalite cite = new Penalite();
-                cite.setNomPenalite(nom.getText().toString().trim());
-                cite.setTels(tel.getText().toString().trim());
-                cite.setDescription(desc.getText().toString().trim());
-                cite.setEmail(email.getText().toString().trim());
-                cite.assoBailleur((Bailleur) bailleur.getSelectedItem());
-                cite.setPolicePenalite(Double.parseDouble(Pcite.getText().toString().trim()));
-                cite.setPoliceContact(Double.parseDouble(Pcont.getText().toString().trim()));
-                cite.setPoliceDescription(Double.parseDouble(Pdesc.getText().toString().trim()));*/
+                Penalite penalite = new Penalite();
                 try {
-                    // cite.save();
+                    penalite.setDatePaiement(sdf.parse(DateDeDePaiement.getText().toString().trim()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                penalite.setMontant(Double.parseDouble(Montant.getText().toString()));
+                penalite.setMontantPayer(Double.parseDouble(MontantPaye.getText().toString()));
+                penalite.setObservation(Observation.getText().toString());
+                penalite.assoOccupation((Occupation) occupation.getSelectedItem());
+                penalite.assoMois((Mois) mois.getSelectedItem());
+                penalite.assoTypePenalite((TypePenalite) typepenalite.getSelectedItem());
+                try {
+                    penalite.save();
                     if (Penalite.findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
@@ -207,10 +310,10 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
                         tvEmptyView.setVisibility(View.GONE);
                     }
 
-                    Snackbar.make(view, "la cite a été correctement crée", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "la pénalité a été correctement crée", Snackbar.LENGTH_LONG)
 
                             .setAction("Action", null).show();
-                    // mAdapter.addItem(Penalite, 0);
+                   mAdapter.addItem(penalite, mAdapter.getItemCount()+1);
                 } catch (Exception e) {
                     Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -328,63 +431,188 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
     @Override
     public void modifier(final int id) {
 
-        final Penalite typeLogement = SQLite.select().from(Penalite.class).where(Penalite_Table.id.eq(id)).querySingle();
+        final Penalite penalite = SQLite.select().from(Penalite.class).where(Penalite_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_cite);
+        dialog.setContentView(R.layout.add_penalites);
         // Initialisation du formulaire
 
-       /* final EditText nom = (EditText) dialog.findViewById(R.id.NomPenalite);
-        final EditText tel = (EditText) dialog.findViewById(R.id.Telephone);
-        final EditText email = (EditText) dialog.findViewById(R.id.Email);
-        final EditText Pcite = (EditText) dialog.findViewById(R.id.PoliceDeLaPenalite);
-        final EditText Pcont = (EditText) dialog.findViewById(R.id.PoliceDesContacts);
-        final EditText Pdesc = (EditText) dialog.findViewById(R.id.PoliceDeLaDescription);
-        final Spinner bailleur = (Spinner) dialog.findViewById(R.id.Bailleur);
-        final EditText desc = (EditText) dialog.findViewById(R.id.Description);
 
+        final TextView operation = (TextView) dialog.findViewById(R.id.operation);
+        final Spinner occupation = (Spinner) dialog.findViewById(R.id.Occupation);
+        final Spinner typepenalite = (Spinner) dialog.findViewById(R.id.TypeDePenalite);
+        final Spinner mois = (Spinner) dialog.findViewById(R.id.Mois);
+        final EditText Montant = (EditText) dialog.findViewById(R.id.Montant);
+        final EditText MontantPaye = (EditText) dialog.findViewById(R.id.MontantPaye);
+        final EditText DateDeDePaiement = (EditText) dialog.findViewById(R.id.DateDeDePaiement);
+        final MaterialBetterSpinner Observation = (MaterialBetterSpinner) dialog.findViewById(R.id.Observation);
+        Button dateSelectEntree = (Button) dialog.findViewById(R.id.dateSelectEntree);
         final Button valider = (Button) dialog.findViewById(R.id.valider);
         final Button annuler = (Button) dialog.findViewById(R.id.annuler);
+
+
+        DateDeDePaiement.setText(sdf.format(penalite.getDatePaiement()));
+        MontantPaye.setText(String.valueOf(penalite.getMontantPayer()));
+        Montant.setText(String.valueOf(penalite.getMontant()));
+
+        final HintSpinner logementHint = new HintSpinner<>(
+                occupation,
+                new HintAdapter<Occupation>(context, "Occupation ", com.mahya.maisonier.entites.Occupation.findAll()),
+                new HintSpinner.Callback<Occupation>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Occupation itemAtPosition) {
+
+
+                    }
+                });
+        logementHint.init();
+
+
+        final HintSpinner typePeHint = new HintSpinner<>(
+                typepenalite,
+                new HintAdapter<TypePenalite>(context, "Type de pénalité ", com.mahya.maisonier.entites.TypePenalite.findAll()),
+                new HintSpinner.Callback<TypePenalite>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, TypePenalite itemAtPosition) {
+
+
+                    }
+                });
+        typePeHint.init();
+
+        final HintSpinner MoisPeHint = new HintSpinner<>(
+                mois,
+                new HintAdapter<com.mahya.maisonier.entites.Mois>(context, "Mois ", com.mahya.maisonier.entites.Mois.findAll()),
+                new HintSpinner.Callback<Mois>() {
+
+
+                    @Override
+                    public void onItemSelected(int position, Mois itemAtPosition) {
+
+
+                    }
+                });
+        MoisPeHint.init();
+        List<String> strings = new ArrayList<>();
+        strings.add("Incomplet");
+        strings.add("Complet");
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, strings);
+        Observation.setAdapter(stringArrayAdapter);
+
+
+        dateSelectEntree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog1 = new Dialog(context);
+                dialog1.setContentView(R.layout.dialog_date);
+                final DatePicker datePicker = (DatePicker) dialog1.findViewById(R.id.datePicker);
+                Button changeDate = (Button) dialog1.findViewById(R.id.selectDatePicker);
+
+                DateDeDePaiement.setText(currentDate(datePicker));
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDeDePaiement.setText(currentDate(datePicker));
+                    }
+                });
+                dialog1.show();
+
+                changeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DateDeDePaiement.setText(currentDate(datePicker));
+                        dialog1.dismiss();
+                    }
+                });
+
+
+            }
+        });
         // Click cancel to dismiss android custom dialog box
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (nom.getText().toString().trim().equals("")) {
-                    nom.setError("Velliez remplir le nom");
+            public void onClick(View v) {
+                if (occupation.getSelectedItemPosition() < 0) {
+                    Toast.makeText(context, " Veillez sélectionner une occupation", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (tel.getText().toString().trim().equals("")) {
-                    tel.setError("Velliez remplir le telephone");
+                if (typepenalite.getSelectedItem() == null) {
+                    Toast.makeText(context, " Veillez sélectionner un type de pénalitée", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (email.getText().toString().trim().equals("")) {
-                    email.setError("Velliez remplir le email");
+                if (mois.getSelectedItem() == null) {
+                    Toast.makeText(context, " Veillez sélectionner un mois", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                if (desc.getText().toString().trim().equals("")) {
-                    desc.setError("Velliez remplir la description");
+                if (Montant.getText().toString().trim().equals("")) {
+                    Montant.setError("Velliez remplir le montant");
                     return;
 
                 }
-                if (bailleur.getSelectedItem().toString().trim().equals("")) {
-                    // bailleur.setEr("Velliez remplir le code");
+                if (MontantPaye.getText().toString().trim().equals("")) {
+                    MontantPaye.setError("Velliez remplir le montant payé");
+                    return;
+
+                }
+                if (DateDeDePaiement.getText().toString().trim().equals("")) {
+                    DateDeDePaiement.setError("Velliez remplir la date de paimentr");
+                    return;
+
+                }
+                if (Observation.getText().toString().trim().equals("")) {
+                    Observation.setError("Velliez remplir la date de paimentr");
                     return;
 
                 }
 
-                Penalite cite = new Penalite();
-                cite.setNomPenalite(nom.getText().toString().trim());
-                cite.setTels(tel.getText().toString().trim());
-                cite.setDescription(desc.getText().toString().trim());
-                cite.setEmail(email.getText().toString().trim());
-                cite.setBailleur((ForeignKeyContainer<Bailleur>) bailleur.getSelectedItem());
-                cite.setPolicePenalite(Double.parseDouble(Pcite.getText().toString().trim()));
-                cite.setPoliceContact(Double.parseDouble(Pcont.getText().toString().trim()));
-                cite.setPoliceDescription(Double.parseDouble(Pdesc.getText().toString().trim()));*/
+                Penalite penalite = new Penalite();
+                penalite.setId(id);
+                try {
+                    penalite.setDatePaiement(sdf.parse(DateDeDePaiement.getText().toString().trim()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                penalite.setMontant(Double.parseDouble(Montant.getText().toString()));
+                penalite.setMontantPayer(Double.parseDouble(MontantPaye.getText().toString()));
+                penalite.setObservation(Observation.getText().toString());
+                penalite.assoOccupation((Occupation) occupation.getSelectedItem());
+                penalite.assoMois((Mois) mois.getSelectedItem());
+                penalite.assoTypePenalite((TypePenalite) typepenalite.getSelectedItem());
+                try {
+                    penalite.save();
 
+                    Snackbar.make(v, "la pénalité a été correctement modifié", Snackbar.LENGTH_LONG)
+
+                            .setAction("Action", null).show();
+                    mAdapter.actualiser(Penalite.findAll());
+                } catch (Exception e) {
+                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+
+                dialog.dismiss();
+            }
+        });
+
+        // Your android custom dialog ok action
+        // Action for custom dialog ok button click
+        annuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
 

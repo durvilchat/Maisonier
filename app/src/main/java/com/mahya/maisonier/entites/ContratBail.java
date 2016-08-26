@@ -149,5 +149,8 @@ public class ContratBail extends BaseModel {
 
     }
 
-
+    @Override
+    public String toString() {
+        return getBailleur().load().getNom() +" "+ getOccupation().load().getHabitant().load().getNom();
+    }
 }

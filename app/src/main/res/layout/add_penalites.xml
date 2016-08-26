@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -27,19 +28,19 @@
         <Spinner
             android:id="@+id/Occupation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/TypeDePenalite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/Mois"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1" />
 
 
@@ -75,27 +76,39 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/desc_DateDePaiement"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/DateDeDePaiement"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/DateDeDePaiement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="date d'entrée"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/dateSelectEntree"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Date de Paiement"
-                android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+                android:background="@drawable/ic_date" />
+        </LinearLayout>
 
-
-        <Spinner
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/Observation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:hint="Observation"
+            android:textColorHint="@color/lightGray"
+            app:met_floatingLabel="normal" />
+
 
         <include
             layout="@layout/btn_valider_annuler"

@@ -16,6 +16,7 @@ import com.mahya.maisonier.activities.BailleurActivity;
 import com.mahya.maisonier.activities.BatimentActivity;
 import com.mahya.maisonier.activities.CaracteristiqueActivity;
 import com.mahya.maisonier.activities.CautionActivity;
+import com.mahya.maisonier.activities.ChargeActivity;
 import com.mahya.maisonier.activities.CiteActivity;
 import com.mahya.maisonier.activities.CompteActivity;
 import com.mahya.maisonier.activities.ContraBailActivity;
@@ -30,8 +31,10 @@ import com.mahya.maisonier.activities.LoyerActivity;
 import com.mahya.maisonier.activities.MoisActivity;
 import com.mahya.maisonier.activities.OccupationActivity;
 import com.mahya.maisonier.activities.ParametrageActivity;
+import com.mahya.maisonier.activities.PenaliteActivity;
 import com.mahya.maisonier.activities.RubriqueActivity;
 import com.mahya.maisonier.activities.RubriqueContratActivity;
+import com.mahya.maisonier.activities.TransfertActivity;
 import com.mahya.maisonier.activities.TypeCautionActivity;
 import com.mahya.maisonier.activities.TypeCompteActivity;
 import com.mahya.maisonier.activities.TypePenaliteActivity;
@@ -191,6 +194,18 @@ public class MenuApp extends ExpandableRecyclerAdapter<MenuApp.ItemMenu> impleme
 
                         }else if (name.getText().toString().trim().equals(context.getString(R.string.Dossierdunhabitant).trim())) {
                             context.startActivity(new Intent(context, DossierHablitant.class));
+
+
+                        }else if (name.getText().toString().trim().equals(context.getString(R.string.Pénalités).trim())) {
+                            context.startActivity(new Intent(context, PenaliteActivity.class));
+
+
+                        }else if (name.getText().toString().trim().equals(context.getString(R.string.Transfertintercompte).trim())) {
+                            context.startActivity(new Intent(context, TransfertActivity.class));
+
+
+                        }else if (name.getText().toString().trim().equals(context.getString(R.string.Charges).trim())) {
+                            context.startActivity(new Intent(context, ChargeActivity.class));
 
 
                         }

@@ -38,24 +38,24 @@ public class Aff_DepotActivity extends AppCompatActivity {
 
         super.setContentView(R.layout.aff_depot);
 
+        initView();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        int id = 0;
+        int id = getIntent().getIntExtra("id", 0);
 
         if (id != 0) {
             Depot depot = SQLite.select().from(Depot.class).where(Depot_Table.id.eq(id)).querySingle();
 
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Habitant.setText(depot.getOccupation().load().getHabitant().load().getNom());
+            Habitant.setText(depot.getOccupation().load().getHabitant().load().getNom() +" "+depot.getOccupation().load().getHabitant().load().getPrenom());
             Occupation.setText(depot.getOccupation().load().getHabitant().load().getNom());
-            Montant.setText(String.valueOf(depot.getMontant()));
+            Montant.setText(String.valueOf(depot.getMontant()) + " F CFA");
             DateDepot.setText(sdf.format(depot.getDateDepot()));
             Observations.setText(depot.getObservation());
         }
-        initView();
 
     }
 

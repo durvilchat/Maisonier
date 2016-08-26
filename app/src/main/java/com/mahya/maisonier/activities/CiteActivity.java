@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
 import android.transition.ChangeTransform;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
@@ -345,16 +345,49 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
 
     @Override
     public void detail(final int id) {
-        final Cite typeLogement = SQLite.select().from(Cite.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        TextView Bailleur;
+        TextView NomCite;
+        TextView Description;
+        TextView Tel;
+        TextView Email;
+        TextView PoliceCite;
+        TextView PoliceDescription;
+        TextView PoliceContacts;
+        CheckBox Etat;
+        final Cite cite = SQLite.select().from(Cite.class).where(TypeLogement_Table.id.eq(id)).querySingle();
+        final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.aff_cite);
 
-        AlertDialog detail = new AlertDialog.Builder(this)
-                .setMessage(Html.fromHtml("<b>" + "Code: " + "</b> ") + typeLogement.getEmail() + "\n" + "\n " + Html.fromHtml("<b>" + "Description: " + "</b> ") + typeLogement.getDescription())
-                .setIcon(R.drawable.ic_info_indigo_900_18dp)
-                .setTitle("Detail " + typeLogement.getNomCite())
-                .setNeutralButton("OK", null)
-                .setCancelable(false)
-                .create();
-        detail.show();
+        Bailleur = (TextView) dialog.findViewById(R.id.Bailleur);
+        NomCite = (TextView) dialog.findViewById(R.id.NomCite);
+        Description = (TextView) dialog.findViewById(R.id.Description);
+        Tel = (TextView) dialog.findViewById(R.id.Tel);
+        Email = (TextView) dialog.findViewById(R.id.Email);
+        PoliceCite = (TextView) dialog.findViewById(R.id.PoliceCite);
+        PoliceDescription = (TextView) dialog.findViewById(R.id.PoliceDescription);
+        PoliceContacts = (TextView) dialog.findViewById(R.id.PoliceContacts);
+        Etat = (CheckBox) dialog.findViewById(R.id.Etat);
+        Button fermer = (Button) dialog.findViewById(R.id.fermer);
+
+
+        Bailleur.setText(cite.getBailleur().load().getNom()+" "+cite.getBailleur().load().getPrenom());
+        NomCite.setText(cite.getNomCite());
+        Description.setText(cite.getDescription());
+        Tel.setText(cite.getTels());
+        Email.setText(cite.getTels());
+        PoliceCite.setText(String.valueOf(cite.getPoliceCite()));
+        PoliceContacts.setText(String.valueOf(cite.getPoliceContact()));
+        PoliceDescription.setText(String.valueOf(cite.getPoliceDescription()));
+        dialog.show();
+
+        fermer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
 
     }
 

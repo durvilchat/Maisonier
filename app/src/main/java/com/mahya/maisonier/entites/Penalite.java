@@ -170,4 +170,19 @@ public class Penalite extends BaseModel {
 
     }
 
+    public static List<Penalite> getPenalites() {
+        return penalites;
+    }
+
+    public ForeignKeyContainer<TypePenalite> getTypePenalite() {
+        return typePenalite;
+    }
+
+    public ForeignKeyContainer<Occupation> getOccupation() {
+        return occupation;
+    }
+
+    public ForeignKeyContainer<Mois> getMois() {
+        return mois;
+    }
 }

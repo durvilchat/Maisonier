@@ -2,6 +2,8 @@ package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -11,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -20,7 +21,9 @@ import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BatimentActivity;
 import com.mahya.maisonier.activities.detail.Aff_BatimentActivity;
 import com.mahya.maisonier.entites.Batiment;
+import com.mahya.maisonier.entites.PhotoBatiment;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.mahya.maisonier.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +58,13 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
-        try {
+
+            if (batiments.get(position).getPhotoBatimentList().isEmpty()) {
+
+            } else {
+                viewHolder.imgBat.setImageURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + Constants.patch + "batiments/" + batiments.get(position).getPhotoBatimentList().get(batiments.get(position).getPhotoBatimentList().size()-1).getNom()));
+
+            }
             viewHolder.nom.setText(batiments.get(position).getCode());
             viewHolder.code.setTextColor(mContext.getResources().getColor(R.color.red));
             viewHolder.citecode.setTextColor(mContext.getResources().getColor(R.color.red));
@@ -63,10 +72,7 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             viewHolder.code.setText(batiments.get(position).getNom());
             viewHolder.cite.setText(batiments.get(position).getCite().load().getNomCite() + " " + batiments.get(position).getCite().load().getSiege());
             viewHolder.id.setText(String.valueOf(batiments.get(position).getId()));
-        } catch (Exception e) {
 
-            return;
-        }
 
 // Span the item if active
         final ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
@@ -88,15 +94,11 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
             @Override
             public void onClick(View v) {
 
-                if (mContext instanceof BatimentActivity) {
                     TextView id = (TextView) v.findViewById(R.id.idItem);
                     idSelect = Integer.parseInt(id.getText().toString());
                     if (mContext instanceof BatimentActivity) {
-                        ((BatimentActivity) mContext).onItemClicked(position);
-                        Intent intent = new Intent(mContext, Aff_BatimentActivity.class);
-                        intent.putExtra("id", idSelect);
-                        mContext.startActivity(intent);
-                    }
+                        ((BatimentActivity) mContext).detail(idSelect);
+
                 }
             }
         });
@@ -183,7 +185,17 @@ public class BatimentAdapter extends RecyclerSwipeAdapter<BatimentAdapter.Simple
         viewHolder.imgBat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BatimentActivity) mContext).startActivity(new Intent(mContext, GalleryDemoActivity.class));
+
+                TextView id = (TextView) viewHolder.itemView.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
+                if (mContext instanceof BatimentActivity) {
+                    ((BatimentActivity) mContext).onItemClicked(position);
+                    Intent intent = new Intent(mContext, GalleryDemoActivity.class);
+                    intent.putExtra("id", idSelect);
+                    intent.putExtra("nom", getItem(position).getNom());
+                    intent.putExtra("type", 1);
+                    mContext.startActivity(intent);
+                }
             }
 
 

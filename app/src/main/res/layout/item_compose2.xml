@@ -123,7 +123,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/donnee1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -143,6 +142,39 @@
 
                 <TextView
                     android:id="@+id/titre1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:maxLines="1"
+                    android:text="none"
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textSize="5pt" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/data"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/libelle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.00"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textSize="@dimen/abc_text_size_subhead_material"
+                    android:textStyle="italic" />
+
+
+                <TextView
+                    android:id="@+id/titre2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"

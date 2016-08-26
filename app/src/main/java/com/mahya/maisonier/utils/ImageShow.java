@@ -55,6 +55,7 @@ public class ImageShow extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     // BEGIN_INCLUDE(get_sap)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,7 +94,7 @@ public class ImageShow extends ActionBarActivity {
     static ArrayList<ContentItem> getSampleContent() {
         ArrayList<ContentItem> items = new ArrayList<ContentItem>();
 
-        items.add(new ContentItem(ContentItem.CONTENT_TYPE_IMAGE,image));
+        items.add(new ContentItem(ContentItem.CONTENT_TYPE_IMAGE,image,0));
         System.out.println(image);
         return items;
     }

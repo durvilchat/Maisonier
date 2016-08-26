@@ -53,14 +53,13 @@ public class Aff_LogementActivity extends AppCompatActivity {
 
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Ref.setText(logement.getReference());
-            PrixMax.setText(String.valueOf(logement.getPrixMax()));
-            PrixMin.setText(String.valueOf(logement.getPrixMin()));
+            PrixMax.setText(String.valueOf(logement.getPrixMax())+" F CFA");
+            PrixMin.setText(String.valueOf(logement.getPrixMin())+" F CFA");
             Type.setText(logement.getTypeLogement().load().getCode());
             Batiment.setText(logement.getBatiment().load().getCite().load().getNomCite());
-            // Etat.setText(logement.);
-            // PrixActuel.setText(String.valueOf(logement.getBatiment().load().));
-        }
+            Etat.setEnabled(logement.getBatiment().load().isEtat());
 
+        }
 
 
     }

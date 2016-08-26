@@ -140,10 +140,7 @@ public class HabitantListActivity extends BaseActivity implements SearchView.OnQ
     }
 
     public void add(final View view) {
-        switch (view.getId()) {
-            case R.id.myfab_main_btn:
-                break;
-        }
+
     }
 
     @Override

@@ -52,14 +52,15 @@ public class PdfRegion extends BaseActivity {
         this.context=context;
     }
 
-    public String etatsRegion(List<Logement> regions) {
+    public File etatsRegion(List<Logement> regions) {
         outPutFilePath = "";
+        File outPutFilePath = null;
         try {
             getFile();
             //Create time stamp
             Date date = new Date();
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date);
-            File outPutFilePath = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
+             outPutFilePath = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
 
 
             format = PageSize.A4;

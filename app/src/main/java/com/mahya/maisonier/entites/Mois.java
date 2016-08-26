@@ -283,8 +283,10 @@ public class Mois extends BaseModel {
 
     }
 
+
+
     @Override
     public String toString() {
-        return mois;
+        return mois +"("+annee.load().getAnnee() +")";
     }
 }

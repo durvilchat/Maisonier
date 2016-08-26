@@ -2,23 +2,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="513dp"
+        android:layout_marginBottom="20dp"
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="513dp"
-            android:layout_marginBottom="20dp"
-            android:columnCount="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
 
 
-            <TextView
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Habitant"
@@ -29,9 +38,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Habitant" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
 
 
-            <TextView
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Paramètres"
@@ -43,8 +71,27 @@
                 android:layout_height="wrap_content"
                 android:text="Paramètres" />
 
+        </LinearLayout>
 
-            <TextView
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
+
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mois"
@@ -55,9 +102,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mois" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
 
 
-            <TextView
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Montant Payé"
@@ -69,8 +134,27 @@
                 android:layout_height="wrap_content"
                 android:text="Montant Payé" />
 
+        </LinearLayout>
 
-            <TextView
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
+
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DatePayement"
@@ -82,8 +166,27 @@
                 android:layout_height="wrap_content"
                 android:text="DatePayement" />
 
+        </LinearLayout>
 
-            <TextView
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half"
+        android:paddingLeft="@dimen/activity_margin_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingLeft="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half">
+
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Observations"
@@ -98,5 +201,7 @@
 
         </LinearLayout>
 
+
     </android.support.v7.widget.CardView>
+    </LinearLayout>
 </ScrollView>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_typelogement"
     android:layout_width="match_parent"
+    android:background="@drawable/background"
     android:layout_height="match_parent"
     tools:context="com.mahya.maisonier.activities.TypelogementActivity">
 
@@ -16,5 +17,6 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <include layout="@layout/myfab" />
+    <include layout="@layout/menuaction" />
 
 </android.support.design.widget.CoordinatorLayout>

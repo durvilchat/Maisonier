@@ -89,6 +89,9 @@ public class DepenseAdapter extends RecyclerSwipeAdapter<DepenseAdapter.SimpleVi
 
                 if (mContext instanceof CiteActivity) {
                     ((CiteActivity) mContext).onItemClicked(position);
+                    TextView id = (TextView) v.findViewById(R.id.idItem);
+                    idSelect = Integer.parseInt(id.getText().toString());
+                    ((CiteActivity) mContext).detail(idSelect);
                 }
             }
         });
@@ -146,6 +149,8 @@ public class DepenseAdapter extends RecyclerSwipeAdapter<DepenseAdapter.SimpleVi
             @Override
             public void onClick(View view) {
 
+                TextView id = (TextView) view.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 ((CiteActivity) mContext).detail(idSelect);
                 mItemManger.closeAllExcept(null);
             }

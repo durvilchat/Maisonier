@@ -1,5 +1,6 @@
 package com.mahya.maisonier.activities.detail;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -11,6 +12,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +51,7 @@ public class Aff_HabitantActivity extends AppCompatActivity {
     protected TextView NomduPere;
     protected TextView NomdelaMere;
     protected TextView Profession;
+    int id;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -55,7 +59,7 @@ public class Aff_HabitantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         super.setContentView(R.layout.aff_habitant);
-        int id = getIntent().getIntExtra("id", 0);
+        id = getIntent().getIntExtra("id", 0);
         initView();
 
         ActionBar actionBar = getSupportActionBar();
@@ -82,7 +86,7 @@ public class Aff_HabitantActivity extends AppCompatActivity {
             Tel2.setText(habitant.getTel2());
             Tel3.setText(habitant.getTel3());
             Tel4.setText(habitant.getTel4());
-            // DateDeNaissance.setText(sdf.format(habitant.getDateNaissance()));
+          //  DateDeNaissance.setText((habitant.getDateNaissance().equals(null) ? "" : sdf.format(habitant.getDateNaissance())));
             LieuDeNaissance.setText(habitant.getLieuNaissance());
             NomduPere.setText(habitant.getNomDuPere());
             NomdelaMere.setText(habitant.getNomDeLaMere());
@@ -102,6 +106,58 @@ public class Aff_HabitantActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private TextView mOperation;
+    private EditText mEmail1;
+    private EditText mEmail2;
+    private EditText mTel2;
+    private EditText mTel3;
+    private EditText mTel4;
+    private Button mValider;
+    private Button mAnnuler;
+
+    public void addContact(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.add_contact);
+        // Initialisation du formulaire
+
+
+        mOperation = (TextView) dialog.findViewById(R.id.operation);
+        mEmail1 = (EditText) dialog.findViewById(R.id.Email1);
+        mEmail2 = (EditText) dialog.findViewById(R.id.Email2);
+        mTel2 = (EditText) dialog.findViewById(R.id.tel2);
+        mTel3 = (EditText) dialog.findViewById(R.id.tel3);
+        mTel4 = (EditText) dialog.findViewById(R.id.tel4);
+        mValider = (Button) dialog.findViewById(R.id.valider);
+        mAnnuler = (Button) dialog.findViewById(R.id.annuler);
+
+        // Click cancel to dismiss android custom dialog box
+        mValider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Habitant habitant = SQLite.select().from(Habitant.class).where(Habitant_Table.id.eq(id)).querySingle();
+                habitant.setId(id);
+                habitant.setEmail1(mEmail1.getText().toString().trim());
+                habitant.setEmail2(mEmail2.getText().toString().trim());
+                habitant.setTel2(mTel2.getText().toString().trim());
+                habitant.setTel3(mTel3.getText().toString().trim());
+                habitant.setTel4(mTel4.getText().toString().trim());
+                habitant.update();
+                dialog.dismiss();
+            }
+        });
+        mAnnuler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

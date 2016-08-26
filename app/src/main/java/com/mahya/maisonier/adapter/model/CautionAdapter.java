@@ -57,7 +57,6 @@ public class CautionAdapter extends RecyclerSwipeAdapter<CautionAdapter.SimpleVi
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
 
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
             viewHolder.prix.setText(String.valueOf(cautions.get(position).getMontant()) + " F CFA");
             viewHolder.prix.setTextColor(mContext.getResources().getColor(R.color.red));
             viewHolder.tilte.setText(cautions.get(position).getStatut());
@@ -66,10 +65,7 @@ public class CautionAdapter extends RecyclerSwipeAdapter<CautionAdapter.SimpleVi
             viewHolder.desc.setText(cautions.get(position).getOccupation().load().getLogement().load().getDescription());
             viewHolder.libele.setText(cautions.get(position).getOccupation().load().getHabitant().load().getNom() + " " + cautions.get(position).getOccupation().load().getHabitant().load().getPrenom());
             viewHolder.id.setText(String.valueOf(cautions.get(position).getId()));
-        } catch (Exception e) {
 
-            return;
-        }
 
 // Span the item if active
         final ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();

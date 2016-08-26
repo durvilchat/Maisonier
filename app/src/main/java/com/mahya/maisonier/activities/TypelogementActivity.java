@@ -189,7 +189,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
 
                     Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, 0);
+                    mAdapter.addItem(typeLogement, mAdapter.getItemCount()+1);
                     if (new Caracteristique().findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
