@@ -44,11 +44,13 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.activities.detail.Aff_HabitantActivity;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.HabitantAdapter;
 import com.mahya.maisonier.entites.Caracteristique;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Habitant_Table;
+import com.mahya.maisonier.fragments.AffHabitantFragment;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
@@ -70,13 +72,13 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
 
     //keep track of camera capture intent
     static final int CAMERA_CAPTURE = 1;
-
     private static final String TAG = HabitantActivity.class.getSimpleName();
     //keep track of cropping intent
     final int PIC_CROP = 3;
     //keep track of gallery intent
     final int PICK_IMAGE_REQUEST = 2;
     protected RecyclerView mRecyclerView;
+    boolean mTwoPane;
     HabitantAdapter mAdapter;
     FrameLayout fab;
     FloatingActionButton myfab_main_btn;
@@ -100,7 +102,7 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
-        super.setContentView(R.layout.activity_model1);
+        super.setContentView(R.layout.activity_list_user);
 
 
         setTitle(context.getString(R.string.Enregistrement));
@@ -110,7 +112,7 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
         }
         initView();
         fab.startAnimation(animation);
-        mAdapter = new HabitantAdapter(this, (ArrayList<Habitant>) Habitant.findAll(), this);
+        mAdapter = new HabitantAdapter(this, Habitant.findAll(), this);
         myfab_main_btn.hide(false);
         mRecyclerView.setAdapter(mAdapter);
         new Handler().postDelayed(new Runnable() {
@@ -133,6 +135,15 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
             }
         });
 
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
     }
 
     private void initView() {
@@ -188,7 +199,7 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
     }
 
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -321,12 +332,7 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
         // Delete.tables(Habitant.class);
     }
 
-    public String currentDate() {
-        StringBuilder mcurrentDate = new StringBuilder();
-        month = datePicker.getMonth() + 1;
-        mcurrentDate.append(datePicker.getDayOfMonth() + "/" + month + "/" + datePicker.getYear());
-        return mcurrentDate.toString();
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -337,6 +343,34 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void start(int id) {
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putInt("id", id);
+            AffHabitantFragment fragment = new AffHabitantFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+
+        } else {
+            Intent intent = new Intent(context, Aff_HabitantActivity.class);
+            intent.putExtra("id", id);
+
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -28,17 +28,16 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.etiennelawlor.imagegallery.library.enums.PaletteColorType;
 import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.GalleryDemoActivity;
-import com.mahya.maisonier.ItemChargeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
-import com.mahya.maisonier.adapter.model.BatimentAdapter;
+import com.mahya.maisonier.adapter.ItemChargeAdapter;
 import com.mahya.maisonier.adapter.model.ChargeAdapter;
 import com.mahya.maisonier.entites.Annee;
-import com.mahya.maisonier.entites.Charge;
 import com.mahya.maisonier.entites.Batiment_Table;
 import com.mahya.maisonier.entites.Caracteristique;
 import com.mahya.maisonier.entites.Charge;
@@ -57,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
@@ -144,7 +144,7 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -160,17 +160,17 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
         dialog.setContentView(R.layout.add_charges);
         // Initialisation du formulaire
 
-         final TextView operation;
-         final Spinner annee;
-         final Spinner mois;
-         final Spinner typeCharge;
-         final ListView occupation;
-         final EditText designation;
-         final EditText montant;
-         final EditText montantpaye;
-         final MaterialBetterSpinner Observation;
-         Button valider;
-         Button annuler;
+        final TextView operation;
+        final Spinner annee;
+        final Spinner mois;
+        final Spinner typeCharge;
+        final ListView occupation;
+        final EditText designation;
+        final EditText montant;
+        final EditText montantpaye;
+        final MaterialBetterSpinner Observation;
+        Button valider;
+        Button annuler;
 
         operation = (TextView) dialog.findViewById(R.id.operation);
         annee = (Spinner) dialog.findViewById(R.id.annee);
@@ -181,16 +181,32 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
         montant = (EditText) dialog.findViewById(R.id.montant);
         montantpaye = (EditText) dialog.findViewById(R.id.montantpaye);
         Observation = (MaterialBetterSpinner) dialog.findViewById(R.id.Observation);
+        Button seelct = (Button) dialog.findViewById(R.id.button);
         valider = (Button) dialog.findViewById(R.id.valider);
         annuler = (Button) dialog.findViewById(R.id.annuler);
 
-        ItemChargeAdapter adapter=new ItemChargeAdapter(context, Occupation.findAll());
+        final ItemChargeAdapter adapter = new ItemChargeAdapter(context, Occupation.findAll());
         occupation.setAdapter(adapter);
+        seelct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String result = "Selected Product are :";
+                int totalAmount = 0;
+                for (Occupation p : adapter.getBox()) {
+                    if (p.select) {
+                        result += "\n" + p.getDescription();
+                    }
+                }
+                Toast.makeText(context, result + "\n" + "Total Amount:=" + totalAmount, Toast.LENGTH_LONG).show();
+            }
 
-        List<String>strings=new ArrayList<>();
+        });
+
+
+        List<String> strings = new ArrayList<>();
         strings.add("Incomplet");
         strings.add("Complet");
-        Observation.setAdapter(new ArrayAdapter<String>(context,R.layout.spinner_item,strings));
+        Observation.setAdapter(new ArrayAdapter<String>(context, R.layout.spinner_item, strings));
         final HintSpinner anneeHint = new HintSpinner<>(
                 annee,
                 new HintAdapter<Annee>(this, "Année ", Annee.findAll()),
@@ -257,15 +273,15 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
                     return;
 
                 }
-DateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 try {
-                    Charge charge=new Charge();
+                    Charge charge = new Charge();
                     charge.assoMois((Mois) mois.getSelectedItem());
-                   // charge.assoOccupation();
+                    // charge.assoOccupation();
                     charge.setMontantPayer(Double.parseDouble(montantpaye.getText().toString().trim()));
                     charge.setMontant(Double.parseDouble(montant.getText().toString().trim()));
                     charge.assoTypeCharge((TypeCharge) typeCharge.getSelectedItem());
-                    charge.setDatePaiement(sdf.parse(new Date().toString()));
+                    charge.setDatePaiement(sdf.parse(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date())));
                     charge.setDesignation(designation.getText().toString());
                     charge.save();
                     Snackbar.make(view, "la charge a été correctement crée", Snackbar.LENGTH_LONG)
@@ -296,12 +312,12 @@ DateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
             public void onClick(View v) {
 
 
-
                 dialog.dismiss();
             }
         });
         dialog.show();
     }
+
 
     @Override
     public void detail(int i) {
@@ -320,7 +336,7 @@ DateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
             Nom = (TextView) dialog.findViewById(R.id.Nom);
             Cite = (TextView) dialog.findViewById(R.id.Cite);
             Etat = (CheckBox) dialog.findViewById(R.id.Etat);
-           final Button fermer  = (Button) dialog.findViewById(R.id.fermer);
+            final Button fermer = (Button) dialog.findViewById(R.id.fermer);
 
 
             DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

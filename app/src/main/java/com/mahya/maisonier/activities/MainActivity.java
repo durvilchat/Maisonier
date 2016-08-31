@@ -22,11 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mahya.maisonier.GalleryDemoActivity;
-import com.mahya.maisonier.MessageActivity;
 import com.mahya.maisonier.Profil_User;
 import com.mahya.maisonier.R;
-import com.mahya.maisonier.Test;
 import com.mahya.maisonier.adapter.ExpandableRecyclerAdapter;
 import com.mahya.maisonier.adapter.MenuApp;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     public void bien(View view) {
 
-        startActivity(new Intent(this, GalleryDemoActivity.class));
+        startActivity(new Intent(this, BailleurActivity.class));
 
     }
 

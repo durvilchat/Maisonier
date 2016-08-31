@@ -24,13 +24,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.LogementAdapter;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.mahya.maisonier.utils.MyRecyclerScroll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +117,7 @@ public class LogementDispoActivity extends BaseActivity implements CrudActivity,
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);

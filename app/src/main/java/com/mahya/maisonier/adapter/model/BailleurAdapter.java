@@ -17,7 +17,6 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.BailleurActivity;
-import com.mahya.maisonier.activities.detail.Aff_BailleurActivity;
 import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
@@ -114,11 +113,7 @@ public class BailleurAdapter extends RecyclerSwipeAdapter<BailleurAdapter.Simple
             public void onClick(View view) {
                 TextView id = (TextView) view.findViewById(R.id.idItem);
                 idSelect = Integer.parseInt(id.getText().toString());
-                if (mContext instanceof BailleurActivity) {
-                    Intent intent = new Intent(mContext, Aff_BailleurActivity.class);
-                    intent.putExtra("id", idSelect);
-                    mContext.startActivity(intent);
-                }
+                ((BailleurActivity) mContext).start(idSelect);
             }
         });
 

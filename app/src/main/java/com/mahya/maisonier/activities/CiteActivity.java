@@ -2,7 +2,10 @@ package com.mahya.maisonier.activities;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -39,9 +43,11 @@ import com.mahya.maisonier.entites.Cite_Table;
 import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
+import com.mahya.maisonier.pdf.PdfCite;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +55,7 @@ import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
 public class CiteActivity extends BaseActivity implements CrudActivity, SearchView.OnQueryTextListener,
-        OnItemClickListener {
+        OnItemClickListener, View.OnClickListener {
 
 
     private static final String TAG = CiteActivity.class.getSimpleName();
@@ -59,9 +65,10 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
     FloatingActionButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private android.support.v7.view.ActionMode actionMode;
-    private android.content.Context context = this;
+    private ActionMode actionMode;
+    private Context context = this;
     private TextView tvEmptyView;
+    private FloatingActionButton sms;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -103,6 +110,7 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
             }
         });
 
+        sms.setVisibility(View.GONE);
     }
 
     private void initView() {
@@ -125,14 +133,38 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
             tvEmptyView.setVisibility(View.GONE);
         }
 
+        sms = (FloatingActionButton) findViewById(R.id.sms);
+        sms.setOnClickListener(this);
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
                 break;
+            case R.id.print:
+                viewPdf(new PdfCite(context).etatsCites(Cite.findAll()));
+                break;
+            case R.id.email:
+                emailNote(new PdfCite(context).etatsCites(Cite.findAll()));
         }
+    }
+
+    private void emailNote(File myFile) {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_SUBJECT, "rostapig@gmail.com");
+        email.putExtra(Intent.EXTRA_TEXT, "rostapig@gmail.com");
+        Uri uri = Uri.parse(myFile.getAbsolutePath());
+        email.putExtra(Intent.EXTRA_STREAM, uri);
+        email.setType("message/rfc822");
+        startActivity(email);
+    }
+
+    private void viewPdf(File myFile) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(myFile), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 
     @Override
@@ -356,6 +388,7 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
         CheckBox Etat;
         final Cite cite = SQLite.select().from(Cite.class).where(TypeLogement_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
+        dialog.setTitle(" Détail " + cite.getNomCite());
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.aff_cite);
 
@@ -368,10 +401,11 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
         PoliceDescription = (TextView) dialog.findViewById(R.id.PoliceDescription);
         PoliceContacts = (TextView) dialog.findViewById(R.id.PoliceContacts);
         Etat = (CheckBox) dialog.findViewById(R.id.Etat);
+        Etat.setEnabled(false);
         Button fermer = (Button) dialog.findViewById(R.id.fermer);
 
 
-        Bailleur.setText(cite.getBailleur().load().getNom()+" "+cite.getBailleur().load().getPrenom());
+        Bailleur.setText(cite.getBailleur().load().getNom() + " " + cite.getBailleur().load().getPrenom());
         NomCite.setText(cite.getNomCite());
         Description.setText(cite.getDescription());
         Tel.setText(cite.getTels());
@@ -547,26 +581,35 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
         return filteredModelList;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sms:
 
-    private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {
+                break;
+        }
+    }
+
+
+    private class ActionModeCallback implements ActionMode.Callback {
         @SuppressWarnings("unused")
         private final String TAG = ActionModeCallback.class.getSimpleName();
 
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
             mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
             return true;
         }
 
         @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             return false;
         }
 
 
         @Override
-        public boolean onActionItemClicked(final android.support.v7.view.ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_supp:
                     new AlertDialog.Builder(context)
@@ -598,7 +641,7 @@ public class CiteActivity extends BaseActivity implements CrudActivity, SearchVi
         }
 
         @Override
-        public void onDestroyActionMode(android.support.v7.view.ActionMode mode) {
+        public void onDestroyActionMode(ActionMode mode) {
             mAdapter.clearSelection();
             actionMode = null;
         }

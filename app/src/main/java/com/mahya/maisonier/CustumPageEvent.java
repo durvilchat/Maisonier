@@ -3,8 +3,6 @@ package com.mahya.maisonier;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.widget.ImageView;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
@@ -36,19 +34,19 @@ import java.util.logging.Logger;
 
 public class CustumPageEvent extends PdfPageEventHelper {
 
-    private final static String HEADER = "Ce document est la propriété du MINFOF";
-    private final static String FOOTER = "@copiright 2015 IA's";
-    protected PdfTemplate total;
-    protected BaseFont helv;
-    protected PdfGState gstate;
-    protected Image image;
-     protected Image filigranePhoto;
     //protected Color color;
 //    public static final String RESOURCE = Utilitaires.path +"/resources/images/cic.gif";
     public static final String RESOURCE = "/cm/minfof/ressources/background.png";
 //    public static final String FILIGRANE = "/home/gervais/NetBeansProjects/SIGIF/src/cm/minfof/ressources/icons/logoSIGIF_128x128.png";
   //  public static final String FILIGRANE = "/cm/minfof/ressources/icons/background.png";
    public static final String FILIGRANE = "/home/ulrich/NetBeansProjects/Maisonier2/filigrane.png";
+    private final static String HEADER = "";
+    private final static String FOOTER = "@copiright 2016";
+    protected PdfTemplate total;
+    protected BaseFont helv;
+    protected PdfGState gstate;
+    protected Image image;
+    protected Image filigranePhoto;
     
 
 
@@ -57,7 +55,7 @@ public class CustumPageEvent extends PdfPageEventHelper {
         super();
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.natureimage12);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             this.image  = Image.getInstance(stream.toByteArray());
             this.filigranePhoto = Image.getInstance(stream.toByteArray());
@@ -100,9 +98,9 @@ public class CustumPageEvent extends PdfPageEventHelper {
     public void onEndPage(PdfWriter writer, Document document) {
         Rectangle rect = writer.getBoxSize("art");
         Font ft = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.ITALIC, BaseColor.GRAY);
-        PdfPTable table = new PdfPTable(3);
+        PdfPTable table = new PdfPTable(5);
         try {
-            table.setWidths(new int[]{40, 8, 2});
+            table.setWidths(new int[]{40, 8, 2, 8, 2});
         } catch (DocumentException e1) {
         }
         table.setTotalWidth(rect.getWidth());

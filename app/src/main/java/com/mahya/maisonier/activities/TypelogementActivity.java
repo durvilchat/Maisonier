@@ -3,7 +3,9 @@ package com.mahya.maisonier.activities;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.TypeLogementAdapter;
@@ -56,9 +60,10 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
     FloatingActionButton myfab_main_btn;
     Animation animation;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private android.support.v7.view.ActionMode actionMode;
-    private android.content.Context context = this;
+    private ActionMode actionMode;
+    private Context context = this;
     private TextView tvEmptyView;
+    private FloatingActionMenu menuAction;
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -112,7 +117,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
     private void setupWindowAnimations() {
 
         Slide slide = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             slide = new Slide();
             slide.setDuration(1000);
             getWindow().setReturnTransition(slide);
@@ -141,9 +146,11 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
         }
 
 
+        menuAction = (FloatingActionMenu) findViewById(R.id.menuAction);
+        menuAction.setVisibility(View.GONE);
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -189,7 +196,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
 
                     Snackbar.make(view, "le type de logement a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(typeLogement, mAdapter.getItemCount()+1);
+                    mAdapter.addItem(typeLogement, mAdapter.getItemCount() + 1);
                     if (new Caracteristique().findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
@@ -199,7 +206,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
                         tvEmptyView.setVisibility(View.GONE);
 
                     }
-                } catch (android.database.sqlite.SQLiteConstraintException e) {
+                } catch (SQLiteConstraintException e) {
 
 
                     Snackbar.make(view, "Type de logement déja existant", Snackbar.LENGTH_LONG)
@@ -377,7 +384,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
                     mAdapter.actualiser(TypeLogement.findAll());
                     Snackbar.make(v, "Type de logement à été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                } catch (android.database.sqlite.SQLiteConstraintException e) {
+                } catch (SQLiteConstraintException e) {
 
 
                     Snackbar.make(v, "Type de logement déja existant", Snackbar.LENGTH_LONG)
@@ -455,12 +462,12 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
     }
 
 
-    private class ActionModeCallback implements android.support.v7.view.ActionMode.Callback {
+    private class ActionModeCallback implements ActionMode.Callback {
         @SuppressWarnings("unused")
         private final String TAG = ActionModeCallback.class.getSimpleName();
 
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
             mode.getMenuInflater().inflate(R.menu.menu_supp, menu);
 
@@ -468,13 +475,13 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
         }
 
         @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             return false;
         }
 
 
         @Override
-        public boolean onActionItemClicked(final android.support.v7.view.ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_supp:
                     new AlertDialog.Builder(context)
@@ -506,7 +513,7 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
         }
 
         @Override
-        public void onDestroyActionMode(android.support.v7.view.ActionMode mode) {
+        public void onDestroyActionMode(ActionMode mode) {
             mAdapter.clearSelection();
             actionMode = null;
         }

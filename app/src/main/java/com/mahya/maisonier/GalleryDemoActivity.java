@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mahya.maisonier.activities.BaseActivity;
+import com.mahya.maisonier.adapter.GalleryImageAdapter;
 import com.mahya.maisonier.entites.Batiment;
 import com.mahya.maisonier.entites.Batiment_Table;
 import com.mahya.maisonier.entites.Logement;
@@ -42,33 +43,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryDemoActivity extends BaseActivity {
+    static String image;
+    static int type;
+    private static List<String> drawables = new ArrayList<>();
+    int id;
+    String nom;
     // Keep reference to the ShareActionProvider from the menu
     private ShareActionProvider mShareActionProvider;
-
-    static String image;
     private ArrayList<ContentItem> mItems = null;
-
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-
     private ImageView selectedImageView;
-
     private ImageView leftArrowImageView;
-
     private ImageView rightArrowImageView;
-
     private Gallery gallery;
-
     private String userChoosenTask;
-
     private int selectedImagePosition = 0;
-
-    private static List<String> drawables =new ArrayList<>();
-
     private GalleryImageAdapter galImageAdapter;
 
-    int id;
-    static int type;
-    String nom;
+    /**
+     * @return An ArrayList of ContentItem's to be displayed in this sample
+     */
+    static ArrayList<ContentItem> getSampleContent() {
+        ArrayList<ContentItem> items = new ArrayList<ContentItem>();
+        for (String s : drawables
+                ) {
+
+            items.add(new ContentItem(ContentItem.CONTENT_TYPE_IMAGE, s, type));
+        }
+        return items;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -207,7 +210,6 @@ public class GalleryDemoActivity extends BaseActivity {
         imageView.setBackgroundDrawable(getResources().getDrawable(R.drawable.selected_image_border));
         imageView.setPadding(3, 3, 3, 3);
     }
-
 
     private void setSelectedImage(int selectedImagePosition) {
         if(type==1){
@@ -382,20 +384,6 @@ public class GalleryDemoActivity extends BaseActivity {
             mShareActionProvider.setShareIntent(shareIntent);
         }
         // END_INCLUDE(update_sap)
-    }
-
-
-    /**
-     * @return An ArrayList of ContentItem's to be displayed in this sample
-     */
-    static ArrayList<ContentItem> getSampleContent() {
-        ArrayList<ContentItem> items = new ArrayList<ContentItem>();
-        for (String s : drawables
-                ) {
-
-            items.add(new ContentItem(ContentItem.CONTENT_TYPE_IMAGE, s,type));
-        }
-        return items;
     }
 
 

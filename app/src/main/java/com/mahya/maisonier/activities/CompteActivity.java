@@ -132,7 +132,7 @@ public class CompteActivity extends BaseActivity implements CrudActivity, Search
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);

@@ -67,6 +67,7 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
     FrameLayout fab;
     FloatingActionButton myfab_main_btn;
     Animation animation;
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private android.support.v7.view.ActionMode actionMode;
     private android.content.Context context = this;
@@ -139,15 +140,13 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
                 break;
         }
     }
-
-    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public void ajouter(final View view) {

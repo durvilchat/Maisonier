@@ -1,0 +1,256 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:swipe="http://schemas.android.com/tools"
+            android:id="@+id/row_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="@dimen/cardview_default_elevation">
+
+            <com.daimajia.swipe.SwipeLayout
+                android:id="@+id/swipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                swipe:leftEdgeSwipeOffset="0dp"
+                swipe:rightEdgeSwipeOffset="0dp">
+
+
+                <!--Bottom View For Right to Left-->
+
+                <LinearLayout
+
+                    android:id="@+id/bottom_wrapper"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_action_bar_splitter"
+                    android:weightSum="2">
+
+                    <ImageButton
+                        android:id="@+id/tvEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:src="@drawable/ic_edit" />
+
+
+                    <ImageButton
+                        android:id="@+id/tvDelete"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:src="@drawable/ic_delete" />
+                </LinearLayout>
+
+
+                <!-- Another Bottom View For Left to Right -->
+
+                <LinearLayout
+                    android:id="@+id/bottom_wrapper1"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
+
+                    <ImageButton
+                        android:id="@+id/detail"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:src="@drawable/ic_info_indigo_900_18dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="8dp">
+
+                    <LinearLayout
+                        android:id="@+id/donnee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:id="@+id/libelle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.00"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="@dimen/abc_text_size_subhead_material"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/idItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.10"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/titre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="@dimen/abc_text_size_subhead_material"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:id="@+id/libelle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.00"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="@dimen/abc_text_size_subhead_material"
+                            android:textStyle="italic" />
+
+
+                        <TextView
+                            android:id="@+id/titre1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:text="none"
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="5pt" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+
+                        <TextView
+                            android:id="@+id/libelle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.00"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="@dimen/abc_text_size_subhead_material"
+                            android:textStyle="italic" />
+
+
+                        <TextView
+                            android:id="@+id/titre2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:text="none"
+                            android:textColor="@color/primary_text_default_material_light"
+                            android:textSize="5pt" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:paddingTop="3dp"
+                            android:text=""
+                            android:textColor="@color/secondary_text_default_material_light"
+                            android:textSize="@dimen/abc_text_size_caption_material" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </com.daimajia.swipe.SwipeLayout>
+
+            <View
+                android:id="@+id/selected_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#24001eff"
+                android:visibility="invisible" />
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/operation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Caractéristiques"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <include
+            layout="@layout/listview_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <include
+            layout="@layout/myfab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Gallery;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,11 +33,13 @@ import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.GalleryDemoActivity;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
+import com.mahya.maisonier.adapter.GalleryImageAdapter;
 import com.mahya.maisonier.adapter.model.BatimentAdapter;
 import com.mahya.maisonier.entites.Batiment;
 import com.mahya.maisonier.entites.Batiment_Table;
 import com.mahya.maisonier.entites.Caracteristique;
 import com.mahya.maisonier.entites.Cite;
+import com.mahya.maisonier.entites.PhotoBatiment;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
@@ -133,7 +136,7 @@ public class BatimentActivity extends BaseActivity implements CrudActivity, Sear
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -234,6 +237,14 @@ public class BatimentActivity extends BaseActivity implements CrudActivity, Sear
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.aff_batiment);
             // Initialisation du formulaire
+            List<String> urls = new ArrayList<>();
+            for (PhotoBatiment image1 : batiment.getPhotoBatimentList()
+                    ) {
+                urls.add(image1.getNom());
+
+            }
+            Gallery gallery = (Gallery) dialog.findViewById(R.id.gal);
+            gallery.setAdapter(new GalleryImageAdapter(this, urls, 1));
 
             Code = (TextView) dialog.findViewById(R.id.Code);
             Nom = (TextView) dialog.findViewById(R.id.Nom);

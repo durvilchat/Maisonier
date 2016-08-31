@@ -17,7 +17,6 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.HabitantActivity;
-import com.mahya.maisonier.activities.detail.Aff_HabitantActivity;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Habitant_Table;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
@@ -112,9 +111,7 @@ public class HabitantAdapter extends RecyclerSwipeAdapter<HabitantAdapter.Simple
                 TextView id = (TextView) v.findViewById(R.id.idItem);
                 idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof HabitantActivity) {
-                    Intent intent = new Intent(mContext, Aff_HabitantActivity.class);
-                    intent.putExtra("id", idSelect);
-                    mContext.startActivity(intent);
+                    ((HabitantActivity) mContext).start(idSelect);
                 }
             }
         });
