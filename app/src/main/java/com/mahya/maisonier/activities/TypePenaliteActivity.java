@@ -171,9 +171,15 @@ public class TypePenaliteActivity extends BaseActivity implements CrudActivity, 
                     Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, typePenalite);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Pénalité déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -333,8 +339,15 @@ public class TypePenaliteActivity extends BaseActivity implements CrudActivity, 
                     Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(TypePenalite.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(view, "Type de pénalité déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(view, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

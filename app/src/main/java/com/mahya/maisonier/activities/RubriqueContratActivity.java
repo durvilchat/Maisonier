@@ -208,10 +208,15 @@ public class RubriqueContratActivity extends BaseActivity implements CrudActivit
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, contratBail);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Rubrique de Contrat déja existante", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -390,9 +395,15 @@ public class RubriqueContratActivity extends BaseActivity implements CrudActivit
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, contratBail);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Rubrique de Contrat  déjà existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

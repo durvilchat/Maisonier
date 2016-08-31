@@ -292,9 +292,15 @@ public class LoyerActivity extends BaseActivity implements CrudActivity, SearchV
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, loyer);
                     check();
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(view, "Loyer déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -540,11 +546,18 @@ public class LoyerActivity extends BaseActivity implements CrudActivity, SearchV
                 loyer.assoOccupation((Occupation) logement.getSelectedItem());
                 try {
                     loyer.save();
-                    Snackbar.make(view, "le loyer a été correctement modifier", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "le loyer a été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Loyer.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(view, "Loyer déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(view, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

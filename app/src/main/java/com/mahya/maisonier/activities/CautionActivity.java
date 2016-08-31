@@ -291,9 +291,14 @@ public class CautionActivity extends BaseActivity implements CrudActivity, Searc
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, caution);
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Caution déja existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -525,8 +530,15 @@ public class CautionActivity extends BaseActivity implements CrudActivity, Searc
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, caution);
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "caution  déjà existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

@@ -252,8 +252,14 @@ public class CompteActivity extends BaseActivity implements CrudActivity, Search
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(compte, 0);
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Compte déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -473,8 +479,15 @@ public class CompteActivity extends BaseActivity implements CrudActivity, Search
 
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Compte.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Compte  déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

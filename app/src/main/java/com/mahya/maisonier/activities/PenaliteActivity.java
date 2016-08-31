@@ -314,9 +314,15 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
 
                             .setAction("Action", null).show();
                    mAdapter.addItem(penalite, mAdapter.getItemCount()+1);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Pénalité déja existanet", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -592,8 +598,15 @@ public class PenaliteActivity extends BaseActivity implements CrudActivity, Sear
 
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Penalite.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Pénalité  déjà existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

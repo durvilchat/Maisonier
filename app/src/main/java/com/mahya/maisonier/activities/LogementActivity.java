@@ -317,18 +317,26 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, logement);
+                    if (Logement.findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Logement déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
-                if (Logement.findAll().isEmpty()) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    tvEmptyView.setVisibility(View.VISIBLE);
 
-                } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    tvEmptyView.setVisibility(View.GONE);
-                }
 
 
                 dialog.dismiss();
@@ -589,8 +597,15 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
                     Snackbar.make(v, "le logement a été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Logement.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Logement  déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

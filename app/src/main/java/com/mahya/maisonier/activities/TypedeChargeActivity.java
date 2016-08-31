@@ -163,9 +163,15 @@ public class TypedeChargeActivity extends BaseActivity implements CrudActivity, 
                     Snackbar.make(view, "la typa de charge a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, typeCharge);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Charge déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -318,11 +324,16 @@ public class TypedeChargeActivity extends BaseActivity implements CrudActivity, 
                     Snackbar.make(v, "la type de charge a été correctement modifiée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(TypeCharge.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Charge déjà existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                    System.out.println(e.getMessage());
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

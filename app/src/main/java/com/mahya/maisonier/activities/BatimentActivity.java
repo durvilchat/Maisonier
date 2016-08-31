@@ -197,8 +197,14 @@ public class BatimentActivity extends BaseActivity implements CrudActivity, Sear
                         mRecyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     }
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Batimen déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -401,8 +407,16 @@ public class BatimentActivity extends BaseActivity implements CrudActivity, Sear
                     batiment.assoCite((Cite) cite.getSelectedItem());
                     batiment.save();
                     mAdapter.actualiser(Batiment.findAll());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Batiment  déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

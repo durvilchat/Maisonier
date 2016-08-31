@@ -174,8 +174,14 @@ public class ArticleActivity extends BaseActivity implements CrudActivity, Searc
                         mRecyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     }
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Article déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -327,8 +333,15 @@ public class ArticleActivity extends BaseActivity implements CrudActivity, Searc
                     Snackbar.make(v, "le type de penalité a été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.actualiser(ArticleBail.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Article  déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

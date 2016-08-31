@@ -254,10 +254,15 @@ public class TransfertActivity extends BaseActivity implements CrudActivity, Sea
                     Snackbar.make(view, "l'occupation a été correctement crée", Snackbar.LENGTH_LONG)
 
                             .setAction("Action", null).show();
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
 
+
+                    Snackbar.make(v, "Transfert déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
                 dialog.dismiss();

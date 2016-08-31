@@ -256,8 +256,14 @@ public class ContraBailActivity extends BaseActivity implements CrudActivity, Se
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, contratBail);
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Contrat de Bail déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -483,8 +489,15 @@ public class ContraBailActivity extends BaseActivity implements CrudActivity, Se
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, contratBail);
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Contrat de Bail déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

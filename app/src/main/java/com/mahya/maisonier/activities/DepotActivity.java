@@ -272,8 +272,14 @@ public class DepotActivity extends BaseActivity implements CrudActivity, SearchV
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, depot);
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Dépot déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -516,9 +522,15 @@ public class DepotActivity extends BaseActivity implements CrudActivity, SearchV
 
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Depot.findAll());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Dépot déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

@@ -279,8 +279,14 @@ DateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
                         mRecyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     }
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Charge déja existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -474,8 +480,16 @@ DateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
                 try {
 
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Charge  déjà existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

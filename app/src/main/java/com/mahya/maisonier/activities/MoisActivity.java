@@ -189,17 +189,25 @@ public class MoisActivity extends BaseActivity implements CrudActivity, SearchVi
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, mois);
+                    if (Mois.findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Mois déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (Mois.findAll().isEmpty()) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    tvEmptyView.setVisibility(View.VISIBLE);
-
-                } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    tvEmptyView.setVisibility(View.GONE);
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -375,8 +383,16 @@ public class MoisActivity extends BaseActivity implements CrudActivity, SearchVi
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Mois.findAll());
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Mois  déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

@@ -162,8 +162,14 @@ public class CaracteristiqueActivity extends BaseActivity implements CrudActivit
                             .setAction("Action", null).show();
                     mAdapter.addItem(caracteristique, 0);
                     etat();
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "caractéristique déja existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -302,9 +308,16 @@ public class CaracteristiqueActivity extends BaseActivity implements CrudActivit
 
                     caracteristique.save();
                     mAdapter.actualiser(Caracteristique.findAll());
-                } catch (Exception e) {
-                    System.out.println("erroo");
-                    System.out.println(e.getMessage());
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Caractéristique  déja existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

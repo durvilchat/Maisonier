@@ -158,9 +158,15 @@ public class TypeCautionActivity extends BaseActivity implements CrudActivity, S
                     Snackbar.make(view, "la caracteristique a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.addItem(caracteristique, 0);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Caution déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -299,9 +305,16 @@ public class TypeCautionActivity extends BaseActivity implements CrudActivity, S
                     caracteristique.save();
                     mAdapter.actualiser(TypeCaution.findAll());
                     System.out.println("good");
-                } catch (Exception e) {
-                    System.out.println("erroo");
-                    System.out.println(e.getMessage());
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Caution déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

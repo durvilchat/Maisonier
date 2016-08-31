@@ -293,21 +293,29 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
 
                 try {
                     bailleur.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                bailleur.save();
+                    bailleur.save();
 
-                Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                if (new Caracteristique().findAll().isEmpty()) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    tvEmptyView.setVisibility(View.VISIBLE);
+                    Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    if (new Caracteristique().findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
 
-                } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    tvEmptyView.setVisibility(View.GONE);
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Bailleur déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
+
 
                 mAdapter.addItem(0, bailleur);
 
@@ -549,13 +557,22 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
 
                 try {
                     bailleur.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    bailleur.save();
+                    Snackbar.make(view, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    mAdapter.actualiser(Bailleur.findAll());
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(view, "Bailleur déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 }
-                bailleur.save();
-                Snackbar.make(view, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                mAdapter.actualiser(Bailleur.findAll());
+                catch (Exception e) {
+                    Snackbar.make(view, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
 
                 dialog.dismiss();
             }

@@ -283,21 +283,29 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
 
                 try {
                     bailleur.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                bailleur.save();
-                Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                mAdapter.addItem(0, bailleur);
-                if (new Caracteristique().findAll().isEmpty()) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    tvEmptyView.setVisibility(View.VISIBLE);
+                    bailleur.save();
+                    Snackbar.make(view, "le type de penalité a été correctement crée", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    mAdapter.addItem(0, bailleur);
+                    if (new Caracteristique().findAll().isEmpty()) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
 
-                } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    tvEmptyView.setVisibility(View.GONE);
+                    } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Habitant déja existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
+
                 dialog.dismiss();
             }
         });
@@ -512,13 +520,26 @@ public class HabitantActivity extends BaseActivity implements CrudActivity, Sear
 
                 try {
                     habitant1.setPhoto(saveToInternalStorage(thePic, Nom.getText().toString()));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    habitant1.save();
+                    Snackbar.make(v, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    mAdapter.actualiser(Habitant.findAll()); habitant1.save();
+                    Snackbar.make(v, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    mAdapter.actualiser(Habitant.findAll());
+
+
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Habitant  déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 }
-                habitant1.save();
-                Snackbar.make(v, "l'habitant a été modifié", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                mAdapter.actualiser(Habitant.findAll());
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
 
                 dialog.dismiss();
             }

@@ -160,9 +160,15 @@ public class TypeCompteActivity extends BaseActivity implements CrudActivity, Se
                     Snackbar.make(view, "le type de compte a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, typeCompte);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                }catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Compte déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -315,8 +321,16 @@ public class TypeCompteActivity extends BaseActivity implements CrudActivity, Se
                     typeCompte.setDescription(Description.getText().toString().trim());
                     typeCompte.save();
                     mAdapter.actualiser(typeCompte.findAll());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
+
+
+                    Snackbar.make(v, "Type de Compte déjà existant", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
 
 

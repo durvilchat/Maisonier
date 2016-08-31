@@ -359,11 +359,17 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
 
                             .setAction("Action", null).show();
                     mAdapter.addItem(0, occupation);
-                } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
 
+
+                    Snackbar.make(v, "Occupation déja existante", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    mAdapter.addItem(0, occupation);
+
+                } catch (Exception e) {
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
+
+
                 }
 
                 dialog.dismiss();
@@ -679,9 +685,15 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
 
                             .setAction("Action", null).show();
                     mAdapter.actualiser(Occupation.findAll());
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
 
+
+                    Snackbar.make(v, "Occupation  déjà existante", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

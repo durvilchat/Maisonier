@@ -161,17 +161,17 @@ public class AnneeActivity extends BaseActivity implements CrudActivity, SearchV
                 annee.setStatut(statut.getText().toString().trim());
                 try {
                     annee.save();
-                    Snackbar.make(view, "l'année a été correctement crée", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "l'année a été correctement créée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     mAdapter.addItem(annee, 0);
                 } catch (android.database.sqlite.SQLiteConstraintException e) {
 
 
-                    Snackbar.make(v, "Type de logement déja existant", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Année déja existante", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
                 } catch (Exception e) {
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
@@ -283,7 +283,7 @@ public class AnneeActivity extends BaseActivity implements CrudActivity, SearchV
     }
 
     @Override
-    public void modifier(final int id) {
+    public void   modifier(final int id) {
 
         final Annee annee = SQLite.select().from(Annee.class).where(Annee_Table.id.eq(id)).querySingle();
         final Dialog dialog = new Dialog(context);
@@ -330,7 +330,7 @@ public class AnneeActivity extends BaseActivity implements CrudActivity, SearchV
 
                 }
                 catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

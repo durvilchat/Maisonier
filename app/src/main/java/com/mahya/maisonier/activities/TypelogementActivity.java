@@ -202,14 +202,12 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
                 } catch (android.database.sqlite.SQLiteConstraintException e) {
 
 
-                    Snackbar.make(view, "Type de logement déja existant", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Type de Logement déja existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-
 
                 } catch (Exception e) {
-
-                    Snackbar.make(view, "echec", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, "echec d'enregistremment", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();;
                 }
 
 
@@ -377,14 +375,15 @@ public class TypelogementActivity extends BaseActivity implements CrudActivity, 
                     mAdapter.actualiser(TypeLogement.findAll());
                     Snackbar.make(v, "Type de logement à été correctement modifié", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                } catch (android.database.sqlite.SQLiteConstraintException e) {
+                }  catch (android.database.sqlite.SQLiteConstraintException e) {
 
 
-                    Snackbar.make(v, "Type de logement déja existant", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Type de Logement déjà existant", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                } catch (Exception e) {
-                    Snackbar.make(v, "echec", Snackbar.LENGTH_LONG)
+                }
+                catch (Exception e) {
+                    Snackbar.make(v, "echec de la modification", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
