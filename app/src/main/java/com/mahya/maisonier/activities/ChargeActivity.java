@@ -28,7 +28,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.etiennelawlor.imagegallery.library.enums.PaletteColorType;
 import com.github.clans.fab.FloatingActionButton;
@@ -181,26 +180,11 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
         montant = (EditText) dialog.findViewById(R.id.montant);
         montantpaye = (EditText) dialog.findViewById(R.id.montantpaye);
         Observation = (MaterialBetterSpinner) dialog.findViewById(R.id.Observation);
-        Button seelct = (Button) dialog.findViewById(R.id.button);
         valider = (Button) dialog.findViewById(R.id.valider);
         annuler = (Button) dialog.findViewById(R.id.annuler);
 
         final ItemChargeAdapter adapter = new ItemChargeAdapter(context, Occupation.findAll());
         occupation.setAdapter(adapter);
-        seelct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String result = "Selected Product are :";
-                int totalAmount = 0;
-                for (Occupation p : adapter.getBox()) {
-                    if (p.select) {
-                        result += "\n" + p.getDescription();
-                    }
-                }
-                Toast.makeText(context, result + "\n" + "Total Amount:=" + totalAmount, Toast.LENGTH_LONG).show();
-            }
-
-        });
 
 
         List<String> strings = new ArrayList<>();
@@ -283,10 +267,15 @@ public class ChargeActivity extends BaseActivity implements CrudActivity, Search
                     charge.assoTypeCharge((TypeCharge) typeCharge.getSelectedItem());
                     charge.setDatePaiement(sdf.parse(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date())));
                     charge.setDesignation(designation.getText().toString());
-                    charge.save();
+                    for (Occupation p : adapter.getBox()) {
+                        if (p.select) {
+                            charge.assoOccupation(p);
+                            charge.save();
+                        }
+                    }
                     Snackbar.make(view, "la charge a été correctement crée", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    //mAdapter.addItem(, 0);
+                    //    mAdapter.addItem(, 0);
                     if (new Caracteristique().findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);

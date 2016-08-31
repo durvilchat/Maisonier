@@ -1,7 +1,7 @@
 package com.mahya.maisonier.utils;
 
 public interface Constants {
-    String patch = "/dcim/.maisonier/";
+    String patch = "/maisonier/";
     String pdfAuteur = "FlySoft";
 
 }
