@@ -18,9 +18,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Html;
 import android.transition.ChangeTransform;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,22 +34,9 @@ import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.mahya.maisonier.PdfRegion;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
@@ -60,26 +45,17 @@ import com.mahya.maisonier.entites.Batiment;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.entites.Logement_Table;
 import com.mahya.maisonier.entites.TypeLogement;
-import com.mahya.maisonier.entites.TypeLogement_Table;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
-import com.mahya.maisonier.utils.Constants;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
 import com.mahya.maisonier.utils.PermissionUtils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
@@ -189,10 +165,13 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
         menuAction.setOnClickListener(this);*/
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
+                break;
+            case R.id.print:
+                viewPdf(new PdfRegion(this).etatsRegion(Logement.findAll()));
                 break;
         }
     }
@@ -467,7 +446,16 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
 
         if (count == 0) {
             actionMode.finish();
+
         } else {
+            if (count == 1) {
+
+                actionMode.getMenu().findItem(R.id.caract).setVisible(true);
+
+            } else {
+
+                actionMode.getMenu().findItem(R.id.caract).setVisible(false);
+            }
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
@@ -737,7 +725,10 @@ public class LogementActivity extends BaseActivity implements CrudActivity, Sear
                             .setNegativeButton(android.R.string.no, null).show();
 
                     return true;
-
+                case R.id.caract:
+                    Intent intent = new Intent(context, CaracterisationActivity.class);
+                    intent.putExtra("id", mAdapter.getId());
+                    startActivity(intent);
                 default:
                     return false;
             }

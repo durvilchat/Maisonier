@@ -32,6 +32,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.DepotAdapter;
+import com.mahya.maisonier.dataBase.Maisonier;
 import com.mahya.maisonier.entites.Annee;
 import com.mahya.maisonier.entites.Depot;
 import com.mahya.maisonier.entites.Depot_Table;
@@ -41,7 +42,10 @@ import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.MyRecyclerScroll;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
+import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -136,7 +140,7 @@ public class DepotActivity extends BaseActivity implements CrudActivity, SearchV
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -246,19 +250,27 @@ public class DepotActivity extends BaseActivity implements CrudActivity, SearchV
 
                 }
 
-                Depot depot = new Depot();
+                final Depot depot = new Depot();
                 try {
                     depot.setDateDepot(sdf.parse(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date())));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                depot.assoOccupation((Occupation) logement.getSelectedItem());
-                depot.setMontant(Double.parseDouble(montant.getText().toString().trim()));
-                depot.assoMois((Mois) mois.getSelectedItem());
-                depot.setObservation(observation.getText().toString().trim());
 
                 try {
-                    depot.save();
+                    FlowManager.getDatabase(Maisonier.class).executeTransaction(new ITransaction() {
+                        @Override
+                        public void execute(DatabaseWrapper databaseWrapper) {
+
+                            depot.assoOccupation((Occupation) logement.getSelectedItem());
+                            depot.setMontant(Double.parseDouble(montant.getText().toString().trim()));
+                            depot.assoMois((Mois) mois.getSelectedItem());
+                            depot.setObservation(observation.getText().toString().trim());
+                            //    SQLite.update(Compte.class).set(Compte_Table.solde.plus(Compte_Table.solde)).where().async()
+                            depot.save();
+                        }
+                    });
+
                     if (Depot.findAll().isEmpty()) {
                         mRecyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);

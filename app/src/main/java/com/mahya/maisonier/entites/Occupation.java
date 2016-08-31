@@ -31,10 +31,10 @@ public class Occupation extends BaseModel {
 
 
     public static List<Occupation> occupations = new ArrayList<>();
+    public boolean select;
     @PrimaryKey(autoincrement = true)
     @Column(name = "id")
     Integer id;
-
     @NotNull
     @Column(name = "date_entree")
 
@@ -45,7 +45,6 @@ public class Occupation extends BaseModel {
     @Size(max = 255)
     @Column(name = "description", length = 255)
     String description;
-
     @NotNull
     @Column(name = "etat")
     boolean etat;
@@ -53,28 +52,22 @@ public class Occupation extends BaseModel {
     Boolean forfaitEau;
     @Column(name = "forfait_electricte")
     Boolean forfaitElectricte;
-
     @NotNull
     @Column(name = "loyer_base")
     double loyerBase;
-
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "mode_paiement", length = 255)
     String modePaiement;
-
     @NotNull
     @Column(name = "paie_cable")
     boolean paieCable;
-
     @NotNull
     @Column(name = "paie_eau")
     boolean paieEau;
-
     @NotNull
     @Column(name = "paie_electricite")
     boolean paieElectricite;
-
     List<Penalite> penaliteList;
 
 
@@ -150,6 +143,14 @@ public class Occupation extends BaseModel {
 
         return Occupation;
 
+    }
+
+    public static List<Occupation> getOccupations() {
+        return occupations;
+    }
+
+    public static void setOccupations(List<Occupation> occupations) {
+        Occupation.occupations = occupations;
     }
 
     public Integer getId() {
@@ -374,6 +375,14 @@ public class Occupation extends BaseModel {
 
     }
 
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
     public Boolean getForfaitEau() {
         return forfaitEau;
     }
@@ -386,8 +395,16 @@ public class Occupation extends BaseModel {
         return logement;
     }
 
+    public void setLogement(ForeignKeyContainer<Logement> logement) {
+        this.logement = logement;
+    }
+
     public ForeignKeyContainer<Habitant> getHabitant() {
         return habitant;
+    }
+
+    public void setHabitant(ForeignKeyContainer<Habitant> habitant) {
+        this.habitant = habitant;
     }
 
     public Boolean getForfaitElectricte() {
@@ -396,10 +413,6 @@ public class Occupation extends BaseModel {
 
     public void setForfaitElectricte(Boolean forfaitElectricte) {
         this.forfaitElectricte = forfaitElectricte;
-    }
-
-    public static List<Occupation> getOccupations() {
-        return occupations;
     }
 
     @Override

@@ -103,6 +103,8 @@ public class LogementAdapter extends RecyclerSwipeAdapter<LogementAdapter.Simple
             @Override
             public boolean onLongClick(View view) {
 
+                TextView id = (TextView) view.findViewById(R.id.idItem);
+                idSelect = Integer.parseInt(id.getText().toString());
                 ((LogementActivity) mContext).onItemLongClicked(position);
 
                 return true;

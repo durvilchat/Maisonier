@@ -1,9 +1,6 @@
-package com.mahya.maisonier;
-
-import java.util.List;
+package com.mahya.maisonier.adapter;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
@@ -14,16 +11,15 @@ import android.widget.ImageView;
 
 import com.mahya.maisonier.utils.Constants;
 
+import java.util.List;
+
 public class GalleryImageAdapter extends BaseAdapter {
 
-	private Activity context;
-
 	private static ImageView imageView;
-
-	private List<String> plotsImages;
-
 	private static ViewHolder holder;
 	int type;
+	private Activity context;
+	private List<String> plotsImages;
 
 	public GalleryImageAdapter(Activity context, List<String> plotsImages,int type) {
 

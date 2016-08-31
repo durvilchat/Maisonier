@@ -1,12 +1,10 @@
 package com.mahya.maisonier.activities;
 
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -16,7 +14,6 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -31,24 +28,24 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.activities.detail.Aff_BailleurActivity;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.BailleurAdapter;
 import com.mahya.maisonier.entites.Bailleur;
 import com.mahya.maisonier.entites.Bailleur_Table;
 import com.mahya.maisonier.entites.Caracteristique;
+import com.mahya.maisonier.fragments.AffBailleurFragment;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
@@ -74,6 +71,7 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
     static final int CAMERA_CAPTURE = 1;
 
     private static final String TAG = BailleurActivity.class.getSimpleName();
+    public static boolean mTwoPane;
     //keep track of cropping intent
     final int PIC_CROP = 3;
     //keep track of gallery intent
@@ -104,11 +102,19 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
-        super.setContentView(R.layout.activity_model1);
+        super.setContentView(R.layout.activity_list_user);
         setTitle(context.getString(R.string.Bailleur));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
         }
         initView();
         fab.startAnimation(animation);
@@ -171,7 +177,7 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -400,6 +406,33 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
         } else {
 
 
+        }
+    }
+
+    public void start(int id) {
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putInt("id", id);
+            AffBailleurFragment fragment = new AffBailleurFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+
+        } else {
+            Intent intent = new Intent(context, Aff_BailleurActivity.class);
+            intent.putExtra("id", id);
+
+            startActivity(intent);
         }
     }
 
@@ -663,7 +696,6 @@ public class BailleurActivity extends BaseActivity implements CrudActivity, Sear
                 break;
         }
     }
-
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

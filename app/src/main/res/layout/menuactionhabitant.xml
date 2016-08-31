@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
 
@@ -14,46 +13,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        fab:menu_icon="@drawable/ic_more_white_36dp"
-        fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
+        android:paddingRight="10dp"
         fab:menu_backgroundColor="#ccffffff"
-        fab:menu_labels_position="right"
         fab:menu_colorNormal="#1565C0"
         fab:menu_colorPressed="#2272CD"
-        fab:menu_colorRipple="#62B2FF">
+        fab:menu_colorRipple="#62B2FF"
+        fab:menu_icon="@drawable/ic_more_white_36dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_position="right"
+        fab:menu_labels_singleLine="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="action"
             android:src="@drawable/ic_print"
-            fab:fab_size="mini"
-            fab:fab_label="Imprimer" />
+            fab:fab_label="Imprimer"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="action"
             android:src="@drawable/ic_msg"
-            fab:fab_size="mini"
-            fab:fab_label="Sms" />
+            fab:fab_label="Sms"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_call"
             android:onClick="addContact"
-            fab:fab_size="mini"
-            fab:fab_label="Ajout des contacts" />
+            android:src="@android:drawable/ic_menu_call"
+            fab:fab_label="Ajout des contacts"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="action"
             android:src="@drawable/ic_email"
-            fab:fab_size="mini"
-            fab:fab_label="Email" />
+            fab:fab_label="Email"
+            fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

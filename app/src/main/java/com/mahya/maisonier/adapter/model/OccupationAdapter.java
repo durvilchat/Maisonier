@@ -1,7 +1,6 @@
 package com.mahya.maisonier.adapter.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseBooleanArray;
@@ -15,7 +14,6 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.mahya.maisonier.R;
 import com.mahya.maisonier.activities.OccupationActivity;
-import com.mahya.maisonier.activities.detail.Aff_OccupationsActivity;
 import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 
@@ -92,9 +90,8 @@ public class OccupationAdapter extends RecyclerSwipeAdapter<OccupationAdapter.Si
                 idSelect = Integer.parseInt(id.getText().toString());
                 if (mContext instanceof OccupationActivity) {
                     ((OccupationActivity) mContext).onItemClicked(position);
-                    Intent intent = new Intent(mContext, Aff_OccupationsActivity.class);
-                    intent.putExtra("id", idSelect);
-                    mContext.startActivity(intent);
+                    if (OccupationActivity.multi == false)
+                        ((OccupationActivity) mContext).start(idSelect);
                 }
             }
         });

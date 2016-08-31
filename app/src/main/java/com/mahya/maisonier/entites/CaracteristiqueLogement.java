@@ -15,8 +15,12 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.annotation.Unique;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
+
+import java.util.List;
 
 @ModelContainer
 @Table(database = Maisonier.class, useBooleanGetterSetters = true)
@@ -29,6 +33,7 @@ public class CaracteristiqueLogement extends BaseModel {
     @Size(max = 255)
     @Column(name = "valeur", length = 255)
     String valeur;
+    @Unique
     @Column
     @ForeignKey(
             references = {@ForeignKeyReference(columnName = "caracteristique_id",
@@ -53,6 +58,10 @@ public class CaracteristiqueLogement extends BaseModel {
         this.id = id;
     }
 
+    public static List<CaracteristiqueLogement> findAll() {
+        return SQLite.select().from(CaracteristiqueLogement.class).queryList();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -72,7 +81,6 @@ public class CaracteristiqueLogement extends BaseModel {
     public ForeignKeyContainer<Caracteristique> getCaracteristique() {
         return caracteristique;
     }
-
 
     public void setCaracteristique(ForeignKeyContainer<Caracteristique> caracteristique) {
         this.caracteristique = caracteristique;
@@ -99,6 +107,4 @@ public class CaracteristiqueLogement extends BaseModel {
         caracteristique.put(Caracteristique_Table.id, caracteristique1.id);
 
     }
-
-
 }

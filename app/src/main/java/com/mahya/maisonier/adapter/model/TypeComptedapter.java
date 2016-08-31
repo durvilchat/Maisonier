@@ -54,6 +54,8 @@ public class TypeComptedapter extends RecyclerSwipeAdapter<TypeComptedapter.Simp
 
         try {
             viewHolder.tilte.setVisibility(View.GONE);
+            viewHolder.tvDelete.setEnabled((TypeComptes.get(position).getLibelle().equals("Principal") ? true : false));
+            viewHolder.tvEdit.setEnabled((TypeComptes.get(position).getLibelle().equals("Principal") ? true : false));
             viewHolder.libele.setText(TypeComptes.get(position).getLibelle());
             viewHolder.desc.setText(TypeComptes.get(position).getDescription());
             viewHolder.id.setText(String.valueOf(TypeComptes.get(position).getId()));

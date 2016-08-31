@@ -139,7 +139,7 @@ public class CautionActivity extends BaseActivity implements CrudActivity, Searc
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);

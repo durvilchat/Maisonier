@@ -1,77 +1,101 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/habitant"
+                            android:layout_width="match_parent"
+                            android:layout_height="319dp" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                        <Button
+                                            android:id="@+id/loyer"
+                                            android:layout_width="180dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Loyer" />
+
+                                        <Button
+                                            android:id="@+id/compte"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Comptes" />
+
+                                        <Button
+                                            android:id="@+id/depot"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Dépot" />
+
+                                        <Button
+                                            android:id="@+id/cable"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Cable" />
+
+                                        <Button
+                                            android:id="@+id/prixUElect"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Consommationenélectricité" />
+
+                                        <Button
+                                            android:id="@+id/prixUEau"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Consommationeneau" />
+
+                                        <Button
+                                            android:id="@+id/facture"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Facture client" />
+
+                                        <Button
+                                            android:id="@+id/caution"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Caution" />
+
+                                        <Button
+                                            android:id="@+id/Occupation"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Occupations" />
+
+                                        <Button
+                                            android:id="@+id/charge"
+                                            android:layout_width="179dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/Charges" />
+
+                                </LinearLayout>
+                        </HorizontalScrollView>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/dossier"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                </LinearLayout>
+        </ScrollView>
 
 
-        <Button
-            android:text="Loyer"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/button9" />
-
-        <Button
-            android:text="Comptes"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/button10" />
-
-        <Button
-            android:text="@string/Dépot"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/button8" />
-
-        <Button
-            android:text="Cable"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/cable" />
-
-        <Button
-            android:text="@string/Consommationenélectricité"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/prixUElect" />
-
-        <Button
-            android:text="@string/Consommationeneau"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/prixUEau" />
-
-        <Button
-            android:text="Facture client"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/facture" />
-
-        <Button
-            android:text="@string/Caution"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/caution" />
-
-        <Button
-            android:text="@string/Occupations"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/Occupation" />
-
-        <Button
-            android:text="@string/Charges"
-            android:layout_width="179dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/charge" />
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

@@ -133,7 +133,7 @@ public class CableActivity extends BaseActivity implements CrudActivity, SearchV
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);

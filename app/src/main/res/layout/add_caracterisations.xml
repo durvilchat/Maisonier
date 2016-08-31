@@ -1,0 +1,56 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/operation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_margin_half"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Ajouter une caractérisation"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/carateristique"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_Montant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/valeur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Valeur *"
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <include
+            layout="@layout/btn_valider_annuler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</ScrollView>

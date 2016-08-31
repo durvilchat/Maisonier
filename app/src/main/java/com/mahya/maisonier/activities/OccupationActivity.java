@@ -42,12 +42,14 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.mahya.maisonier.R;
+import com.mahya.maisonier.activities.detail.Aff_OccupationActivity;
 import com.mahya.maisonier.adapter.DividerItemDecoration;
 import com.mahya.maisonier.adapter.model.OccupationAdapter;
 import com.mahya.maisonier.entites.Habitant;
 import com.mahya.maisonier.entites.Logement;
 import com.mahya.maisonier.entites.Occupation;
 import com.mahya.maisonier.entites.Occupation_Table;
+import com.mahya.maisonier.fragments.AffOccupationFragment;
 import com.mahya.maisonier.interfaces.CrudActivity;
 import com.mahya.maisonier.interfaces.OnItemClickListener;
 import com.mahya.maisonier.utils.Constants;
@@ -72,11 +74,13 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
     //keep track of camera capture intent
     static final int CAMERA_CAPTURE = 1;
     private static final String TAG = OccupationActivity.class.getSimpleName();
+    public static boolean multi;
     //keep track of cropping intent
     final int PIC_CROP = 3;
     //keep track of gallery intent
     final int PICK_IMAGE_REQUEST = 2;
     protected RecyclerView mRecyclerView;
+    boolean mTwoPane;
     DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     OccupationAdapter mAdapter;
     FrameLayout fab;
@@ -104,7 +108,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setSharedElementExitTransition(new ChangeTransform());
         animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
-        super.setContentView(R.layout.activity_model1);
+        super.setContentView(R.layout.activity_list_user);
 
         setTitle(context.getString(R.string.Occupations));
         ActionBar actionBar = getSupportActionBar();
@@ -136,7 +140,15 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
             }
         });
 
-
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
     }
 
     private void initView() {
@@ -161,7 +173,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
 
     }
 
-    public void add(final View view) {
+    public void action(final View view) {
         switch (view.getId()) {
             case R.id.myfab_main_btn:
                 ajouter(view);
@@ -444,6 +456,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
 
         if (count == 0) {
             actionMode.finish();
+            multi = false;
         } else {
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
@@ -461,8 +474,10 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
 
     @Override
     public boolean onItemLongClicked(int position) {
+
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
+            multi = true;
         }
 
         toggleSelection(position);
@@ -714,6 +729,32 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
         dialog.show();
     }
 
+    public void start(int id) {
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putInt("id", id);
+            AffOccupationFragment fragment = new AffOccupationFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+
+        } else {
+            Intent intent = new Intent(context, Aff_OccupationActivity.class);
+            intent.putExtra("id", id);
+
+            startActivity(intent);
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -845,6 +886,7 @@ public class OccupationActivity extends BaseActivity implements CrudActivity, Se
                                         mAdapter.removeItems(mAdapter.getSelectedItems());
                                         mode.finish();
 
+                                        multi = false;
                                     } catch (Exception e) {
 
                                     }

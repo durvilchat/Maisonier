@@ -39,96 +39,17 @@ import java.util.Locale;
 
 public class PdfRegion extends BaseActivity {
 
+    private static final Font fontTirets = new Font(Font.FontFamily.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK);
     private static Rectangle format = null;
     private static Rectangle art = null;
     private static PdfWriter writer = null;
     private static String outPutFilePath;
     private static Document document;
-    private static final Font fontTirets = new Font(Font.FontFamily.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK);
     private static String nomDuFichier;
     private final Context context;
 
     public PdfRegion(Context context) {
         this.context=context;
-    }
-
-    public File etatsRegion(List<Logement> regions) {
-        outPutFilePath = "";
-        File outPutFilePath = null;
-        try {
-            getFile();
-            //Create time stamp
-            Date date = new Date();
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date);
-             outPutFilePath = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
-
-
-            format = PageSize.A4;
-            art = new Rectangle(format.getLeft() + 25, format.getBottom() + 25, format.getRight() - 25, format.getTop());
-            document = new Document(format, Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f));
-            writer = PdfWriter.getInstance(document, new FileOutputStream(outPutFilePath));
-            writer.setBoxSize("art", art);
-            writer.setPageEvent(new CustumPageEvent(context));
-            document.open();
-            document.addTitle("Durvillo");
-            document.addSubject("Etat liste des regions");
-            document.addKeywords("Etat, gestion des archives, IA's");
-            document.addCreator("My program using iText");
-            document.addAuthor("gervaisbommeu@gmail.com");
-            document.addHeader("Expires", "0");
-            float[] widths1 = {0.5f, 0.5f, 2f};
-            PdfPTable table = new PdfPTable(widths1);
-            table.setWidthPercentage(60);
-            table.setTotalWidth(art.getWidth());
-            ecrireEntete(document);
-
-            PdfPCell cellNum = new PdfPCell(new Paragraph("N°", fontTirets));
-            cellNum.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(cellNum);
-
-            PdfPCell cell1Code = new PdfPCell(new Paragraph("CODE", fontTirets));
-            cell1Code.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(cell1Code);
-
-            PdfPCell cellNom = new PdfPCell(new Paragraph("NOM", fontTirets));
-            cellNom.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(cellNom);
-
-            int nbRegion = 0;
-            for (Logement region : regions) {
-
-                //String numS = String.valueOf(batiment.getId());
-                PdfPCell cellNumero = new PdfPCell(new Phrase((nbRegion + 1) + ""));
-                cellNumero.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cellNumero);
-
-                PdfPCell cellCode = new PdfPCell(new Phrase(region.getReference()));
-                cellCode.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cellCode);
-
-                PdfPCell cellNomRegion = new PdfPCell(new Phrase(region.getBatiment().load().getNom()));
-                cellNomRegion.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cellNomRegion);
-                nbRegion++;
-            }
-
-            Paragraph P5 = new Paragraph("Liste des Regions\n\n");
-            document.add(P5);
-            document.add(table);
-
-            Paragraph nombreBatiments = new Paragraph(new Phrase("Nombre de régions: " + String.valueOf(nbRegion)));
-            nombreBatiments.setAlignment(Element.ALIGN_RIGHT);
-            document.add(nombreBatiments);
-
-            document.close();
-            System.out.println("fermeture du fichier " + outPutFilePath);
-
-        } catch (FileNotFoundException | DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outPutFilePath;
     }
 
     private static void ecrireEntete(Document document) throws DocumentException {
@@ -200,6 +121,101 @@ public class PdfRegion extends BaseActivity {
         tete.addCell(cell1);
         document.add(tete);
 
+    }
+
+    public File etatsRegion(List<Logement> regions) {
+        outPutFilePath = "";
+        File outPutFilePath = null;
+        try {
+            getFile();
+            //Create time stamp
+            Date date = new Date();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date);
+             outPutFilePath = new File(file.getAbsolutePath() + File.separator + timeStamp + ".pdf");
+
+
+            format = PageSize.A4;
+            art = new Rectangle(format.getLeft() + 25, format.getBottom() + 25, format.getRight() - 25, format.getTop());
+            document = new Document(format, Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f), Utilities.inchesToPoints(0.35f));
+            writer = PdfWriter.getInstance(document, new FileOutputStream(outPutFilePath));
+            writer.setBoxSize("art", art);
+            writer.setPageEvent(new CustumPageEvent(context));
+            document.open();
+            document.addTitle("Durvillo");
+            document.addSubject("Etat liste des regions");
+            document.addKeywords("Etat, gestion des archives, IA's");
+            document.addCreator("My program using iText");
+            document.addAuthor("gervaisbommeu@gmail.com");
+            document.addHeader("Expires", "0");
+            float[] widths1 = {0.5f, 0.5f, 2f};
+            PdfPTable table = new PdfPTable(widths1);
+            table.setWidthPercentage(60);
+            table.setTotalWidth(art.getWidth());
+            // ecrireEntete(document);
+
+            PdfPCell cellNum = new PdfPCell(new Paragraph("N°", fontTirets));
+            cellNum.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cellNum);
+
+            PdfPCell cell1Code = new PdfPCell(new Paragraph("CODE", fontTirets));
+            cell1Code.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell1Code);
+
+            PdfPCell cell1bat = new PdfPCell(new Paragraph("BATIMENT", fontTirets));
+            cell1bat.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell1bat);
+
+            PdfPCell cellDes = new PdfPCell(new Paragraph("DESCRIPTION", fontTirets));
+            cellDes.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cellDes);
+
+            PdfPCell cellNom = new PdfPCell(new Paragraph("NOM", fontTirets));
+            cellNom.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cellNom);
+
+            int nbRegion = 0;
+            for (Logement region : regions) {
+
+                //String numS = String.valueOf(batiment.getId());
+                PdfPCell cellNumero = new PdfPCell(new Phrase((nbRegion + 1) + ""));
+                cellNumero.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellNumero);
+
+                PdfPCell cellCode = new PdfPCell(new Phrase(region.getReference()));
+                cellCode.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellCode);
+
+                PdfPCell cellBatiment = new PdfPCell(new Phrase(region.getDescription()));
+                cellBatiment.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellBatiment);
+
+                PdfPCell cellDes1 = new PdfPCell(new Phrase(region.getReference()));
+                cellDes1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellDes1);
+
+                PdfPCell cellNomRegion = new PdfPCell(new Phrase(region.getBatiment().load().getNom()));
+                cellNomRegion.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellNomRegion);
+                nbRegion++;
+            }
+
+            Paragraph P5 = new Paragraph("Liste des Regions\n\n");
+            document.add(P5);
+            document.add(table);
+
+            Paragraph nombreBatiments = new Paragraph(new Phrase("Nombre de régions: " + String.valueOf(nbRegion)));
+            nombreBatiments.setAlignment(Element.ALIGN_RIGHT);
+            document.add(nombreBatiments);
+
+            document.close();
+            System.out.println("fermeture du fichier " + outPutFilePath);
+
+        } catch (FileNotFoundException | DocumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outPutFilePath;
     }
 
 
