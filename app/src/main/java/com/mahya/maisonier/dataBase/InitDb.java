@@ -34,7 +34,7 @@ public class InitDb extends Application {
         FlowManager.init(new FlowConfig.Builder(this).build());
 
         File maisonier = new File(Environment.getExternalStorageDirectory() +
-                File.separator + "TollCulator");
+                File.separator + "maisonier");
         boolean success = true;
         if (!maisonier.exists()) {
             success = maisonier.mkdir();
